@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Cores oficiais da marca Impact Hub Floripa */
+  --ihf-brand-primary: #812926;
+  --ihf-brand-forest: #063b27;
+  --ihf-brand-lime: #b9ee8d;
+  --ihf-brand-navy: #1c395c;
+  --ihf-brand-cyan: #41bed0;
+  --ihf-brand-peach: #fde2ce;
+
+  /* Superfícies e Fundos */
+  --ihf-bg-primary: #f7f6f2;
+  --ihf-bg-white: #ffffff;
+  --ihf-bg-light: #f3f4f5;
+  --ihf-bg-dark: #212020;
+  --ihf-bg-dark-line: #333333;
+  --ihf-bg-navy-card: #1c395c;
+  --ihf-bg-cyan-card: #e2f5f8;
+
+  /* Textos */
+  --ihf-text-primary: #212020;
+  --ihf-text-heading: #812926;
+  --ihf-text-body: #333333;
+  --ihf-text-body-alt: #484848;
+  --ihf-text-muted: #c1c1c1;
+  --ihf-text-on-dark: #ffffff;
+  --ihf-text-on-brand: #fde2ce;
+
+  /* Bordas */
+  --ihf-border-light: #e5e5e5;
+  --ihf-border-dark: #333333;
+
+  /* Status Semânticos Isolados */
+  --ihf-status-error: #DC2626;
+  --ihf-status-warning: #D97706;
+  --ihf-status-success: #16A34A;
+  --ihf-status-info: #1C395C;
+
+  /* Tipografia */
+  --poppins: 'Poppins', sans-serif;
+  --GT-Walsheim: 'GT Walsheim', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--ihf-bg-primary);
+  color: var(--ihf-text-body);
+  font-family: var(--GT-Walsheim);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--poppins);
+  color: var(--ihf-text-heading);
+}
+
+/* Micro-interação oficial de botão */
+.btn-vermelho-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-vermelho-hover:hover {
+  background-color: #ffffff !important;
+  color: #1c395c !important;
+  border-color: #1c395c !important;
+}
