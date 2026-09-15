@@ -46,6 +46,18 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 4 Concluída: Utilitários Centrais, Supabase SSR e Validador Matemático
+- **Commit**: `2b42b79`
+- **Contexto**: Implementação da biblioteca central de matemática fiscal, cálculo de hash SHA-256 universal, formatadores monetários brasileiros e clientes `@supabase/ssr` para Server Actions e middleware.
+- **Arquivos**: `src/lib/math.ts`, `src/lib/crypto.ts`, `src/lib/formatters.ts`, `src/lib/supabase/client.ts`, `src/lib/supabase/server.ts`, `src/lib/supabase/middleware.ts`, `tests/unit/math-crypto.test.ts`, `.gitignore`.
+- **Decisões e Resultados**:
+  1. Implementação de `validateTaxMath` com tolerância fiscal estrita de até R$ 0,02 (2 centavos) para cálculo de retenções (`Líquido = Bruto - Deduções`).
+  2. Implementação de `calculateSha256` universal suportando Web Crypto API nativa com fallback para `node:crypto`.
+  3. Formatadores `formatBRL`, `formatCNPJ` e `parseCentavos` para manipulação segura de moedas em centavos inteiros.
+  4. Configuração dos clientes `@supabase/ssr` para Client Components, Server Components e Next.js Middleware.
+  5. Ajuste no `.gitignore` (`/lib/`) para não mascarar a pasta `src/lib/`.
+  6. Validação com 100% de sucesso nos testes unitários (`npm test` com 18 testes passando).
+
 ### [2026-09-15] — Tarefa 3 Concluída: Design System, Tokens CSS e Root Layout com next/font
 - **Commit**: `b8e52f6`
 - **Contexto**: Implementação dos tokens oficiais do Impact Hub Floripa (`docs/designIHF.md`), injeção de fontes nativas sem CLS e componentes atômicos essenciais (`Button`, `Badge`, `Modal`).
