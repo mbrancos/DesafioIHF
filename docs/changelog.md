@@ -46,6 +46,13 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Instalação das Skills Oficiais Supabase Postgres e Vercel React Best Practices
+- **Contexto**: Incorporação das diretrizes oficiais de alto nível para banco de dados relacional PostgreSQL (Supabase) e engenharia de componentes e performance React (Vercel) via CLI `skills add`.
+- **Decisões Tomadas**:
+  1. Instalação de [`.agents/skills/supabase-postgres-best-practices`](../.agents/skills/supabase-postgres-best-practices/SKILL.md): Padrões de modelagem relacional, indexação, RLS (Row Level Security), funções PL/pgSQL, tipos inteiros e integridade referencial para o schema do iHubFiscal.
+  2. Instalação de [`.agents/skills/vercel-react-best-practices`](../.agents/skills/vercel-react-best-practices/SKILL.md): Padrões de renderização, performance de UI, tratamento de eventos e arquitetura de componentes.
+  3. Registro no `skills-lock.json` e atualização da lista de skills em [`AGENTS.md`](../AGENTS.md) e [`GEMINI.md`](../GEMINI.md).
+
 ### [2026-09-15] — Instalação e Adaptação das Skills invoice-organizer e legal-advisor
 - **Contexto**: Integração de recursos especializados de automação contábil e governança de dados ao ecossistema do iHubFiscal, provenientes do `skills.sh`.
 - **Decisões Tomadas**:

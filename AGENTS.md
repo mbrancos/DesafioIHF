@@ -51,6 +51,8 @@ As skills locais estão instaladas em `.agents/skills/` e foram adaptadas para o
 - `finishing-a-development-branch`: Finalização e integração com `ask_question`.
 - `invoice-organizer`: Organização, nomenclatura padronizada, pareamento e fechamento contábil (.ZIP/CSV).
 - `legal-advisor`: Conformidade jurídica, proteção de dados LGPD, termos de consentimento e governança fiscal.
+- `supabase-postgres-best-practices`: Melhores práticas oficiais de modelagem, migração, RLS e performance no PostgreSQL.
+- `vercel-react-best-practices`: Padrões e diretrizes de excelência da Vercel para React, renderização e performance.
 
 ---
 
