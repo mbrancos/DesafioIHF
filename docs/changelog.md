@@ -46,6 +46,13 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Governança de Segredos: Criação do .gitignore, .env.example e Armazenamento no .env.local
+- **Contexto**: Necessidade de armazenar com segurança as credenciais e conexões do projeto Supabase (`DesafioIHF`), blindando o repositório contra vazamento de chaves e senhas no GitHub.
+- **Decisões Tomadas**:
+  1. Escolha do arquivo `.env.local` para guardar as credenciais confidenciais (por convenção de indústria e frameworks modernos, `.env.local` é reservado exclusivamente para segredos da máquina local).
+  2. Criação do arquivo [`.gitignore`](../.gitignore) bloqueando preventivamente `.env`, `.env.local`, `.env.*.local`, dependências, arquivos de sistema e temporários.
+  3. Criação do arquivo [`.env.example`](../.env.example) como modelo sem segredos para versionamento e replicação de ambiente.
+
 ### [2026-09-15] — Configuração do Repositório Remoto e Sincronização com o GitHub
 - **Contexto**: Integração do repositório local com o repositório remoto oficial no GitHub (`https://github.com/mbrancos/DesafioIHF.git`) para versionamento contínuo, backup em nuvem e compartilhamento seguro do código e documentação.
 - **Decisões Tomadas**:
