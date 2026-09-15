@@ -143,11 +143,60 @@ Estes são os itens que não existem nos repositórios e precisam ser produzidos
 
 ---
 
-## 5. Estimativa de Economia de Tempo & Vantagem Competitiva
+## 5. Gestão de Riscos Críticos & Correção de Rota Estratégica
 
-* **Tempo que levaria para fazer tudo do zero**: ~40 a 50 horas de engenharia.
-* **Tempo com o reaproveitamento dos seus 2 apps**: ~**6 a 8 horas**, focadas quase exclusivamente em:
-  1. Exportar e testar o `.json` do n8n com as notas fiscais.
-  2. Redigir os 2 documentos oficiais (Desenho da Solução e Manual).
-  3. Gravar o vídeo demonstrativo de 3 minutos.
-* **Vantagem Competitiva Frente aos Outros Candidatos**: Enquanto os demais candidatos entregarão fluxos teóricos ou automações isoladas no n8n, você apresentará uma **arquitetura de produto completa**, já validada com banco de dados, governança real e experiência de conferência assistida por IA (*Human-in-the-Loop*).
+A partir de uma auditoria técnica rigorosa sobre os critérios do edital, identificamos 4 armadilhas operacionais que foram neutralizadas nesta correção de rota:
+
+### ⚠️ Risco 1: A Armadilha do n8n Acoplado ao Neon (Risco de Desqualificação)
+* **O Problema**: Se o fluxo n8n depender de funções PL/pgSQL customizadas (`01_criar_funcao_neon.sql`) ou tabelas proprietárias no Neon, o avaliador não conseguirá rodar o JSON na máquina ou nuvem dele. O fluxo retornaria erro de conexão ou de schema.
+* **Ajuste Mandatório**: O **Trecho 1 no n8n deve ser 100% autocontido**. A geração de Hash (MD5/SHA-256) e a validação de duplicidade devem ser tratadas nativamente por nós de **Crypto / Code (JavaScript)** e gravadas em saída transparente (JSON estruturado / Google Sheets padrão), garantindo que o avaliador importe e execute o workflow sem atrito de configuração externa.
+
+### ⚠️ Risco 2: Escopo Inflado — Bananecos como Arquitetura, Não Código do MVP
+* **O Problema**: O edital exige a implementação prática **exclusiva do Trecho 1** (da chegada da nota até a extração dos dados estruturados via IA). Tentar integrar a máquina de estados de 7 fases, travas de aprovação e exportação em .ZIP do Bananecos no fluxo prático do n8n dispersaria energia e aumentaria o risco de bugs no prazo fatal (16/09).
+* **Ajuste Mandatório**: O Bananecos entra com força total no **Entregável 1 (Desenho da Solução Completa - 2 páginas)** como a especificação da arquitetura To-Be da holding, demonstrando visão executiva e senioridade de produto, sem sobrecarregar a implementação prática do Trecho 1.
+
+### ⚠️ Risco 3: Complexidade Fiscal Real (NFS-e vs. Boletos)
+* **O Problema**: O BM Scan lia boletos de condomínio simples. Notas fiscais de serviços (NFS-e) brasileiras exigem regras fiscais sofisticadas:
+  * Distinção mandatória entre **Prestador** (emissor PJ) e **Tomador** (uma das 4 empresas da Companhia de Impacto).
+  * Retenções tributárias complexas na fonte: Federais (PIS, COFINS, CSLL, IRRF) e Municipal (ISS).
+  * Validação matemática estrita: $\text{Valor Líquido} = \text{Valor Bruto} - \text{Retenções}$.
+  * Descrição de serviço para inferência do centro de custo da holding.
+* **Ajuste Mandatório**: O prompt do LLM e o nó de sanitização requerem engenharia tributária dedicada, com validação algorítmica de consistência matemática em nó Code nativo do n8n.
+
+### ⚠️ Risco 4: Realismo de Tempo & Cronograma até 16/09
+* Gravação e edição do vídeo de até 3 minutos, confecção de 3 a 5 PDFs fictícios realistas e redação de 2 documentos executivos de alto nível exigem tempo dedicado de polimento e revisão.
+* A separação cirúrgica entre o que é código prático (n8n Trecho 1) e o que é desenho executivo (documentação de 2 páginas) é o que garante a entrega de excelência dentro do prazo.
+
+---
+
+## 6. Plano de Continuidade Corrigido
+
+```mermaid
+graph TD
+    subgraph IMPLEMENTACAO_PRATICA["1. Implementação Prática (Trecho 1 n8n - Zero Atrito)"]
+        A1["Entrada: Webhook / E-mail"] --> B1["Nó Code: Crypto Hash SHA-256 (Nativo)"]
+        B1 --> C1["Nó LLM: Prompt Especializado em NFS-e Brasileira"]
+        C1 --> D1["Nó Code: Validador Matemático (Bruto - Retenções = Líquido)"]
+        D1 --> E1["Saída: JSON Estruturado & Persistência Simples (Sheets/Memory)"]
+    end
+
+    subgraph ARQUITETURA_CONCEITUAL["2. Documento de Arquitetura (2 Páginas - Bagagem Bananecos)"]
+        F1["Visão End-to-End da Holding (4 Verticais)"]
+        F2["Máquina de Estados de 7 Fases & Alçadas"]
+        F3["Trava de Auto-Auditoria & Compliance Financeiro"]
+        F4["Portal do Contador com Exportação .ZIP em Lote"]
+    end
+
+    subgraph ENTREGAVEIS_OFICIAIS["3. Entregáveis Oficiais da Banca"]
+        E1 --> G1["Entregável 2: JSON n8n Exportável"]
+        ARQUITETURA_CONCEITUAL --> G2["Entregável 1: Desenho da Solução (2 págs)"]
+        H1["Manual Operacional do Financeiro"] --> G3["Entregável 3: Manual + Matriz de Falhas"]
+        G1 --> G4["Entregável 4: Vídeo Demo (Máx 3 min)"]
+    end
+
+    style C1 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style D1 fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style G1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style G2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+```
+
