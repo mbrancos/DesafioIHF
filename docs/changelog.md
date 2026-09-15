@@ -46,6 +46,13 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Integração e Ativação do MCP Server do Supabase na IDE
+- **Contexto**: Habilitação da integração nativa da IDE com o projeto Supabase (`DesafioIHF`) via protocolo MCP (Model Context Protocol) para gerenciamento de banco de dados, DDL, inspeção de tabelas e automações diretas.
+- **Decisões Tomadas**:
+  1. Identificação do pacote oficial do MCP no NPM (`@supabase/mcp-server-supabase@latest`), corrigindo a divergência do guia original (`@supabase/mcp-server` não existia no NPM).
+  2. Configuração do servidor `supabase` no arquivo de configuração global de MCPs da IDE (`~/.gemini/config/mcp_config.json`), injetando `--access-token` e `--project-ref dksxeqonxvqybjbynjqh`, e definindo `"disabled": false`.
+  3. Teste de inicialização executado com sucesso (processo stdio estável).
+
 ### [2026-09-15] — Governança de Segredos: Criação do .gitignore, .env.example e Armazenamento no .env.local
 - **Contexto**: Necessidade de armazenar com segurança as credenciais e conexões do projeto Supabase (`DesafioIHF`), blindando o repositório contra vazamento de chaves e senhas no GitHub.
 - **Decisões Tomadas**:
