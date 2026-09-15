@@ -46,6 +46,17 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 10 Concluída: Dashboard Executivo da Holding (/dashboard)
+- **Commit**: `feat(dashboard): implementa dashboard executivo com bento grid e metricas consolidadas das 4 verticais`
+- **Contexto**: Implementação da tela `/dashboard` em formato Bento Grid consolidando os dados financeiros em tempo real das 4 empresas da holding (Impact Hub Floripa, Salto Aceleradora, Impacta Mais e Seu PêJota).
+- **Arquivos**: `src/app/dashboard/page.tsx`, `src/lib/dashboard-metrics.ts`, `tests/unit/dashboard-metrics.test.ts`.
+- **Decisões e Resultados**:
+  1. Criação do módulo `src/lib/dashboard-metrics.ts` calculando o total do passivo circulante ativo, total liquidado, taxa média de acurácia da IA Gemini e decomposição por empresa e centros de custo.
+  2. Implementação do layout Bento Grid corporativo seguindo rigorosamente os tokens de `docs/designIHF.md`: card azul marinho (`#1c395c`), card bordô primário (`#812926`) com tipografia `--laranja: #fde2ce` e card ciano métrico (`#e2f5f8`).
+  3. Visualização segmentada das 4 verticais com volume financeiro em R$ e contagem de faturas.
+  4. Funil de fases do ciclo de vida com barras de progresso cromáticas proporcionais e ranking de centros de custo mais demandados.
+  5. 100% de sucesso nos testes unitários e tipagem estrita do TypeScript aprovada (`41 tests passed`).
+
 ### [2026-09-15] — Tarefa 9 Concluída: Telas Operacionais Internas (/conferencia/:id, /aprovacoes, /pagamentos, /notas/:id)
 - **Commit**: `feat(ops): implementa telas de conferencia tecnica, aprovacoes com alcada, pagamentos e auditoria`
 - **Contexto**: Entrega do pacote central de telas operacionais com governança orçamentária rígida, conferência human-in-the-loop, fila de quitação com Pix em 1 clique e linha do tempo de auditoria imutável (event sourcing).
