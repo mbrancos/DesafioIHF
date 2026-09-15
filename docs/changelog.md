@@ -46,6 +46,22 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Correção de Naming iHubFiscal e Otimização do Header no Portal (/portal)
+- **Commit**: `fix(portal): corrige naming iHubFiscal e elimina quebras de linha no header`
+- **Contexto**: Eliminação de referências residuais à nomenclatura preliminar ("ImpactPay") na Landing Page Executiva e expansão do container do header para o padrão `.container-1465px` de `docs/designIHF.md`, garantindo que links e botões não sofram quebras de linha em viewports comuns (ex.: 1366px e 1440px).
+- **Arquivos**: `public/portal/index.html`, `portal/index.html`, `docs/changelog.md`.
+- **Decisões e Resultados**:
+  1. **Tag `<title>` e Metadados**: Substituído `ImpactPay AI` por `iHubFiscal — Central Integrada de Contas a Pagar & Governança com IA | Companhia de Impacto`.
+  2. **Substituição de Naming Residual**:
+     - Seção de Vídeo: `Demonstração Prática do iHubFiscal`.
+     - Seção de Arquitetura: `Como o iHubFiscal Protege a Holding`.
+  3. **Header e Dimensões Oficiais**:
+     - Container expandido de `max-w-7xl` (1280px) para `max-w-[1465px]` (`.container-1465px`), alinhado à Seção 3.2 de `docs/designIHF.md`.
+     - Aplicação de `whitespace-nowrap` e controle de encolhimento (`shrink-0`) em todos os 5 links de navegação (`4 Entregáveis`, `Vídeo Demo (3 min)`, `Arquitetura`, `Simulador n8n`, `Contingência`).
+     - Botão CTA com rótulo conciso `Acessar iHubFiscal v2 →` e `whitespace-nowrap`, evitando quebra do sufixo `v2`.
+     - Identificação do candidato (`Moisés Branco`) em linha única perfeitamente legível.
+  4. **Validação**: Testado via subagente de navegador com captura de tela em `http://localhost:3000/portal` comprovando integridade e fidelidade estética.
+
 ### [2026-09-15] — Redesign Executivo da Landing Page (/portal) Alinhado ao designIHF.md
 - **Commit**: `style(portal): aplica identidade visual oficial de designIHF.md na landing page executiva`
 - **Contexto**: Harmonização estética completa da Landing Page executiva (`/portal`) com os tokens oficiais do Impact Hub Floripa (tema Labbo Digital), eliminando paletas genéricas (teal e laranja padrão) e aplicando a tipografia oficial Poppins e GT Walsheim.
