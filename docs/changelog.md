@@ -16,7 +16,7 @@ Toda IA ou desenvolvedor atuando neste workspace **DEVE** consultar estes arquiv
 | 🎨 **Design System & UI** | [`docs/designIHF.md`](docs/designIHF.md) | **Única fonte da verdade** para cores, fontes (Poppins + GT Walsheim), botões, micro-interações, sombras, z-index, tokens `:root` e regras WCAG. Extraído diretamente do CSS de [floripa.impacthub.net](https://floripa.impacthub.net/). |
 | 📋 **Requisitos & Dados v2** | [`docs/iHubFiscal.md`](docs/iHubFiscal.md) | **Única fonte da verdade** para as 10 telas/rotas, enums de status (`TRIAGEM` a `PAGO`), taxonomia de centros de custo, entidades, regras de alçada e schema Postgres. |
 | 📜 **Histórico & ADR** | [`docs/changelog.md`](docs/changelog.md) | **Este documento**. Registro obrigatório de decisões, pivôs de rota, commits e justificativas de arquitetura. |
-| 🤖 **Diretrizes do Agente** | [`AGENTS.md`](../AGENTS.md) / [`GEMINI.md`](../GEMINI.md) | Regras operacionais, idioma (pt-BR), convenções de shell e protocolos de skills. |
+| 🤖 **Diretrizes do Agente** | [`AGENTS.md`](../AGENTS.md) | Regras operacionais, idioma (pt-BR), convenções de shell e protocolos de skills. |
 | 📦 **Fase 1: Landing Page** | [`portal/index.html`](../portal/index.html) | Landing Page Executiva em Tailwind entregando os 4 entregáveis da vaga em link único oficial. |
 | ⚡ **Fase 1: Workflow n8n** | [`workflows/fluxo-n8n-trecho1-extracao-nf.json`](../workflows/fluxo-n8n-trecho1-extracao-nf.json) | Workflow autocontido do Trecho 1 (ingestão de NFS-e, LLM Vision multimodal, strict null). |
 | 📄 **Fase 1: Entregáveis** | `docs/entregavel-1-*`, `3-*`, `4-*` | Documentos executivos (Desenho da Solução, Manual Operacional e Roteiro de Vídeo Demo). |
@@ -45,6 +45,12 @@ timeline
 ---
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
+
+### [2026-09-15] — Eliminação de Redundância: Remoção do GEMINI.md em Favor do AGENTS.md
+- **Contexto**: O Antigravity IDE carrega automaticamente arquivos de regras na raiz do workspace (`AGENTS.md` e `GEMINI.md`). Como ambos continham exatamente o mesmo conteúdo, o sistema consumia tokens desnecessariamente e gerava overhead de manutenção em dobro.
+- **Decisões Tomadas**:
+  1. Remoção do arquivo `GEMINI.md`, consolidando o [`AGENTS.md`](../AGENTS.md) como o único arquivo de diretrizes operacionais do projeto.
+  2. Atualização do índice de fontes da verdade em `docs/changelog.md`.
 
 ### [2026-09-15] — Instalação das Skills Oficiais Supabase Postgres e Vercel React Best Practices
 - **Contexto**: Incorporação das diretrizes oficiais de alto nível para banco de dados relacional PostgreSQL (Supabase) e engenharia de componentes e performance React (Vercel) via CLI `skills add`.
