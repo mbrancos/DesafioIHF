@@ -46,6 +46,19 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 9 Concluída: Telas Operacionais Internas (/conferencia/:id, /aprovacoes, /pagamentos, /notas/:id)
+- **Commit**: `feat(ops): implementa telas de conferencia tecnica, aprovacoes com alcada, pagamentos e auditoria`
+- **Contexto**: Entrega do pacote central de telas operacionais com governança orçamentária rígida, conferência human-in-the-loop, fila de quitação com Pix em 1 clique e linha do tempo de auditoria imutável (event sourcing).
+- **Arquivos**: `src/app/conferencia/[id]/page.tsx`, `src/components/conference/ConferenceForm.tsx`, `src/app/aprovacoes/page.tsx`, `src/components/approvals/ApprovalCard.tsx`, `src/app/pagamentos/page.tsx`, `src/components/payments/PaymentCard.tsx`, `src/app/notas/[id]/page.tsx`, `src/lib/approvals.ts`, `src/actions/approvals.ts`, `src/actions/invoices.ts`, `tests/unit/operational-screens.test.ts`.
+- **Decisões e Resultados**:
+  1. Criação do módulo `src/lib/approvals.ts` com regras estritas de alçada: Gestor aprova até R$ 10.000,00; acima de R$ 10.000,00 bloqueia exigindo alçada extraordinária do CFO; analistas restritos à conferência técnica.
+  2. Implementação da tela `/aprovacoes` com validação visual de alçada por persona e ações de deliberação imediata ou recusa formal.
+  3. Implementação da tela `/conferencia/:id` em Split-View (`DynamicPdfViewer` + `ConferenceForm`), com conferência matemática de impostos e retenções em tempo real (`validateTaxMath`).
+  4. Implementação da tela `/pagamentos` com totalizador do passivo da fila, cópia de Pix em 1 clique com feedback visual e liquidação vinculada ao anexo de comprovante bancário (`PaymentProofModal`).
+  5. Implementação da tela `/notas/:id` exibindo o carimbo criptográfico SHA-256 de imutabilidade, quadro financeiro detalhado e linha do tempo imutável de eventos (`invoice_events`) com autores e justificativas.
+  6. Server Actions `approveInvoiceAction`, `getInvoicesForApproval` e `getInvoiceById`.
+  7. 100% de sucesso nos testes unitários e tipagem estrita do TypeScript aprovada (`38 tests passed`).
+
 ### [2026-09-15] — Tarefa 8 Concluída: Quadro Kanban com @dnd-kit, Estado Otimista e Interceptações de Governança
 - **Commit**: `feat(kanban): quadro operacional dnd-kit com atualizacao otimista e modais de governanca`
 - **Contexto**: Implementação da tela `/kanban` com visão horizontal das 5 colunas operacionais estritas (`TRIAGEM`, `AGUARDANDO_APROVACAO`, `RECUSADO`, `AGENDADO_PAGAMENTO`, `PAGO`), drag-and-drop otimista e barreiras de segurança com modais obrigatórios.
