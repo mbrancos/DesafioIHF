@@ -166,13 +166,21 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0px 4px 12px rgba(122, 34, 30, 0.15);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .btn-primary:hover {
-  background-color: #6B1D19;
-  transform: translateY(-1px);
+  background-color: #5E1A17;       /* Borgonha mais profundo */
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0px 8px 20px rgba(122, 34, 30, 0.3);
 }
-/* Ícone: seta direita → */
+/* Ícone seta → desloca no hover */
+.btn-primary .icon-arrow {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.btn-primary:hover .icon-arrow {
+  transform: translateX(4px);      /* Seta desliza para a direita */
+}
 ```
 
 #### Botão Outline Secundário
@@ -190,13 +198,21 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease,
+              border-color 0.3s ease, transform 0.3s ease;
 }
 .btn-outline:hover {
   background-color: #7A221E;
   color: #FFFFFF;
+  border-color: #7A221E;
 }
-/* Ícone: seta diagonal ↗ */
+/* Ícone seta ↗ desloca na diagonal no hover */
+.btn-outline .icon-arrow {
+  transition: transform 0.3s ease;
+}
+.btn-outline:hover .icon-arrow {
+  transform: translate(2px, -2px); /* Desloca na diagonal */
+}
 ```
 
 #### Botão de Navegação (Header)
@@ -209,10 +225,26 @@
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
+  position: relative;
   transition: color 0.2s ease;
 }
 .btn-nav:hover {
   color: #7A221E;
+}
+/* Underline animado que cresce da esquerda */
+.btn-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0%;
+  height: 2px;
+  background-color: #7A221E;
+  transition: width 0.3s ease;
+}
+.btn-nav:hover::after {
+  width: 100%;             /* Underline expande ao passar o mouse */
 }
 ```
 
@@ -226,6 +258,12 @@
   padding: 10px 20px;
   border-radius: 9999px;
   border: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.btn-cta-header:hover {
+  background-color: #5E1A17;
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 12px rgba(122, 34, 30, 0.25);
 }
 ```
 
@@ -239,6 +277,36 @@
   padding: 10px 20px;
   border: 1px solid #1C1C1C;
   border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+.btn-cta-header-outline:hover {
+  background-color: #1C1C1C;
+  color: #FFFFFF;
+  border-color: #1C1C1C;
+}
+```
+
+#### Botão de Lista Verde (Hub de Inovação Climática)
+```css
+.btn-list-green {
+  background-color: transparent;
+  color: #CBE98D;                 /* Verde limão */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 16px 20px;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.btn-list-green:hover {
+  background-color: #CBE98D;       /* Preenchimento lime no hover */
+  color: #09392B;                  /* Texto muda para verde escuro */
 }
 ```
 
@@ -259,9 +327,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   z-index: 1000;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.fab-acesso-rapido:hover {
+  transform: scale(1.1) rotate(90deg); /* Rotação do + para × */
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.25);
 }
 /* Legenda "Acesso Rápido" abaixo, font-size: 10px, font-weight: 600 */
 ```
@@ -490,18 +563,41 @@
 
 ```css
 --ihf-ease-default: ease;
---ihf-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
---ihf-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+--ihf-ease-smooth: cubic-bezier(0.25, 0.8, 0.25, 1);  /* Easing principal dos botões */
+--ihf-ease-material: cubic-bezier(0.4, 0, 0.2, 1);     /* Material-style */
+--ihf-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);  /* Para animações com overshoot */
 ```
 
-### 7.3 Padrões de Animação Observados
+### 7.3 Padrões de Animação por Componente
 
-- **Hero Banner**: Carrossel com slides automáticos (auto-play), transição suave entre imagens (`fade` ou `slide`).
-- **Cards em Hover**: `translateY(-4px)` com sombra ampliada.
-- **Botões em Hover**: `translateY(-1px)` com cor mais escura.
-- **Scroll Reveal**: Elementos aparecem com `fade-in` + `translateY(20px)` ao entrar no viewport.
-- **Logos de Parceiros**: Carrossel horizontal com scroll automático infinito.
-- **Contadores Numéricos**: Animação de contagem progressiva ao entrar no viewport.
+#### Botões
+| Componente                | Propriedade animada                      | Valor no hover                                      | Duração / Easing                              |
+|---------------------------|------------------------------------------|------------------------------------------------------|-----------------------------------------------|
+| **Botão Primário**        | `background-color`, `transform`, `box-shadow` | `#5E1A17`, `translateY(-2px) scale(1.02)`, shadow borgonha `0.3` | `0.3s cubic-bezier(0.25, 0.8, 0.25, 1)` |
+| **Seta → (dentro do btn)**| `transform`                              | `translateX(4px)` — desliza para a direita            | `0.3s cubic-bezier(0.25, 0.8, 0.25, 1)` |
+| **Botão Outline**         | `background-color`, `color`, `border-color` | Preenchimento sólido `#7A221E`, texto branco       | `0.3s ease`                                   |
+| **Seta ↗ (outline)**      | `transform`                              | `translate(2px, -2px)` — desloca na diagonal          | `0.3s ease`                                   |
+| **CTA Header**            | `background-color`, `transform`, `box-shadow` | `#5E1A17`, `translateY(-1px)`, shadow borgonha    | `0.3s cubic-bezier(0.25, 0.8, 0.25, 1)` |
+| **Header Outline**        | `background-color`, `color`              | Inversão: fundo `#1C1C1C`, texto branco               | `0.3s ease`                                   |
+| **Lista Verde (Climática)**| `background-color`, `color`             | Inversão: fundo `#CBE98D`, texto `#09392B`            | `0.3s ease`                                   |
+| **FAB (Acesso Rápido)**   | `transform`, `box-shadow`                | `scale(1.1) rotate(90deg)` — + vira × , sombra maior | `0.3s ease`                                   |
+
+#### Navegação e Links
+| Componente                | Efeito                                                                                     |
+|---------------------------|---------------------------------------------------------------------------------------------|
+| **Links do header**       | Cor muda para `#7A221E` + underline `::after` expande de 0% a 100% (da esquerda p/ direita) |
+| **Links do footer**       | Telefones em bordô com underline; links de política mudam opacidade                         |
+| **Ícones sociais (footer)**| `opacity: 0.7 → 1.0` + `translateY(-3px)` + `scale(1.15)` no hover                       |
+
+#### Seções e Cards
+| Componente                | Efeito                                                                       |
+|---------------------------|-------------------------------------------------------------------------------|
+| **Hero Banner**           | Carrossel com slides automáticos (auto-play), fade-in entre slides             |
+| **Cards de conteúdo**     | `translateY(-4px)` + sombra ampliada `(0.06 → 0.1)` no hover                  |
+| **Scroll Reveal**         | Elementos aparecem com `fade-in` + `translateY(20px)` ao entrar no viewport   |
+| **Logos de Parceiros**    | Carrossel horizontal infinito com auto-scroll                                  |
+| **Contadores Numéricos**  | Animação de contagem progressiva (`0 → N`) ao entrar no viewport               |
+| **Texto d'água (IMPACTO)**| Entrada com fade + slight parallax no scroll                                   |
 
 ---
 
@@ -647,8 +743,13 @@ O site utiliza **SVGs inline/customizados** — não depende de bibliotecas de �
   --ihf-shadow-sm:         0px 2px 8px rgba(0, 0, 0, 0.04);
   --ihf-shadow-md:         0px 8px 24px rgba(0, 0, 0, 0.06);
   --ihf-shadow-lg:         0px 12px 32px rgba(0, 0, 0, 0.1);
-  --ihf-shadow-fab:        0px 4px 16px rgba(0, 0, 0, 0.15);
+  --ihf-shadow-fab:        0px 4px 10px rgba(0, 0, 0, 0.15);
   --ihf-shadow-focus:      0 0 0 3px rgba(122, 34, 30, 0.1);
+
+  /* Sombras com cor de marca (para botões primários) */
+  --ihf-shadow-brand-sm:   0px 4px 12px rgba(122, 34, 30, 0.15);
+  --ihf-shadow-brand-md:   0px 8px 20px rgba(122, 34, 30, 0.3);
+  --ihf-shadow-brand-lg:   0px 4px 12px rgba(122, 34, 30, 0.25);
 
   /* ═══ BORDER RADIUS ═══ */
   --ihf-radius-sm:         4px;
@@ -661,6 +762,7 @@ O site utiliza **SVGs inline/customizados** — não depende de bibliotecas de �
   /* ═══ TRANSIÇÕES ═══ */
   --ihf-transition-fast:   0.15s ease;
   --ihf-transition-normal: 0.3s ease;
+  --ihf-transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   --ihf-transition-slow:   0.5s ease;
 
   /* ═══ LAYOUT ═══ */
