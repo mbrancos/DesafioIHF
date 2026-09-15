@@ -49,6 +49,8 @@ As skills locais estão instaladas em `.agents/skills/` e foram adaptadas para o
 - `ui-ux-pro-max`: Inteligência de design e busca local via `python .agents/skills/ui-ux-pro-max/scripts/search.py`.
 - `web-design-guidelines`: Auditoria de regras web com `read_url_content`.
 - `finishing-a-development-branch`: Finalização e integração com `ask_question`.
+- `invoice-organizer`: Organização, nomenclatura padronizada, pareamento e fechamento contábil (.ZIP/CSV).
+- `legal-advisor`: Conformidade jurídica, proteção de dados LGPD, termos de consentimento e governança fiscal.
 
 ---
 

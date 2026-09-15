@@ -46,6 +46,13 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Instalação e Adaptação das Skills invoice-organizer e legal-advisor
+- **Contexto**: Integração de recursos especializados de automação contábil e governança de dados ao ecossistema do iHubFiscal, provenientes do `skills.sh`.
+- **Decisões Tomadas**:
+  1. Criação da skill [`.agents/skills/invoice-organizer`](../.agents/skills/invoice-organizer/SKILL.md): Adaptada para o ecossistema fiscal brasileiro de NFS-e (CNPJs, retenções, centros de custo), definindo nomenclatura padronizada, manifesto de conciliação CSV e travas de pareamento 100% obrigatório para o pacote `.ZIP` de fechamento contábil.
+  2. Criação da skill [`.agents/skills/legal-advisor`](../.agents/skills/legal-advisor/SKILL.md): Adaptada para conformidade com a LGPD (Lei nº 13.709/2018), com termos de consentimento para upload público sem login em `/upload`, mascaramento de chaves Pix/CPF de MEI e autônomos e retenção legal tributária de 5 anos.
+  3. Atualização das diretrizes em [`AGENTS.md`](../AGENTS.md) e [`GEMINI.md`](../GEMINI.md) incorporando as duas novas skills.
+
 ### [2026-09-15] — Consolidação da Governança Visual e Diário de Decisões
 - **Contexto**: A banca e o produto exigem fidelidade inquestionável à marca do Impact Hub Floripa e clareza documental absoluta entre as duas fases do projeto.
 - **Decisões Tomadas**:
