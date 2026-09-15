@@ -30,7 +30,7 @@ export interface CreateInvoiceInput {
  * Gera protocolo único e auditável para o fornecedor acompanhar o status
  * Formato: IHF-2026-XXXX (ex: IHF-2026-AB72)
  */
-export function generateProtocol(): string {
+function generateProtocol(): string {
   const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
   return `IHF-2026-${randomPart}`;
 }

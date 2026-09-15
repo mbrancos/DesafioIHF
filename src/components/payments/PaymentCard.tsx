@@ -190,7 +190,7 @@ export const PaymentCard: React.FC<PaymentCardProps> = ({ invoice }) => {
             Valor a Pagar (Líquido)
           </span>
           <span className="text-lg font-black text-[#212020] font-['Poppins']">
-            {formatBRL(invoice.amount_liquido / 100)}
+            {formatBRL(invoice.amount_liquido)}
           </span>
         </div>
       </div>

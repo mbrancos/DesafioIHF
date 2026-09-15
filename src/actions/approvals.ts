@@ -105,8 +105,8 @@ export async function getInvoicesForApproval(companyId?: string) {
         protocol: 'IHF-2026-CFO1',
         invoice_number: '9902',
         status: 'AGUARDANDO_APROVACAO' as const,
-        amount_bruto: 4500000,
-        amount_liquido: 4250000, // R$ 42.500,00 (excede alçada do gestor -> exige CFO)
+        amount_bruto: 1500000,
+        amount_liquido: 1425000, // R$ 14.250,00 (excede alçada do gestor de R$ 10.000,00 -> exige CFO)
         issue_date: '2026-09-14T00:00:00.000Z',
         due_date: '2026-09-28T00:00:00.000Z',
         service_description: 'Reforma acústica e estrutural das salas de coworking do Hub',

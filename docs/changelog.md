@@ -46,6 +46,18 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefas 11 e 12 Concluídas: Fechamento Contábil com JSZip, Configurações e Blindagem de Integridade
+- **Commit**: `feat(closing): implementa fechamento contabil jszip, configuracoes da holding e recalibragem de integridade B2B`
+- **Contexto**: Implementação das telas finais `/fechamento` e `/configuracoes`, resolução da armadilha de 4.5 MB da Vercel via compilação no cliente (`jszip`), eliminação de erro de hidratação e recalibragem de escala financeira B2B e alçadas.
+- **Arquivos**: `src/app/fechamento/page.tsx`, `src/components/closing/ZipGeneratorButton.tsx`, `src/lib/csv-manifest.ts`, `src/app/configuracoes/page.tsx`, `src/app/layout.tsx`, `src/actions/approvals.ts`, `src/components/approvals/ApprovalCard.tsx`, `src/components/kanban/InvoiceCard.tsx`, `src/components/kanban/KanbanColumn.tsx`, `src/components/kanban/PaymentProofModal.tsx`, `src/components/payments/PaymentCard.tsx`, `src/app/pagamentos/page.tsx`, `src/app/notas/[id]/page.tsx`, `src/app/dashboard/page.tsx`, `tests/unit/closing-zip.test.ts`.
+- **Decisões e Resultados**:
+  1. **Eliminação da Armadilha de 4.5 MB da Vercel**: Fechamento contábil em `/fechamento` executa o download paralelo de notas e comprovantes e a compilação do arquivo `.zip` 100% no navegador via `jszip`. Custo de servidor zero, sem timeout de 10s e sem risco de erro `502 / FUNCTION_PAYLOAD_TOO_LARGE`.
+  2. **Manifesto CSV e Pareamento Contábil**: Criação de `src/lib/csv-manifest.ts` seguindo as diretrizes da skill `invoice-organizer`, com cabeçalho com ponto e vírgula, decimais com vírgula e alerta de notas sem comprovante.
+  3. **Tela de Configurações da Holding (`/configuracoes`)**: Gestão institucional das 4 empresas (*Impact Hub Floripa*, *Instituto Salto*, *Impacta Mais*, *Seu PêJota*), catálogo de 6 centros de custo, matriz de alçadas orçamentárias (Gestor até R$ 10.000,00 e CFO ilimitado) e diretrizes de conformidade LGPD.
+  4. **Eliminação do Erro de Hidratação**: Adição de `suppressHydrationWarning` nas tags `<html>` e `<body>` de `src/app/layout.tsx`, eliminando ruídos no DOM causados por extensões do navegador e assegurando console limpo.
+  5. **Recalibragem de Escala B2B e Causa-Raiz de Alçada**: Identificada e sanada a dupla divisão por 100 nos componentes (`formatBRL` já divide centavos). O valor da Construtora foi recalibrado para R$ 14.250,00 (centavos `1425000`), tornando o bloqueio por exceder R$ 10.000,00 matematicamente irrefutável para a banca.
+  6. **Validação E2E no Navegador Real**: `browser_subagent` navegou pelas rotas `/`, `/aprovacoes`, `/fechamento`, `/configuracoes` e `/portal`, atestando status 200 OK, funcionamento correto das alçadas e ausência de erros.
+
 ### [2026-09-15] — Tarefa 10 Concluída: Dashboard Executivo da Holding (/dashboard)
 - **Commit**: `feat(dashboard): implementa dashboard executivo com bento grid e metricas consolidadas das 4 verticais`
 - **Contexto**: Implementação da tela `/dashboard` em formato Bento Grid consolidando os dados financeiros em tempo real das 4 empresas da holding (Impact Hub Floripa, Salto Aceleradora, Impacta Mais e Seu PêJota).

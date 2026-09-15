@@ -48,7 +48,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
         <div className="mt-2 flex items-baseline justify-between text-xs">
           <span className="text-[11px] text-[#484848]">Volume Previsto:</span>
           <span className="font-bold text-[#212020] font-mono">
-            {formatBRL(totalCentavos / 100)}
+            {formatBRL(totalCentavos)}
           </span>
         </div>
         <p className="text-[10px] text-[#484848] mt-1 truncate">

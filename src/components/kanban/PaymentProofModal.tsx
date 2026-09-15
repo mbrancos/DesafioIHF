@@ -86,7 +86,7 @@ export const PaymentProofModal: React.FC<PaymentProofModalProps> = ({
               <>
                 Valor a liquidar:{' '}
                 <strong className="font-semibold text-[#15803d]">
-                  {formatBRL(amountLiquidoCentavos / 100)}
+                  {formatBRL(amountLiquidoCentavos)}
                 </strong>
                 . A baixa de contas a pagar exige anexo obrigatório do comprovante bancário para conciliação contábil.
               </>

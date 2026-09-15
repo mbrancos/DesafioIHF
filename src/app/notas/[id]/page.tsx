@@ -183,28 +183,28 @@ export default async function InvoiceDetailPage({ params }: InvoiceDetailPagePro
                 <div className="flex justify-between py-1.5 border-b border-[#f3f4f5]">
                   <span className="text-[#484848]">Valor Bruto dos Serviços:</span>
                   <span className="font-bold text-[#212020] font-mono">
-                    {formatBRL(invoice.amount_bruto / 100)}
+                    {formatBRL(invoice.amount_bruto)}
                   </span>
                 </div>
 
                 <div className="flex justify-between py-1.5 border-b border-[#f3f4f5]">
                   <span className="text-[#484848]">ISS Retido:</span>
                   <span className="font-mono text-[#DC2626]">
-                    - {formatBRL((invoice.iss || 0) / 100)}
+                    - {formatBRL(invoice.iss || 0)}
                   </span>
                 </div>
 
                 <div className="flex justify-between py-1.5 border-b border-[#f3f4f5]">
                   <span className="text-[#484848]">IRRF Retido:</span>
                   <span className="font-mono text-[#DC2626]">
-                    - {formatBRL((invoice.irrf || 0) / 100)}
+                    - {formatBRL(invoice.irrf || 0)}
                   </span>
                 </div>
 
                 <div className="flex justify-between py-1.5 border-b border-[#f3f4f5]">
                   <span className="text-[#484848]">PIS / COFINS / CSLL:</span>
                   <span className="font-mono text-[#DC2626]">
-                    - {formatBRL((invoice.pis_cofins_csll || 0) / 100)}
+                    - {formatBRL(invoice.pis_cofins_csll || 0)}
                   </span>
                 </div>
               </div>
@@ -220,7 +220,7 @@ export default async function InvoiceDetailPage({ params }: InvoiceDetailPagePro
                 </span>
               </div>
               <span className="text-xl font-extrabold text-[#812926] font-mono">
-                {formatBRL(invoice.amount_liquido / 100)}
+                {formatBRL(invoice.amount_liquido)}
               </span>
             </div>
           </div>

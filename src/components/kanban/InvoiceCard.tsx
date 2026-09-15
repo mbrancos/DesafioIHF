@@ -136,7 +136,7 @@ export const InvoiceCard: React.FC<InvoiceCardProps> = ({ invoice, isOverlay = f
             Valor Líquido
           </span>
           <span className="text-sm font-bold text-[#212020] font-['Poppins']">
-            {formatBRL(invoice.amount_liquido / 100)}
+            {formatBRL(invoice.amount_liquido)}
           </span>
         </div>
 

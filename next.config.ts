@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '4mb',
     },
   },
+  async rewrites() {
+    return [
+      {
+        source: '/portal',
+        destination: '/portal/index.html',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

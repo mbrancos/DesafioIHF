@@ -3,44 +3,8 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export interface UserSession {
-  id: string;
-  name: string;
-  email: string;
-  role: 'analista' | 'gestor' | 'cfo' | 'admin';
-  company_id: string;
-}
-
-export const TEST_USERS: Record<string, UserSession> = {
-  analista: {
-    id: 'u0000000-0000-0000-0000-000000000001',
-    name: 'Carlos Financeiro',
-    email: 'analista@impacthub.net',
-    role: 'analista',
-    company_id: 'c0000000-0000-0000-0000-000000000001',
-  },
-  gestor: {
-    id: 'u0000000-0000-0000-0000-000000000002',
-    name: 'Beatriz Inovação',
-    email: 'gestor@impacthub.net',
-    role: 'gestor',
-    company_id: 'c0000000-0000-0000-0000-000000000001',
-  },
-  cfo: {
-    id: 'u0000000-0000-0000-0000-000000000003',
-    name: 'Rodrigo Controller',
-    email: 'cfo@impacthub.net',
-    role: 'cfo',
-    company_id: 'c0000000-0000-0000-0000-000000000001',
-  },
-  admin: {
-    id: 'u0000000-0000-0000-0000-000000000004',
-    name: 'Mariana Admin',
-    email: 'admin@impacthub.net',
-    role: 'admin',
-    company_id: 'c0000000-0000-0000-0000-000000000001',
-  },
-};
+import { TEST_USERS, type UserSession } from '@/lib/auth-types';
+export type { UserSession };
 
 /**
  * Autentica o usuário com 1 clique utilizando as credenciais pré-cadastradas no seed.sql

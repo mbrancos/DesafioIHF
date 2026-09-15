@@ -72,7 +72,7 @@ export default async function PaymentsPage({ searchParams }: PaymentsPageProps) 
               Passivo a Liquidar na Fila
             </span>
             <span className="text-lg font-black text-[#812926] font-mono">
-              {formatBRL(totalPagarCentavos / 100)}
+              {formatBRL(totalPagarCentavos)}
             </span>
           </div>
         </div>

@@ -104,7 +104,7 @@ export default async function DashboardPage() {
                 <Clock className="w-5 h-5 text-[#41bed0]" />
               </div>
               <h3 className="text-3xl font-black font-['Poppins'] mt-3">
-                {formatBRL(metrics.totalPassivoCirculanteCentavos / 100)}
+                {formatBRL(metrics.totalPassivoCirculanteCentavos)}
               </h3>
               <p className="text-xs text-[#abb5c2] mt-1">
                 Total de despesas em aberto nas fases de triagem, aprovação e fila de pagamento.
@@ -126,7 +126,7 @@ export default async function DashboardPage() {
                 <CheckCircle className="w-5 h-5 text-[#b9ee8d]" />
               </div>
               <h3 className="text-3xl font-black font-['Poppins'] text-[#fde2ce] mt-3">
-                {formatBRL(metrics.totalLiquidadoCentavos / 100)}
+                {formatBRL(metrics.totalLiquidadoCentavos)}
               </h3>
               <p className="text-xs text-white/80 mt-1">
                 Pagamentos 100% liquidados com anexo obrigatório de comprovante bancário.
@@ -197,7 +197,7 @@ export default async function DashboardPage() {
                       Volume Total
                     </span>
                     <span className="text-base font-black text-[#212020] font-mono">
-                      {formatBRL((v.data?.totalLiquidoCentavos || 0) / 100)}
+                      {formatBRL(v.data?.totalLiquidoCentavos || 0)}
                     </span>
                   </div>
                   <span className="text-xs font-bold text-[#484848] bg-[#f7f6f2] px-2 py-1 rounded">
@@ -260,7 +260,7 @@ export default async function DashboardPage() {
                   <div key={name} className="flex items-center justify-between py-1.5 border-b border-[#f3f4f5]">
                     <span className="text-[#484848] truncate max-w-[200px]">{name}</span>
                     <span className="font-bold text-[#212020] font-mono">
-                      {formatBRL(centavos / 100)}
+                      {formatBRL(centavos)}
                     </span>
                   </div>
                 ))

@@ -174,10 +174,10 @@ export const ApprovalCard: React.FC<ApprovalCardProps> = ({
             Valor a Autorizar (Líquido)
           </span>
           <span className="text-xl font-extrabold text-[#212020] font-['Poppins']">
-            {formatBRL(invoice.amount_liquido / 100)}
+            {formatBRL(invoice.amount_liquido)}
           </span>
           <span className="text-[11px] text-[#484848] block">
-            Bruto: {formatBRL(invoice.amount_bruto / 100)}
+            Bruto: {formatBRL(invoice.amount_bruto)}
           </span>
         </div>
 
