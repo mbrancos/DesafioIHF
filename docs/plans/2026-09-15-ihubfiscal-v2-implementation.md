@@ -1,6 +1,6 @@
 # Plano de Implementação — iHubFiscal v2
 
-> **Para executores agenticos:** No Google Antigravity IDE, utilize o skill `executing-plans` para implementar este plano tarefa por tarefa com rigor de TDD e checkpoints. Cada passo utiliza a sintaxe de checkbox (`- [ ]`) para rastreamento contínuo.
+> **Para executores agenticos:** No Google Antigravity IDE, utilize o skill `executing-plans` para implementar este plano tarefa por tarefa com rigor de TDD e checkpoints. Cada passo utiliza a sintaxe de checkbox (`- [x]`) para rastreamento contínuo.
 
 **Objetivo:** Construir a versão 2 completa do **iHubFiscal** — Central Inteligente de Contas a Pagar e Governança com IA da holding Companhia de Impacto — integrando Next.js 15 na raiz (App Router), Supabase (PostgreSQL, Auth e Storage via `@supabase/ssr`), Google Gemini 2.5 Flash (`@google/genai`), Kanban otimista com `@dnd-kit` e fechamento contábil via `jszip` no cliente.
 
@@ -84,17 +84,17 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Ambiente de desenvolvimento funcional, script `npm run dev`, `npm run build` e `npm test` configurados.
 
-- [ ] **Passo 1: Escrever teste de integridade do ambiente**
+- [x] **Passo 1: Escrever teste de integridade do ambiente**
   Criar `tests/unit/setup.test.ts` verificando carregamento de variáveis de ambiente e resolução de caminhos `@/*`.
-- [ ] **Passo 2: Rodar o teste para verificar que falha**
+- [x] **Passo 2: Rodar o teste para verificar que falha**
   Executar `npx vitest run tests/unit/setup.test.ts` e confirmar falha por ausência de configuração.
-- [ ] **Passo 3: Criar arquivos de configuração do Next.js 15 e instalar dependências**
+- [x] **Passo 3: Criar arquivos de configuração do Next.js 15 e instalar dependências**
   Configurar `package.json` com `@supabase/ssr`, `@supabase/supabase-js`, `@google/genai`, `@dnd-kit/core`, `@dnd-kit/sortable`, `jszip`, `lucide-react`, `vitest`, `happy-dom`.
-- [ ] **Passo 4: Mover Landing Page da Fase 1 para `public/portal/`**
+- [x] **Passo 4: Mover Landing Page da Fase 1 para `public/portal/`**
   Garantir que `public/portal/index.html` esteja acessível estaticamente.
-- [ ] **Passo 5: Rodar testes e build para validar**
+- [x] **Passo 5: Rodar testes e build para validar**
   Executar `npm test` e verificar sucesso.
-- [ ] **Passo 6: Commit**
+- [x] **Passo 6: Commit**
   `git commit -m "chore(infra): inicializa Next.js 15, TypeScript, Tailwind e vitest"`
 
 ---
@@ -109,17 +109,17 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Schema DDL das 7 tabelas (`companies`, `cost_centers`, `users`, `suppliers`, `approval_levels`, `invoices`, `invoice_events`), enums estritos, regras de RLS, políticas de CORS para os buckets `invoices` e `payment-proofs`, e seed completo das 4 empresas, 6 centros de custo e 4 personas de teste.
 
-- [ ] **Passo 1: Escrever teste de validação estática do DDL e Seed SQL**
+- [x] **Passo 1: Escrever teste de validação estática do DDL e Seed SQL**
   Criar `tests/unit/schema-validation.test.ts` conferindo a presença de todas as constraints e tabelas exigidas em `docs/iHubFiscal.md`.
-- [ ] **Passo 2: Rodar o teste para verificar que falha**
+- [x] **Passo 2: Rodar o teste para verificar que falha**
   Confirmar falha por ausência dos arquivos SQL.
-- [ ] **Passo 3: Escrever `20260915000000_initial_schema.sql`**
+- [x] **Passo 3: Escrever `20260915000000_initial_schema.sql`**
   Definir tabelas, foreign keys com `ON DELETE RESTRICT`, constraints de idempotência `UNIQUE(supplier_id, invoice_number)`, índices de performance (vencimento, status, company_id) e políticas de RLS.
-- [ ] **Passo 4: Escrever `supabase/seed.sql`**
+- [x] **Passo 4: Escrever `supabase/seed.sql`**
   Inserir 4 empresas da holding (Impact Hub Floripa, Salto, Impacta Mais, Seu PêJota), os 6 centros de custo, os 4 usuários de teste (`analista`, `gestor`, `cfo`, `admin`), regras de alçada financeira e regras de CORS nos buckets.
-- [ ] **Passo 5: Rodar teste para verificar que passa**
+- [x] **Passo 5: Rodar teste para verificar que passa**
   Executar `npx vitest run tests/unit/schema-validation.test.ts`.
-- [ ] **Passo 6: Commit**
+- [x] **Passo 6: Commit**
   `git commit -m "feat(db): adiciona migrations, schema relacional, RLS e seed inicial"`
 
 ---
@@ -134,13 +134,13 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Componentes visuais atômicos seguindo 100% `docs/designIHF.md`. Injeção de variáveis `--poppins` e `--GT-Walsheim` sem CLS.
 
-- [ ] **Passo 1: Escrever teste de renderização e tokens do Design System**
+- [x] **Passo 1: Escrever teste de renderização e tokens do Design System**
   Criar teste unitário verificando presença das classes `--ihf-brand-primary` (`#812926`) e isolamento com `--ihf-status-success` (`#16A34A`).
-- [ ] **Passo 2: Rodar teste para verificar que falha**
-- [ ] **Passo 3: Configurar `tailwind.config.ts` e `globals.css` com tokens reais**
-- [ ] **Passo 4: Implementar `src/app/layout.tsx` com `next/font` e componentes `Button`, `Badge`, `Modal`**
-- [ ] **Passo 5: Rodar teste para verificar aprovação**
-- [ ] **Passo 6: Commit**
+- [x] **Passo 2: Rodar teste para verificar que falha**
+- [x] **Passo 3: Configurar `tailwind.config.ts` e `globals.css` com tokens reais**
+- [x] **Passo 4: Implementar `src/app/layout.tsx` com `next/font` e componentes `Button`, `Badge`, `Modal`**
+- [x] **Passo 5: Rodar teste para verificar aprovação**
+- [x] **Passo 6: Commit**
   `git commit -m "feat(ui): configura tokens de design system, next/font e componentes base"`
 
 ---
@@ -155,11 +155,11 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: `calculateSha256(buffer)`, `validateTaxMath({ amount_bruto, amount_liquido, iss, irrf, pis_cofins_csll })` com tolerância de R$ 0,02, e helpers `@supabase/ssr`.
 
-- [ ] **Passo 1: Escrever testes unitários para cálculo de SHA-256 e validação matemática de impostos**
-- [ ] **Passo 2: Rodar teste para verificar que falha**
-- [ ] **Passo 3: Implementar `math.ts`, `crypto.ts`, `formatters.ts` e clientes Supabase**
-- [ ] **Passo 4: Rodar testes para verificar aprovação**
-- [ ] **Passo 5: Commit**
+- [x] **Passo 1: Escrever testes unitários para cálculo de SHA-256 e validação matemática de impostos**
+- [x] **Passo 2: Rodar teste para verificar que falha**
+- [x] **Passo 3: Implementar `math.ts`, `crypto.ts`, `formatters.ts` e clientes Supabase**
+- [x] **Passo 4: Rodar testes para verificar aprovação**
+- [x] **Passo 5: Commit**
   `git commit -m "feat(core): implementa clientes supabase ssr, hashing sha256 e validador fiscal"`
 
 ---
@@ -174,12 +174,12 @@ d:/Etna/Projetos/DesafioIHF/
 - Consumes: Multipart `FormData` contendo arquivo PDF.
 - Produz: JSON com dados fiscais extraídos, score de confiança cromático e hash SHA-256.
 
-- [ ] **Passo 1: Escrever testes unitários simulando requisição válida, arquivo > 4 MB e formato não-PDF**
-- [ ] **Passo 2: Rodar teste para verificar que falha**
-- [ ] **Passo 3: Implementar `src/lib/gemini.ts` com JSON Schema estrito do Gemini 2.5 Flash**
-- [ ] **Passo 4: Implementar `src/app/api/extract/route.ts` com `runtime = 'nodejs'` e `maxDuration = 30`**
-- [ ] **Passo 5: Rodar testes para validar o fluxo e as travas de 4 MB**
-- [ ] **Passo 6: Commit**
+- [x] **Passo 1: Escrever testes unitários simulando requisição válida, arquivo > 4 MB e formato não-PDF**
+- [x] **Passo 2: Rodar teste para verificar que falha**
+- [x] **Passo 3: Implementar `src/lib/gemini.ts` com JSON Schema estrito do Gemini 2.5 Flash**
+- [x] **Passo 4: Implementar `src/app/api/extract/route.ts` com `runtime = 'nodejs'` e `maxDuration = 30`**
+- [x] **Passo 5: Rodar testes para validar o fluxo e as travas de 4 MB**
+- [x] **Passo 6: Commit**
   `git commit -m "feat(ai): cria rota de extração multimodal com Gemini 2.5 Flash e trava de 4MB"`
 
 ---
@@ -193,11 +193,11 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Login tradicional por email/senha e atalhos rápidos de 1 clique para `analista`, `gestor`, `cfo` e `admin`. Redirecionamento inteligente para `/kanban`.
 
-- [ ] **Passo 1: Escrever teste de renderização e troca de perfil de autenticação**
-- [ ] **Passo 2: Rodar teste para verificar falha**
-- [ ] **Passo 3: Implementar Server Action `loginWithPersona` e formulário corporativo em `src/app/page.tsx`**
-- [ ] **Passo 4: Rodar teste e validar fluxo de login**
-- [ ] **Passo 5: Commit**
+- [x] **Passo 1: Escrever teste de renderização e troca de perfil de autenticação**
+- [x] **Passo 2: Rodar teste para verificar falha**
+- [x] **Passo 3: Implementar Server Action `loginWithPersona` e formulário corporativo em `src/app/page.tsx`**
+- [x] **Passo 4: Rodar teste e validar fluxo de login**
+- [x] **Passo 5: Commit**
   `git commit -m "feat(auth): implementa tela de login com atalhos de persona para a banca"`
 
 ---
@@ -214,12 +214,12 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Wizard de 2 etapas público (sem login). Split-view dinâmico via `next/dynamic` com `{ ssr: false }`, conferência matemática em tempo real e emissão de protocolo `IHF-2026-XXXX`.
 
-- [ ] **Passo 1: Escrever teste unitário do fluxo de transição entre Etapa 1 e Etapa 2**
-- [ ] **Passo 2: Rodar teste para verificar falha**
-- [ ] **Passo 3: Implementar `DynamicPdfViewer` isolado do SSR e componentes do Wizard**
-- [ ] **Passo 4: Implementar Server Action `createInvoice` persistindo em `invoices` (`TRIAGEM`) e logando em `invoice_events`**
-- [ ] **Passo 5: Rodar testes para validar o comportamento da tela dividida**
-- [ ] **Passo 6: Commit**
+- [x] **Passo 1: Escrever teste unitário do fluxo de transição entre Etapa 1 e Etapa 2**
+- [x] **Passo 2: Rodar teste para verificar falha**
+- [x] **Passo 3: Implementar `DynamicPdfViewer` isolado do SSR e componentes do Wizard**
+- [x] **Passo 4: Implementar Server Action `createInvoice` persistindo em `invoices` (`TRIAGEM`) e logando em `invoice_events`**
+- [x] **Passo 5: Rodar testes para validar o comportamento da tela dividida**
+- [x] **Passo 6: Commit**
   `git commit -m "feat(supplier): implementa portal do fornecedor com split-view e emissão de protocolo"`
 
 ---
@@ -236,13 +236,13 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Quadro de 5 fases operacionais. Transições regulares otimistas; transições para `RECUSADO` ou `PAGO` interceptadas com abertura de modais obrigatórios.
 
-- [ ] **Passo 1: Escrever testes unitários cobrindo a interceptação de destino no drag-and-drop**
-- [ ] **Passo 2: Rodar teste para verificar que falha**
-- [ ] **Passo 3: Implementar `KanbanBoard` com `@dnd-kit`, somatórios financeiros e cards por vertical**
-- [ ] **Passo 4: Implementar `RejectModal` e `PaymentProofModal` integrados ao `onDragEnd`**
-- [ ] **Passo 5: Implementar Server Action `updateInvoiceStatus` com validação de role via `@supabase/ssr`**
-- [ ] **Passo 6: Rodar testes e verificar aprovação**
-- [ ] **Passo 7: Commit**
+- [x] **Passo 1: Escrever testes unitários cobrindo a interceptação de destino no drag-and-drop**
+- [x] **Passo 2: Rodar teste para verificar que falha**
+- [x] **Passo 3: Implementar `KanbanBoard` com `@dnd-kit`, somatórios financeiros e cards por vertical**
+- [x] **Passo 4: Implementar `RejectModal` e `PaymentProofModal` integrados ao `onDragEnd`**
+- [x] **Passo 5: Implementar Server Action `updateInvoiceStatus` com validação de role via `@supabase/ssr`**
+- [x] **Passo 6: Rodar testes e verificar aprovação**
+- [x] **Passo 7: Commit**
   `git commit -m "feat(kanban): adiciona quadro kanban com @dnd-kit otimista e modais de interceptação"`
 
 ---
@@ -257,13 +257,13 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Triagem analista human-in-the-loop, validação de alçadas orçamentárias de gestor/CFO, fila de quitação com cópia de Pix em 1 clique e linha do tempo de auditoria imutável.
 
-- [ ] **Passo 1: Escrever teste unitário de regras de alçada (aprovação dentro do teto vs bloqueio exigindo CFO)**
-- [ ] **Passo 2: Rodar teste para verificar falha**
-- [ ] **Passo 3: Implementar Server Action `approveInvoiceWithCheck` e tela `/aprovacoes`**
-- [ ] **Passo 4: Implementar `/conferencia/:id` com reprocessamento IA e validação de retenções**
-- [ ] **Passo 5: Implementar `/pagamentos` com cópia de Pix e `/notas/:id` com histórico de auditoria**
-- [ ] **Passo 6: Rodar testes e validar aprovação**
-- [ ] **Passo 7: Commit**
+- [x] **Passo 1: Escrever teste unitário de regras de alçada (aprovação dentro do teto vs bloqueio exigindo CFO)**
+- [x] **Passo 2: Rodar teste para verificar falha**
+- [x] **Passo 3: Implementar Server Action `approveInvoiceWithCheck` e tela `/aprovacoes`**
+- [x] **Passo 4: Implementar `/conferencia/:id` com reprocessamento IA e validação de retenções**
+- [x] **Passo 5: Implementar `/pagamentos` com cópia de Pix e `/notas/:id` com histórico de auditoria**
+- [x] **Passo 6: Rodar testes e validar aprovação**
+- [x] **Passo 7: Commit**
   `git commit -m "feat(ops): implementa telas de conferência, aprovações por alçada, pagamentos e auditoria"`
 
 ---
@@ -277,11 +277,11 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Bento Grid executivo com indicadores consolidados e segmentados das 4 verticais (Impact Hub, Salto, Impacta Mais, Seu PêJota), funil de fases e passivo circulante.
 
-- [ ] **Passo 1: Escrever teste unitário de cálculo de agregados e somatórios por vertical**
-- [ ] **Passo 2: Rodar teste para verificar falha**
-- [ ] **Passo 3: Implementar Server Components de busca de dados consolidados e visualização gráfica**
-- [ ] **Passo 4: Rodar testes para validar somatórios e métricas**
-- [ ] **Passo 5: Commit**
+- [x] **Passo 1: Escrever teste unitário de cálculo de agregados e somatórios por vertical**
+- [x] **Passo 2: Rodar teste para verificar falha**
+- [x] **Passo 3: Implementar Server Components de busca de dados consolidados e visualização gráfica**
+- [x] **Passo 4: Rodar testes para validar somatórios e métricas**
+- [x] **Passo 5: Commit**
   `git commit -m "feat(dashboard): implementa dashboard executivo com indicadores das 4 verticais"`
 
 ---
@@ -295,13 +295,13 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Tabela de auditoria com indicador de pareamento 100%, download paralelo de blobs via URLs assinadas e empacotamento em memória no cliente com `jszip`, disparando download direto do `.zip`.
 
-- [ ] **Passo 1: Escrever teste unitário de geração do manifesto CSV e estrutura de pastas do ZIP**
-- [ ] **Passo 2: Rodar teste para verificar falha**
-- [ ] **Passo 3: Implementar `src/lib/csv-manifest.ts` seguindo as diretrizes da skill `invoice-organizer`**
-- [ ] **Passo 4: Implementar `ZipGeneratorButton` com `jszip` e download nativo via Blob**
-- [ ] **Passo 5: Implementar página `/fechamento` com trava de notas não pareadas**
-- [ ] **Passo 6: Rodar testes para validar o empacotamento**
-- [ ] **Passo 7: Commit**
+- [x] **Passo 1: Escrever teste unitário de geração do manifesto CSV e estrutura de pastas do ZIP**
+- [x] **Passo 2: Rodar teste para verificar falha**
+- [x] **Passo 3: Implementar `src/lib/csv-manifest.ts` seguindo as diretrizes da skill `invoice-organizer`**
+- [x] **Passo 4: Implementar `ZipGeneratorButton` com `jszip` e download nativo via Blob**
+- [x] **Passo 5: Implementar página `/fechamento` com trava de notas não pareadas**
+- [x] **Passo 6: Rodar testes para validar o empacotamento**
+- [x] **Passo 7: Commit**
   `git commit -m "feat(closing): implementa fechamento contábil e compilação do .zip via jszip no cliente"`
 
 ---
@@ -315,12 +315,12 @@ d:/Etna/Projetos/DesafioIHF/
 **Interfaces:**
 - Produz: Gestão institucional de empresas e centros de custo, verificação ponta a ponta e build verde da aplicação (`npm run build`).
 
-- [ ] **Passo 1: Implementar tela `/configuracoes` para manutenção das empresas e alçadas**
-- [ ] **Passo 2: Rodar suíte completa de testes automatizados (`npm test`)**
-- [ ] **Passo 3: Executar `npm run build` e certificar que não há erros de tipagem TypeScript ou ESLint**
-- [ ] **Passo 4: Validar navegação e fluxo com subagente de navegador**
-- [ ] **Passo 5: Atualizar `docs/changelog.md` com a conclusão da implementação**
-- [ ] **Passo 6: Commit final**
+- [x] **Passo 1: Implementar tela `/configuracoes` para manutenção das empresas e alçadas**
+- [x] **Passo 2: Rodar suíte completa de testes automatizados (`npm test`)**
+- [x] **Passo 3: Executar `npm run build` e certificar que não há erros de tipagem TypeScript ou ESLint**
+- [x] **Passo 4: Validar navegação e fluxo com subagente de navegador**
+- [x] **Passo 5: Atualizar `docs/changelog.md` com a conclusão da implementação**
+- [x] **Passo 6: Commit final**
   `git commit -m "feat(app): conclui telas de configurações, testes integrados e validação de build"`
 
 ---
