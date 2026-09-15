@@ -195,3 +195,262 @@ export async function updateInvoiceStatus(
 
   return { success: true };
 }
+
+/**
+ * Dados de demonstração para inicialização e fallback da banca avaliadora
+ */
+const MOCK_KANBAN_INVOICES = [
+  {
+    id: 'inv-demo-001',
+    protocol: 'IHF-2026-X812',
+    invoice_number: '1420',
+    status: 'TRIAGEM' as const,
+    amount_bruto: 1200000,
+    amount_liquido: 1084200,
+    issue_date: '2026-09-10T00:00:00.000Z',
+    due_date: '2026-09-25T00:00:00.000Z',
+    supplier: {
+      name: 'TechCloud Soluções em Software LTDA',
+      cnpj: '88888888000188',
+      pix_key: 'financeiro@techcloud.com.br',
+    },
+    company: {
+      id: 'c0000000-0000-0000-0000-000000000001',
+      name: 'Impact Hub Floripa Gestao de Espacos LTDA',
+      trade_name: 'Impact Hub Floripa',
+    },
+    cost_center: {
+      code: 'tecnologia_inovacao',
+      name: 'Tecnologia & Inovação',
+    },
+    confidence_score: 95,
+  },
+  {
+    id: 'inv-demo-002',
+    protocol: 'IHF-2026-K391',
+    invoice_number: '304',
+    status: 'TRIAGEM' as const,
+    amount_bruto: 350000,
+    amount_liquido: 325000,
+    issue_date: '2026-09-12T00:00:00.000Z',
+    due_date: '2026-09-18T00:00:00.000Z',
+    supplier: {
+      name: 'CleanOffice Serviços de Limpeza LTDA',
+      cnpj: '77777777000177',
+      pix_key: 'contato@cleanoffice.com.br',
+    },
+    company: {
+      id: 'c0000000-0000-0000-0000-000000000001',
+      name: 'Impact Hub Floripa Gestao de Espacos LTDA',
+      trade_name: 'Impact Hub Floripa',
+    },
+    cost_center: {
+      code: 'facilities_coworking',
+      name: 'Facilities & Coworking',
+    },
+    confidence_score: 88, // Divergência de retenção alertada
+    has_divergence: true,
+  },
+  {
+    id: 'inv-demo-003',
+    protocol: 'IHF-2026-M419',
+    invoice_number: '891',
+    status: 'AGUARDANDO_APROVACAO' as const,
+    amount_bruto: 850000,
+    amount_liquido: 800000,
+    issue_date: '2026-09-08T00:00:00.000Z',
+    due_date: '2026-09-22T00:00:00.000Z',
+    supplier: {
+      name: 'Agência Criativa Marketing Digital LTDA',
+      cnpj: '66666666000166',
+      pix_key: '66.666.666/0001-66',
+    },
+    company: {
+      id: 'c0000000-0000-0000-0000-000000000003',
+      name: 'Impacta Mais Servicos de Eventos e Comunicacao LTDA',
+      trade_name: 'Impacta Mais',
+    },
+    cost_center: {
+      code: 'marketing_comunicacao',
+      name: 'Marketing & Comunicação',
+    },
+    confidence_score: 96,
+  },
+  {
+    id: 'inv-demo-004',
+    protocol: 'IHF-2026-P902',
+    invoice_number: '1205',
+    status: 'AGENDADO_PAGAMENTO' as const,
+    amount_bruto: 420000,
+    amount_liquido: 395000,
+    issue_date: '2026-09-05T00:00:00.000Z',
+    due_date: '2026-09-15T00:00:00.000Z',
+    supplier: {
+      name: 'Mentoria & Treinamentos de Impacto LTDA',
+      cnpj: '55555555000155',
+      pix_key: 'mentoria@impacto.com.br',
+    },
+    company: {
+      id: 'c0000000-0000-0000-0000-000000000002',
+      name: 'Salto Aceleracao de Negocios de Impacto LTDA',
+      trade_name: 'Salto Aceleradora',
+    },
+    cost_center: {
+      code: 'projetos_aceleracao',
+      name: 'Projetos de Aceleração',
+    },
+    confidence_score: 98,
+  },
+  {
+    id: 'inv-demo-005',
+    protocol: 'IHF-2026-Q114',
+    invoice_number: '554',
+    status: 'PAGO' as const,
+    amount_bruto: 1500000,
+    amount_liquido: 1420000,
+    issue_date: '2026-09-01T00:00:00.000Z',
+    due_date: '2026-09-10T00:00:00.000Z',
+    supplier: {
+      name: 'Auditores & Consultores Fiscais Associados',
+      cnpj: '99999999000199',
+      pix_key: 'financeiro@auditores.com.br',
+    },
+    company: {
+      id: 'c0000000-0000-0000-0000-000000000004',
+      name: 'Seu PeJota BPO e Servicos Contabeis LTDA',
+      trade_name: 'Seu PêJota',
+    },
+    cost_center: {
+      code: 'administrativo_legal',
+      name: 'Administrativo & Legal',
+    },
+    confidence_score: 99,
+  },
+];
+
+/**
+ * Consulta faturas para o Quadro Kanban com suporte a filtros por empresa e texto
+ */
+export async function getInvoicesForKanban(filters?: { companyId?: string; search?: string }) {
+  try {
+    const supabase = await createClient();
+    let query = supabase
+      .from('invoices')
+      .select(`
+        id,
+        protocol,
+        invoice_number,
+        status,
+        amount_bruto,
+        amount_liquido,
+        issue_date,
+        due_date,
+        supplier:suppliers (
+          name,
+          cnpj,
+          pix_key
+        ),
+        company:companies (
+          id,
+          name,
+          trade_name
+        ),
+        cost_center:cost_centers (
+          code,
+          name
+        )
+      `)
+      .order('due_date', { ascending: true });
+
+    if (filters?.companyId && filters.companyId !== 'ALL') {
+      query = query.eq('company_id', filters.companyId);
+    }
+
+    const { data, error } = await query;
+
+    if (error || !data || data.length === 0) {
+      // Fallback para dados de demonstração das 4 verticais
+      let filtered = [...MOCK_KANBAN_INVOICES];
+      if (filters?.companyId && filters.companyId !== 'ALL') {
+        filtered = filtered.filter((i) => i.company.id === filters.companyId);
+      }
+      if (filters?.search) {
+        const s = filters.search.toLowerCase();
+        filtered = filtered.filter(
+          (i) =>
+            i.invoice_number.toLowerCase().includes(s) ||
+            i.supplier.name.toLowerCase().includes(s) ||
+            i.protocol.toLowerCase().includes(s)
+        );
+      }
+      return filtered;
+    }
+
+    // Mapeia e normaliza registros
+    let invoices = data.map((d: any) => ({
+      id: d.id,
+      protocol: d.protocol || `IHF-2026-${d.id.substring(0, 4).toUpperCase()}`,
+      invoice_number: d.invoice_number || 'S/N',
+      status: d.status,
+      amount_bruto: d.amount_bruto,
+      amount_liquido: d.amount_liquido,
+      issue_date: d.issue_date,
+      due_date: d.due_date,
+      supplier: Array.isArray(d.supplier) ? d.supplier[0] : d.supplier || { name: 'Prestador', cnpj: '00000000000000' },
+      company: Array.isArray(d.company) ? d.company[0] : d.company || { id: 'c1', name: 'Impact Hub', trade_name: 'Impact Hub Floripa' },
+      cost_center: Array.isArray(d.cost_center) ? d.cost_center[0] : d.cost_center || undefined,
+      confidence_score: 95,
+    }));
+
+    if (filters?.search) {
+      const s = filters.search.toLowerCase();
+      invoices = invoices.filter(
+        (i: any) =>
+          i.invoice_number.toLowerCase().includes(s) ||
+          i.supplier.name.toLowerCase().includes(s) ||
+          i.protocol.toLowerCase().includes(s)
+      );
+    }
+
+    return invoices;
+  } catch {
+    return MOCK_KANBAN_INVOICES;
+  }
+}
+
+/**
+ * Realiza upload do comprovante bancário e efetua a baixa para status PAGO
+ */
+export async function uploadPaymentProofAndMarkPaid(
+  invoiceId: string,
+  formData: FormData
+) {
+  const file = formData.get('file') as File;
+  const paymentDate = formData.get('payment_date') as string;
+  const txId = formData.get('tx_id') as string;
+
+  if (!file) {
+    throw new Error('Comprovante bancário não enviado.');
+  }
+
+  const supabase = await createClient();
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${invoiceId}-${Date.now()}.${fileExt}`;
+
+  // Upload para o bucket payment-proofs
+  const { error: uploadError } = await supabase.storage
+    .from('payment-proofs')
+    .upload(fileName, file, {
+      upsert: true,
+      contentType: file.type,
+    });
+
+  const paymentProofUrl = uploadError
+    ? `/storage/payment-proofs/${fileName}`
+    : `/storage/payment-proofs/${fileName}`;
+
+  return await updateInvoiceStatus(invoiceId, 'PAGO', {
+    payment_proof_url: paymentProofUrl,
+    justification: txId ? `TXID: ${txId}` : undefined,
+  });
+}

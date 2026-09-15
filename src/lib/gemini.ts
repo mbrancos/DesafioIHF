@@ -137,7 +137,8 @@ Sugira o centro de custo mais adequado. Atribua uma pontuação de confiança de
     },
   });
 
-  const responseText = response.text();
+  const rawText = typeof (response as any).text === 'function' ? (response as any).text() : response.text;
+  const responseText = typeof rawText === 'string' ? rawText : '';
   if (!responseText) {
     throw new Error('O modelo Gemini não retornou dados estruturados para este documento.');
   }

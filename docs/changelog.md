@@ -46,6 +46,19 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 8 Concluída: Quadro Kanban com @dnd-kit, Estado Otimista e Interceptações de Governança
+- **Commit**: `feat(kanban): quadro operacional dnd-kit com atualizacao otimista e modais de governanca`
+- **Contexto**: Implementação da tela `/kanban` com visão horizontal das 5 colunas operacionais estritas (`TRIAGEM`, `AGUARDANDO_APROVACAO`, `RECUSADO`, `AGENDADO_PAGAMENTO`, `PAGO`), drag-and-drop otimista e barreiras de segurança com modais obrigatórios.
+- **Arquivos**: `src/app/kanban/page.tsx`, `src/components/kanban/KanbanBoard.tsx`, `src/components/kanban/KanbanColumn.tsx`, `src/components/kanban/InvoiceCard.tsx`, `src/components/kanban/RejectModal.tsx`, `src/components/kanban/PaymentProofModal.tsx`, `src/components/kanban/kanban-utils.ts`, `src/components/common/Navbar.tsx`, `src/actions/invoices.ts`, `tests/unit/kanban-dnd.test.ts`.
+- **Decisões e Resultados**:
+  1. Criação do utilitário `kanban-utils.ts` com as 5 colunas, totalizadores financeiros automáticos e lógica de decisão `shouldInterceptTransition`.
+  2. Implementação do `KanbanBoard` com `@dnd-kit/core` utilizando `PointerSensor` com tolerância de distância para permitir cliques normais em botões de cards.
+  3. Blindagem de governança: arrastar para `RECUSADO` intercepta e exige justificativa formal via `RejectModal`; arrastar para `PAGO` intercepta e exige anexo de comprovante bancário via `PaymentProofModal`.
+  4. Atualização de estado otimista para transições diretas com reversão automática caso a persistência via Server Action falhe.
+  5. Criação do componente `Navbar.tsx` para trânsito fluido entre as rotas operacionais do sistema, com exibição da persona ativa e botão de encerramento de sessão.
+  6. Server Action `getInvoicesForKanban` com filtros por vertical da holding e busca textual, além de `uploadPaymentProofAndMarkPaid`.
+  7. 100% de sucesso nos testes unitários e tipagem estrita do TypeScript aprovada (`34 tests passed`).
+
 ### [2026-09-15] — Tarefa 7 Concluída: Portal do Fornecedor com Split-View e Emissão de Protocolo
 - **Commit**: `d2f06c7`
 - **Contexto**: Implementação da rota pública `/upload` com Wizard em 2 etapas para autoatendimento do prestador PJ sem login, conferência assistida em tela dividida e emissão de protocolo.

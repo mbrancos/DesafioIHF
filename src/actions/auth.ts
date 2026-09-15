@@ -114,3 +114,6 @@ export async function logout() {
   cookieStore.delete('ihf_session');
   redirect('/');
 }
+
+export const signOut = logout;
+
