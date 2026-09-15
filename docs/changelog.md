@@ -46,6 +46,12 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Configuração do Repositório Remoto e Sincronização com o GitHub
+- **Contexto**: Integração do repositório local com o repositório remoto oficial no GitHub (`https://github.com/mbrancos/DesafioIHF.git`) para versionamento contínuo, backup em nuvem e compartilhamento seguro do código e documentação.
+- **Decisões Tomadas**:
+  1. Configuração do remoto `origin` apontando para `https://github.com/mbrancos/DesafioIHF.git`.
+  2. Sincronização inicial completa do histórico de commits da branch `master` para o repositório remoto.
+
 ### [2026-09-15] — Eliminação de Redundância: Remoção do GEMINI.md em Favor do AGENTS.md
 - **Contexto**: O Antigravity IDE carrega automaticamente arquivos de regras na raiz do workspace (`AGENTS.md` e `GEMINI.md`). Como ambos continham exatamente o mesmo conteúdo, o sistema consumia tokens desnecessariamente e gerava overhead de manutenção em dobro.
 - **Decisões Tomadas**:
