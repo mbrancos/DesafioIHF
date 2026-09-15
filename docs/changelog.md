@@ -46,6 +46,18 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 7 Concluída: Portal do Fornecedor com Split-View e Emissão de Protocolo
+- **Commit**: `d2f06c7`
+- **Contexto**: Implementação da rota pública `/upload` com Wizard em 2 etapas para autoatendimento do prestador PJ sem login, conferência assistida em tela dividida e emissão de protocolo.
+- **Arquivos**: `src/app/upload/page.tsx`, `src/components/supplier/WizardStep1Upload.tsx`, `src/components/supplier/WizardStep2SplitView.tsx`, `src/components/pdf/DynamicPdfViewer.tsx`, `src/components/pdf/PdfViewer.tsx`, `src/actions/invoices.ts`, `tests/unit/supplier-wizard.test.ts`.
+- **Decisões e Resultados**:
+  1. Criação do `DynamicPdfViewer` encapsulado com `next/dynamic` e `{ ssr: false }`, blindando a renderização de PDFs contra falhas de SSR na Vercel.
+  2. Implementação da Etapa 1 com dropzone de PDF e trava de 4 MB integrada diretamente à rota `/api/extract`.
+  3. Implementação da Etapa 2 em Split-View: documento original renderizado à esquerda e formulário editável pré-preenchido pela IA à direita.
+  4. Validador matemático visual em tempo real conferindo se `Líquido = Bruto - Retenções` com tolerância de até R$ 0,02.
+  5. Implementação da Server Action `createInvoice` com geração de protocolo padronizado `IHF-2026-XXXX`, persistência em `invoices` (`TRIAGEM`) e registro imutável em `invoice_events`.
+  6. Validação com 100% de aprovação na suíte de testes (`npm test` com 29 testes passando).
+
 ### [2026-09-15] — Tarefa 6 Concluída: Tela de Login e Atalhos de Persona para a Banca
 - **Commit**: `b2233ba`
 - **Contexto**: Implementação da rota `/` com autenticação institucional iHubFiscal, formulário corporativo e painel de atalhos rápidos de 1 clique para a banca avaliadora testar as alçadas.
