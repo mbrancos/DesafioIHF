@@ -46,6 +46,16 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 6 Concluída: Tela de Login e Atalhos de Persona para a Banca
+- **Commit**: `b2233ba`
+- **Contexto**: Implementação da rota `/` com autenticação institucional iHubFiscal, formulário corporativo e painel de atalhos rápidos de 1 clique para a banca avaliadora testar as alçadas.
+- **Arquivos**: `src/app/page.tsx`, `src/actions/auth.ts`, `src/components/auth/LoginForm.tsx`, `src/components/auth/PersonaSwitcher.tsx`, `tests/unit/auth-flow.test.ts`.
+- **Decisões e Resultados**:
+  1. Criação do `PersonaSwitcher` com os 4 perfis (`analista`, `gestor`, `cfo`, `admin`) vinculados aos dados pré-cadastrados no `seed.sql`.
+  2. Implementação das Server Actions `loginWithPersona`, `loginWithCredentials` e `logout` com gerenciamento de sessão seguro em cookies HTTP-only.
+  3. Adição do banner de autoatendimento para fornecedores no rodapé direcionando para a rota pública `/upload`.
+  4. Validação com 100% de aprovação na suíte de testes (`npm test` com 25 testes passando).
+
 ### [2026-09-15] — Tarefa 5 Concluída: Rota de Ingestão de IA com Gemini 2.5 Flash e Trava de 4 MB
 - **Commit**: `289c0d4`
 - **Contexto**: Implementação da rota serverless Node.js `/api/extract` para ingestão de NFS-e, cálculo de integridade SHA-256 e extração multimodal estruturada com o modelo Gemini 2.5 Flash via `@google/genai`.
