@@ -57,3 +57,24 @@ As skills locais estão instaladas em `.agents/skills/` e foram adaptadas para o
 - **Tokens Obrigatórios**: Todas as cores (`--ihf-brand-*`, `--ihf-bg-*`, `--ihf-status-*`), tipografia (Poppins para títulos/UI e GT Walsheim para corpo/labels), escala de espaçamento em grade de 4px/rem, z-index, sombras, bordas e micro-interações de botões devem seguir rigorosamente o especificado no documento.
 - **Proibição de Desvios**: Nenhuma tela, componente ou estilo deve introduzir cores arbitrárias, estimativas visuais ou frameworks utilitários conflitantes sem referenciar e derivar diretamente dos tokens definidos em `docs/designIHF.md`.
 
+---
+
+## 6. Diário de Bordo e Decisões Arquiteturais (Changelog & ADR)
+- **Arquivo Oficial**: [`docs/changelog.md`](docs/changelog.md).
+- **Objetivo**: Servir como a memória permanente de longo prazo do projeto, prevenindo regressões, perda de contexto e decisões que divirjam das diretrizes acordadas.
+- **Regra Obrigatória de Registro**: **Toda vez** que formos realizar uma atualização significativa, mudança arquitetural, commit ou push, é **obrigatório** registrar a alteração no `docs/changelog.md`, incluindo data, contexto, arquivos afetados e a justificativa da decisão tomada.
+
+---
+
+## 7. Árvore de Referências e Fontes da Verdade (Anti-Alucinação)
+Para blindar o agente contra alucinações ou decisões que fujam do padrão, consulte estritamente os arquivos oficiais conforme o escopo da tarefa:
+1. **Design & Identidade Visual**: [`docs/designIHF.md`](docs/designIHF.md) (ÚNICA fonte de verdade para cores, tipografia Poppins + GT Walsheim, botões, micro-interações, espaçamento e tokens CSS `:root`).
+2. **Requisitos Funcionais & Dados (v2)**: [`docs/iHubFiscal.md`](docs/iHubFiscal.md) (ÚNICA fonte de verdade para as 10 telas/rotas, ciclo de vida das 5 fases, centros de custo, entidades e schema Postgres).
+3. **Memória de Decisões & Histórico**: [`docs/changelog.md`](docs/changelog.md) (diário cronológico e justificativas de arquitetura).
+4. **Legado da Fase 1 (Entregáveis do Desafio Técnico)**:
+   - **Landing Page Executiva**: [`portal/index.html`](portal/index.html) (vitrine de entrega da vaga em link único; preservada para avaliação da banca).
+   - **Workflow n8n Trecho 1**: [`workflows/fluxo-n8n-trecho1-extracao-nf.json`](workflows/fluxo-n8n-trecho1-extracao-nf.json).
+   - **Documentos Executivos**: [`docs/entregavel-1-desenho-da-solucao.md`](docs/entregavel-1-desenho-da-solucao.md), [`docs/entregavel-3-manual-operacional-financeiro.md`](docs/entregavel-3-manual-operacional-financeiro.md) e [`docs/entregavel-4-roteiro-video-demo.md`](docs/entregavel-4-roteiro-video-demo.md).
+   - **PRD e Reaproveitamento**: [`docs/prd-automacao-contas-a-pagar.md`](docs/prd-automacao-contas-a-pagar.md) e [`docs/analise-reaproveitamento-apps.md`](docs/analise-reaproveitamento-apps.md).
+
+
