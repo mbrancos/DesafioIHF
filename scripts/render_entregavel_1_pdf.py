@@ -1,0 +1,480 @@
+import os
+import subprocess
+import sys
+
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
+HTML_CONTENT = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Entregável 1 — Desenho da Solução Completa (ImpactPay AI)</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.35;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+  }
+  .page {
+    page-break-after: always;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+  .header {
+    border-bottom: 2px solid #0f766e;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header-left h1 {
+    font-size: 14pt;
+    color: #0f766e;
+    margin: 0 0 2px 0;
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+  }
+  .header-left p {
+    font-size: 8.5pt;
+    color: #64748b;
+    margin: 0;
+    font-weight: 500;
+  }
+  .badge-candidate {
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    color: #0f766e;
+    font-size: 8pt;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: right;
+  }
+  h2 {
+    font-size: 10.5pt;
+    color: #0f172a;
+    margin: 8px 0 4px 0;
+    border-left: 3px solid #0f766e;
+    padding-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+  }
+  p {
+    margin: 0 0 6px 0;
+    font-size: 9pt;
+    color: #334155;
+    text-align: justify;
+  }
+  .highlight-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    font-size: 8.5pt;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+    font-size: 8pt;
+  }
+  th {
+    background: #0f766e;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 5px 6px;
+    border: 1px solid #0f766e;
+    text-transform: uppercase;
+    font-size: 7.5pt;
+  }
+  td {
+    padding: 4px 6px;
+    border: 1px solid #cbd5e1;
+    vertical-align: middle;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  .center {
+    text-align: center;
+  }
+  .bold {
+    font-weight: 600;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .kpi-card {
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+    border-radius: 4px;
+    padding: 6px 8px;
+    text-align: center;
+  }
+  .kpi-val {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f766e;
+    display: block;
+  }
+  .kpi-label {
+    font-size: 7pt;
+    color: #475569;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .flow-diagram {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .flow-step {
+    flex: 1;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 3px;
+    padding: 5px 4px;
+    text-align: center;
+    font-size: 7.5pt;
+  }
+  .flow-step strong {
+    display: block;
+    color: #0f766e;
+    font-size: 8pt;
+    margin-bottom: 1px;
+  }
+  .flow-arrow {
+    padding: 0 4px;
+    color: #94a3b8;
+    font-weight: bold;
+    font-size: 10pt;
+  }
+  .footer {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 4px;
+    font-size: 7.5pt;
+    color: #94a3b8;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PÁGINA 1 ==================== -->
+<div class="page">
+  <div>
+    <div class="header">
+      <div class="header-left">
+        <h1>ImpactPay AI — Desenho da Solução Completa</h1>
+        <p>Automação Inteligente de Contas a Pagar & Governança • Holding Companhia de Impacto</p>
+      </div>
+      <div class="badge-candidate">
+        Candidato: Moisés Branco dos Santos<br>
+        Vaga: Analista Pleno de IA e Produtos Digitais
+      </div>
+    </div>
+
+    <h2>1. Contexto & Diagnóstico da Holding</h2>
+    <p>
+      A <strong>Companhia de Impacto</strong> gerencia 4 verticais com CNPJs distintos: <em>Impact Hubs (Floripa, SP, POA e Cuiabá)</em>, <em>Salto (Inclusão Produtiva)</em>, <em>Impacta Mais (Eventos)</em> e <em>Seu PêJota</em>. O processo atual opera com <strong>3 caixas de e-mail descentralizadas</strong>, digitação manual em planilhas e <strong>aprovações informais via WhatsApp</strong>. Consequências críticas: perda de notas fiscais, multas e juros por atraso em vencimentos, ausência de visibilidade para a diretoria financeira e passivos trabalhistas/fiscais.
+    </p>
+
+    <h2>2. Visão Sistêmica Ponta a Ponta (Arquitetura To-Be)</h2>
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <strong>1. Ingestão Central</strong>
+        E-mail Unificado + Upload Web de Contingência
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-step">
+        <strong>2. Triagem & Hash</strong>
+        Idempotência SHA-256 (Anti-Duplicidade nativa)
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-step">
+        <strong>3. IA Multimodal</strong>
+        LLM Vision + Prompt Strict Null (Sem alucinação)
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-step">
+        <strong>4. Alçadas no Chat</strong>
+        Aprovação com 1 clique (Slack/Teams/Whats)
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-step">
+        <strong>5. Repasse Fiscal</strong>
+        Baixa Pix + Pacote .ZIP para a Contabilidade
+      </div>
+    </div>
+
+    <h2>3. Stack Tecnológica & Racional de Decisão</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 22%;">Camada</th>
+          <th style="width: 28%;">Tecnologia Escolhida</th>
+          <th>Justificativa Técnica & Racional de Negócio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bold">Orquestrador Central</td>
+          <td><strong>n8n</strong> (Self-hosted / Cloud)</td>
+          <td>Padrão ouro corporativo em automação com IA; nós modulares, controle total de webhooks, escalabilidade assíncrona e exportação limpa em JSON.</td>
+        </tr>
+        <tr>
+          <td class="bold">Inteligência Artificial</td>
+          <td><strong>OpenAI GPT-4o-mini Vision</strong></td>
+          <td>Excelente custo por token, tempo de inferência &lt; 4s e precisão multimodal na extração de tabelas tributárias de NFS-e do Brasil.</td>
+        </tr>
+        <tr>
+          <td class="bold">Engenharia de Prompt</td>
+          <td><strong>Strict Null Framework</strong></td>
+          <td>Mitigação de risco financeiro: se um campo não estiver explícito na nota, a IA retorna estritamente <code>null</code>, forçando a conferência humana.</td>
+        </tr>
+        <tr>
+          <td class="bold">Deduplicação / Hash</td>
+          <td><strong>Hash SHA-256 Nativo no n8n</strong></td>
+          <td>Calcula o hash do binário da NF no próprio fluxo, eliminando dependência de funções externas no banco de dados e travando duplicatas.</td>
+        </tr>
+        <tr>
+          <td class="bold">Repositório & Painel</td>
+          <td><strong>Google Sheets / PostgreSQL</strong></td>
+          <td>Garante visibilidade em tempo real para a diretoria, com controle de status relacional e zero barreira de adoção para analistas de negócio.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>4. Matriz de Papéis e Responsabilidades (RACI)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Etapa do Processo Operacional</th>
+          <th class="center" style="width: 14%;">Fornecedor PJ</th>
+          <th class="center" style="width: 14%;">Time Financeiro</th>
+          <th class="center" style="width: 16%;">Gestor da Vertical</th>
+          <th class="center" style="width: 16%;">ImpactPay AI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Envio da Nota Fiscal legível no canal centralizado</td>
+          <td class="center bold">R</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+          <td class="center">A</td>
+        </tr>
+        <tr>
+          <td>Deduplicação, extração inteligente e checagem matemática</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+          <td class="center bold">A / R</td>
+        </tr>
+        <tr>
+          <td>Triagem e saneamento de notas retidas em exceção</td>
+          <td class="center">I</td>
+          <td class="center bold">A / R</td>
+          <td class="center">C</td>
+          <td class="center">I</td>
+        </tr>
+        <tr>
+          <td>Aprovação formal da contratação (Alçada de Despesa)</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+          <td class="center bold">A / R</td>
+          <td class="center">I</td>
+        </tr>
+        <tr>
+          <td>Agendamento bancário, liquidação e anexo do Pix</td>
+          <td class="center">I</td>
+          <td class="center bold">A / R</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+        </tr>
+        <tr>
+          <td>Repasse do lote mensal de PDFs/XMLs para a contabilidade</td>
+          <td class="center">I</td>
+          <td class="center bold">A</td>
+          <td class="center">I</td>
+          <td class="center bold">R (Gera .ZIP)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size: 7.5pt; color: #64748b; margin-top: -2px;">
+      <em>Legenda: <strong>R</strong> = Responsável pela Execução (Responsible) | <strong>A</strong> = Aprovador / Dono (Accountable) | <strong>C</strong> = Consultado (Consulted) | <strong>I</strong> = Informado (Informed)</em>
+    </p>
+  </div>
+
+  <div class="footer">
+    <span>Companhia de Impacto Holding • Desafio Técnico AI Product Architect</span>
+    <span>Página 1 de 2</span>
+  </div>
+</div>
+
+<!-- ==================== PÁGINA 2 ==================== -->
+<div class="page">
+  <div>
+    <div class="header">
+      <div class="header-left">
+        <h1>ImpactPay AI — Riscos, Governança & Tratamento de Falhas</h1>
+        <p>Políticas de Contingência, LGPD e Indicadores de Sucesso do Produto</p>
+      </div>
+      <div class="badge-candidate">
+        Entregável 1 • Página 2 de 2
+      </div>
+    </div>
+
+    <h2>5. Mapeamento de Riscos & Tratamento de Falhas ("O Que Fazer Se Quebrar")</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Cenário de Falha / Risco</th>
+          <th class="center" style="width: 10%;">Severidade</th>
+          <th style="width: 32%;">Ação Preventiva Automatizada</th>
+          <th>Procedimento de Contingência Manual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bold">Nota fiscal borrada, cortada ou ilegível</td>
+          <td class="center" style="color: #d97706; font-weight: bold;">MÉDIA</td>
+          <td>Prompt aciona <em>Strict Null</em> e calcula <code>confidence_score &lt; 0.8</code>, direcionando para <code>REVISAO_MANUAL</code>.</td>
+          <td>Analista abre a tela de revisão em split-view, confere o PDF lado a lado e ajusta o campo ou clica em "Solicitar Reenvio".</td>
+        </tr>
+        <tr>
+          <td class="bold">Fornecedor envia mesma NF em duplicidade</td>
+          <td class="center" style="color: #dc2626; font-weight: bold;">CRÍTICA</td>
+          <td>Hash SHA-256 e checagem <code>[CNPJ + Nº NF]</code> bloqueiam a inserção na entrada do n8n sem duplicar lançamentos.</td>
+          <td>Sistema dispara aviso automático ao remetente informando a data e o ID da nota já cadastrada, evitando pagamento duplo.</td>
+        </tr>
+        <tr>
+          <td class="bold">Divergência matemática de impostos retidos</td>
+          <td class="center" style="color: #ea580c; font-weight: bold;">ALTA</td>
+          <td>Nó Code valida: <code>|Bruto - Retenções - Líquido| &gt; 0,05</code>. Se divergir, marca flag de alerta fiscal.</td>
+          <td>O financeiro é sinalizado com o detalhamento das alíquotas (ISS, IRRF, PIS/COFINS/CSLL) para correção antes da aprovação.</td>
+        </tr>
+        <tr>
+          <td class="bold">Gestor não responde à solicitação de aprovação</td>
+          <td class="center" style="color: #ea580c; font-weight: bold;">ALTA</td>
+          <td>Disparo programado de lembrete automático no canal corporativo com 48h e 24h antes do vencimento da fatura.</td>
+          <td>Ao atingir 24h para o vencimento sem parecer, a pendência é escalonada automaticamente para o diretor geral da vertical.</td>
+        </tr>
+        <tr>
+          <td class="bold">Indisponibilidade momentânea da API de IA</td>
+          <td class="center" style="color: #d97706; font-weight: bold;">MÉDIA</td>
+          <td>O n8n executa política de 3 retentativas automáticas com intervalo progressivo (1m, 5m, 15m) via Dead Letter Queue.</td>
+          <td>Caso o erro persista, as notas são retidas em pasta segura e o operador recebe notificação com botão "Reprocessar Lote".</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. Governança Corporativa, Compliance & Adequação à LGPD</h2>
+    <div class="highlight-box">
+      <strong style="color: #0f766e;">🛡️ Trava de Auto-Auditoria (Segregação de Funções Financeiras):</strong><br>
+      Inspirada no sistema de conformidade já validado em produção, nenhum gestor ou colaborador da holding que preste serviços como PJ possui permissão no sistema para aprovar as suas próprias notas fiscais ou solicitações de reembolso. A alçada é compulsoriamente transferida para a liderança superior.
+    </div>
+
+    <p>
+      <strong>Proteção de Dados Pessoais (LGPD - Lei 13.709/2018):</strong> Notas fiscais de prestadores autônomos (RPA) e microempreendedores individuais (MEI) trazem dados pessoais protegidos por lei (CPF, nome civil, endereço residencial e chave Pix/dados bancários). O <strong>ImpactPay AI</strong> cumpre rigorosamente os princípios de conformidade:
+    </p>
+    <ul style="margin: 2px 0 8px 18px; padding: 0; font-size: 8.5pt; color: #334155;">
+      <li><strong>Criptografia Ponta a Ponta:</strong> Todo o tráfego de arquivos e payloads trafega sobre conexões seguras TLS 1.3 (HTTPS).</li>
+      <li><strong>Acesso Baseado em Papéis (RBAC):</strong> Apenas o analista de contas a pagar e o gestor aprovador designado têm visibilidade sobre os valores e dados cadastrais da respectiva contratação.</li>
+      <li><strong>Links Contábeis Temporários:</strong> O acesso externo de escritórios de contabilidade utiliza tokens criptográficos com expiração automática programada (máximo de 15 dias), eliminando links públicos permanentes.</li>
+    </ul>
+
+    <h2>7. Indicadores de Sucesso do Produto (OKRs & KPIs)</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-val">&lt; 4 Horas</span>
+        <span class="kpi-label">Tempo Médio de Ciclo (De 72h para &lt; 4h)</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-val">0%</span>
+        <span class="kpi-label">Multas/Juros por Atraso Operacional</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-val">&ge; 98%</span>
+        <span class="kpi-label">Acurácia da IA nos Campos Fiscais</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-val">-90%</span>
+        <span class="kpi-label">Horas Gastas em Digitação Manual</span>
+      </div>
+    </div>
+
+    <h2>8. Conclusão Executiva</h2>
+    <p>
+      O <strong>ImpactPay AI</strong> transforma o contas a pagar da Companhia de Impacto em uma operação blindada, eficiente e escalável. Ao combinar automação com <em>Human-in-the-Loop</em>, a solução preserva a segurança jurídica da holding e libera o time financeiro para atuar de forma analítica e estratégica.
+    </p>
+  </div>
+
+  <div class="footer">
+    <span>Companhia de Impacto Holding • Desafio Técnico AI Product Architect</span>
+    <span>Página 2 de 2 (Extensão Máxima Oficial)</span>
+  </div>
+</div>
+
+</body>
+</html>
+"""
+
+def main():
+    target_dir = os.path.abspath(r"d:\Etna\Projetos\DesafioIHF\docs")
+    html_path = os.path.join(target_dir, "entregavel-1-desenho-da-solucao.html")
+    pdf_path = os.path.join(target_dir, "entregavel-1-desenho-da-solucao.pdf")
+    
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(HTML_CONTENT)
+    print(f"Gerado HTML do Entregavel 1: {html_path}")
+    
+    browser_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+    if not os.path.exists(browser_path):
+        browser_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+    
+    cmd = [
+        browser_path,
+        "--headless=new",
+        "--disable-gpu",
+        "--no-pdf-header-footer",
+        f"--print-to-pdf={pdf_path}",
+        html_path
+    ]
+    
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if os.path.exists(pdf_path) and os.path.getsize(pdf_path) > 0:
+        print(f"[SUCESSO] PDF do Entregavel 1 gerado: {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
+    else:
+        print(f"[ERRO] Falha ao gerar PDF: {res.stderr}")
+
+if __name__ == "__main__":
+    main()
