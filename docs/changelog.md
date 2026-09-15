@@ -46,6 +46,17 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 5 Concluída: Rota de Ingestão de IA com Gemini 2.5 Flash e Trava de 4 MB
+- **Commit**: `289c0d4`
+- **Contexto**: Implementação da rota serverless Node.js `/api/extract` para ingestão de NFS-e, cálculo de integridade SHA-256 e extração multimodal estruturada com o modelo Gemini 2.5 Flash via `@google/genai`.
+- **Arquivos**: `src/app/api/extract/route.ts`, `src/lib/gemini.ts`, `tests/unit/api-extract.test.ts`.
+- **Decisões e Resultados**:
+  1. Configuração explícita de `export const runtime = 'nodejs';`, `export const maxDuration = 30;` e `export const dynamic = 'force-dynamic';` para estabilidade no ambiente Vercel.
+  2. Implementação da trava estrita de upload: rejeição com status 400 para formatos não-PDF e status 413 para arquivos superiores a 4 MB.
+  3. Cálculo automático do hash SHA-256 do binário para garantia de idempotência e auditoria.
+  4. Definição do `INVOICE_EXTRACTION_SCHEMA` estruturado (JSON Schema com OpenAPI 3.0) garantindo extração tipada de valores em centavos, retenções, datas e chave Pix.
+  5. Validação com 100% de aprovação na suíte de testes (`npm test` com 22 testes passando).
+
 ### [2026-09-15] — Tarefa 4 Concluída: Utilitários Centrais, Supabase SSR e Validador Matemático
 - **Commit**: `2b42b79`
 - **Contexto**: Implementação da biblioteca central de matemática fiscal, cálculo de hash SHA-256 universal, formatadores monetários brasileiros e clientes `@supabase/ssr` para Server Actions e middleware.
