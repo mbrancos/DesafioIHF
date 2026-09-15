@@ -46,6 +46,17 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Especificação da Arquitetura Técnica do iHubFiscal v2
+- **Contexto**: Definição da fundação técnica, stack 100% serverless e resolução de armadilhas técnicas da Vercel para a versão 2 do iHubFiscal.
+- **Arquivo**: [`docs/superpowers/specs/2026-09-15-ihubfiscal-v2-architecture-design.md`](superpowers/specs/2026-09-15-ihubfiscal-v2-architecture-design.md)
+- **Decisões Tomadas**:
+  1. **Stack Central**: Next.js 15 na raiz com TypeScript, Tailwind CSS e App Router em `src/app`, Supabase (PostgreSQL, Auth e Storage via `@supabase/ssr`), e Google Gemini 2.5 Flash via SDK oficial `@google/genai`.
+  2. **Preservação da Fase 1**: A Landing Page executiva do desafio técnico (`portal/index.html`) é movida para `public/portal/index.html`, permanecendo acessível estaticamente via rota `/portal`.
+  3. **Bypass da Armadilha de 4.5 MB da Vercel**: Remoção de qualquer rota de `.zip` no backend. A compilação do pacote contábil mensal com PDFs e manifesto CSV é executada 100% no cliente via `jszip` a partir de URLs assinadas, com custo zero de servidor e sem risco de erro `502 / FUNCTION_PAYLOAD_TOO_LARGE`.
+  4. **Kanban Otimista com Interceptação por Modal (`@dnd-kit`)**: No `onDragEnd`, movimentações regulares atualizam a UI de forma otimista; destinos que exigem dados obrigatórios (`RECUSADO` com justificativa e `PAGO` com comprovante) abrem seus respectivos modais antes de autorizar a transição.
+  5. **Ingestão e IA Segura**: Rota `/api/extract` com `export const maxDuration = 30;`, trava de arquivo de até 4 MB, cálculo SHA-256 e Structured Outputs com JSON Schema tipado.
+  6. **Design System & Tipografia**: Isolamento semântico estrito (Bordô `#812926` para marca, Verde `#16A34A` para sucesso/confiança) e importação otimizada de fontes via `next/font` (Poppins e GT Walsheim), eliminando CLS.
+
 ### [2026-09-15] — Integração e Ativação do MCP Server do Supabase na IDE
 - **Contexto**: Habilitação da integração nativa da IDE com o projeto Supabase (`DesafioIHF`) via protocolo MCP (Model Context Protocol) para gerenciamento de banco de dados, DDL, inspeção de tabelas e automações diretas.
 - **Decisões Tomadas**:
