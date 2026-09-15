@@ -49,3 +49,11 @@ As skills locais estão instaladas em `.agents/skills/` e foram adaptadas para o
 - `ui-ux-pro-max`: Inteligência de design e busca local via `python .agents/skills/ui-ux-pro-max/scripts/search.py`.
 - `web-design-guidelines`: Auditoria de regras web com `read_url_content`.
 - `finishing-a-development-branch`: Finalização e integração com `ask_question`.
+
+---
+
+## 5. Identidade Visual e Design System (Fonte de Verdade)
+- **Fonte da Verdade Absoluta**: O arquivo [`docs/designIHF.md`](docs/designIHF.md) é a **única fonte da verdade** para qualquer aspecto de identidade visual, tokens de design e componentes da interface do **iHubFiscal** e das verticais da holding.
+- **Tokens Obrigatórios**: Todas as cores (`--ihf-brand-*`, `--ihf-bg-*`, `--ihf-status-*`), tipografia (Poppins para títulos/UI e GT Walsheim para corpo/labels), escala de espaçamento em grade de 4px/rem, z-index, sombras, bordas e micro-interações de botões devem seguir rigorosamente o especificado no documento.
+- **Proibição de Desvios**: Nenhuma tela, componente ou estilo deve introduzir cores arbitrárias, estimativas visuais ou frameworks utilitários conflitantes sem referenciar e derivar diretamente dos tokens definidos em `docs/designIHF.md`.
+
