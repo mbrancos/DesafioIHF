@@ -51,15 +51,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between h-16">
           {/* Logo iHubFiscal */}
           <div className="flex items-center gap-6">
-            <Link href="/kanban" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#812926] flex items-center justify-center text-white font-bold font-['Poppins'] text-base shadow-sm">
-                iH
-              </div>
+            <Link href="/kanban" className="flex items-center gap-2.5 group">
+              <img
+                src="/img/logo-impact-hub.svg"
+                alt="Impact Hub"
+                className="w-8 h-8 rounded-lg shadow-sm shrink-0 group-hover:scale-105 transition-transform"
+              />
               <div className="flex flex-col">
                 <span className="text-sm font-extrabold text-[#212020] font-['Poppins'] tracking-tight leading-none">
                   iHubFiscal
                 </span>
-                <span className="text-[10px] font-semibold text-[#812926] tracking-wider uppercase leading-none mt-0.5">
+                <span className="text-[10px] font-semibold text-[#812926] tracking-wider uppercase leading-none mt-1">
                   Companhia de Impacto
                 </span>
               </div>

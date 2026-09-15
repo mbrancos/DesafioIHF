@@ -12,6 +12,14 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'iHubFiscal — Central de Contas a Pagar & Governança',
   description: 'Central inteligente de contas a pagar e governança fiscal da holding Companhia de Impacto',
+  icons: {
+    icon: [
+      { url: '/img/logo-impact-hub.svg', type: 'image/svg+xml' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/img/logo-impact-hub.svg',
+    apple: '/img/logo-impact-hub.svg',
+  },
 };
 
 export default function RootLayout({

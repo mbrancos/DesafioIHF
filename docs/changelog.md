@@ -46,6 +46,25 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Aplicação do Logotipo Oficial e Favicon do Impact Hub no Projeto
+- **Commit**: `feat(branding): aplica logotipo oficial do Impact Hub e configura favicon em todas as páginas`
+- **Contexto**: Inclusão do asset vetorial oficial da marca (`logo-impact-hub.svg`) extraído de `floripa.impacthub.net` para substituir todos os placeholders textuais ("iH", "H") por logotipo de alta definição, além de configurar suporte a favicon SVG nativo em todas as rotas do Next.js e da Landing Page executiva.
+- **Arquivos**: `public/img/logo-impact-hub.svg`, `public/favicon.svg`, `src/app/icon.svg`, `src/app/layout.tsx`, `src/components/common/Navbar.tsx`, `src/app/page.tsx`, `src/app/upload/page.tsx`, `public/portal/index.html`, `portal/index.html`, `docs/changelog.md`.
+- **Decisões e Resultados**:
+  1. **Decisão Arquitetural de Assets Estáticos**:
+     - **Pasta `public/` e `src/app/`**: Escolhidas como a melhor prática definitiva para logos, favicons e elementos de UI da marca, garantindo latência zero, cache CDN na borda e independência de serviços externos ou autenticação.
+     - **Supabase Storage**: Mantido estritamente para o seu propósito ideal: dados dinâmicos enviados por usuários e fornecedores (PDFs de NFS-e, comprovantes bancários e fechamentos mensais em `.zip`).
+  2. **Favicon Multiplataforma**:
+     - Configurado `src/app/icon.svg` (suporte automático do Next.js App Router para `<link rel="icon">`).
+     - Metadados explícitos em `src/app/layout.tsx` (`icons.icon`, `icons.shortcut`, `icons.apple`).
+     - Tags `<link rel="icon" type="image/svg+xml">` e `<link rel="apple-touch-icon">` adicionadas no `<head>` de `public/portal/index.html` e `portal/index.html`.
+  3. **Aplicação Visual em Todas as Telas**:
+     - **Navbar Unificado (`Navbar.tsx`)**: Atualizado com o logotipo oficial ao lado de `iHubFiscal | Companhia de Impacto`, impactando instantaneamente todas as 7 rotas operacionais do sistema (`/kanban`, `/aprovacoes`, `/revisao-ia`, `/conciliacao`, `/fechamento`, `/fornecedores`, `/configuracoes`).
+     - **Tela de Login (`page.tsx`)**: Header superior com o logo oficial da marca.
+     - **Portal do Fornecedor (`upload/page.tsx`)**: Header de autoatendimento com o logo oficial e microinteração no hover.
+     - **Portal Executivo (`/portal`)**: Header e Footer com o logo oficial em SVG nítido.
+  4. **Validação**: Testado e validado com sucesso via subagente de navegador com evidências visuais capturadas em todas as rotas.
+
 ### [2026-09-15] — Correção de Naming iHubFiscal e Otimização do Header no Portal (/portal)
 - **Commit**: `fix(portal): corrige naming iHubFiscal e elimina quebras de linha no header`
 - **Contexto**: Eliminação de referências residuais à nomenclatura preliminar ("ImpactPay") na Landing Page Executiva e expansão do container do header para o padrão `.container-1465px` de `docs/designIHF.md`, garantindo que links e botões não sofram quebras de linha em viewports comuns (ex.: 1366px e 1440px).

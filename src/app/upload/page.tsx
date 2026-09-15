@@ -28,10 +28,12 @@ export default function SupplierUploadPage() {
       {/* Header do Portal do Fornecedor */}
       <header className="w-full border-b border-[#e5e5e5] bg-[#ffffff] py-3.5 px-6 sm:px-12 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-[#812926] flex items-center justify-center text-white font-bold text-base font-['Poppins'] group-hover:bg-[#1c395c] transition-colors">
-              H
-            </div>
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <img
+              src="/img/logo-impact-hub.svg"
+              alt="Impact Hub"
+              className="w-8 h-8 rounded-lg shadow-sm shrink-0 group-hover:scale-105 transition-transform"
+            />
             <div>
               <span className="text-base font-bold text-[#812926] font-['Poppins'] tracking-tight">
                 iHubFiscal
