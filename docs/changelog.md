@@ -46,6 +46,17 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 1 Concluída: Scaffolding Next.js 15, TypeScript, Tailwind CSS e Vitest
+- **Commit**: `4412ba6`
+- **Contexto**: Inicialização da fundação da versão 2 do iHubFiscal na raiz do repositório, configuração do ecossistema moderno e preservação dos ativos da Fase 1.
+- **Arquivos**: `package.json`, `tsconfig.json`, `tailwind.config.ts`, `postcss.config.mjs`, `next.config.ts`, `vitest.config.ts`, `public/portal/index.html`, `tests/unit/setup.test.ts`.
+- **Decisões e Resultados**:
+  1. Criação da branch de desenvolvimento `feat/ihubfiscal-v2`.
+  2. Instalação bem-sucedida das dependências oficiais (`@supabase/ssr`, `@supabase/supabase-js`, `@google/genai@^2.22.0`, `@dnd-kit/core`, `@dnd-kit/sortable`, `jszip`, `lucide-react`, `vitest`, `happy-dom`).
+  3. Configuração do Tailwind CSS com todos os tokens semânticos extraídos de `docs/designIHF.md`.
+  4. Replicação da Landing Page e documentos da Fase 1 para `public/portal/`, garantindo disponibilidade em rota estática `/portal`.
+  5. Validação da suíte de testes com Vitest (`npm test` executado com 100% de sucesso).
+
 ### [2026-09-15] — Especificação da Arquitetura Técnica do iHubFiscal v2
 - **Contexto**: Definição da fundação técnica, stack 100% serverless e resolução de armadilhas técnicas da Vercel para a versão 2 do iHubFiscal.
 - **Arquivo**: [`docs/superpowers/specs/2026-09-15-ihubfiscal-v2-architecture-design.md`](superpowers/specs/2026-09-15-ihubfiscal-v2-architecture-design.md)
