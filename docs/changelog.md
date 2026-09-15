@@ -46,6 +46,17 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 2 Concluída: Migrações PostgreSQL, RLS, Storage com CORS e Seed Inicial
+- **Commit**: `aff611a`
+- **Contexto**: Modelagem das 7 tabelas relacionais do iHubFiscal v2, regras estritas de enums e alçadas, políticas de segurança RLS, buckets de storage e script de seed para a banca.
+- **Arquivos**: `supabase/migrations/20260915000000_initial_schema.sql`, `supabase/seed.sql`, `tests/unit/schema-validation.test.ts`.
+- **Decisões e Resultados**:
+  1. Criação das tabelas relacionais `companies`, `cost_centers`, `users`, `suppliers`, `approval_levels`, `invoices` e `invoice_events` com constraints de integridade e índices otimizados.
+  2. Implementação das 5 fases estritas (`TRIAGEM`, `AGUARDANDO_APROVACAO`, `RECUSADO`, `AGENDADO_PAGAMENTO`, `PAGO`) e taxonomia dos 6 centros de custo.
+  3. Configuração dos buckets `invoices` e `payment-proofs` no Supabase Storage com políticas de acesso e suporte a download direto (CORS liberado para `GET`/`HEAD`).
+  4. Criação do `supabase/seed.sql` com as 4 empresas da holding, os 6 centros de custo, os 4 usuários de teste com roles (`analista`, `gestor`, `cfo`, `admin`) e regras de alçada de até R$ 10.000,00 para gestores e ilimitado para CFO.
+  5. Validação com testes unitários via Vitest com 100% de cobertura das tabelas e seeds.
+
 ### [2026-09-15] — Tarefa 1 Concluída: Scaffolding Next.js 15, TypeScript, Tailwind CSS e Vitest
 - **Commit**: `4412ba6`
 - **Contexto**: Inicialização da fundação da versão 2 do iHubFiscal na raiz do repositório, configuração do ecossistema moderno e preservação dos ativos da Fase 1.
