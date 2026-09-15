@@ -56,6 +56,9 @@ timeline
   4. **Kanban Otimista com Interceptação por Modal (`@dnd-kit`)**: No `onDragEnd`, movimentações regulares atualizam a UI de forma otimista; destinos que exigem dados obrigatórios (`RECUSADO` com justificativa e `PAGO` com comprovante) abrem seus respectivos modais antes de autorizar a transição.
   5. **Ingestão e IA Segura**: Rota `/api/extract` com `export const maxDuration = 30;`, trava de arquivo de até 4 MB, cálculo SHA-256 e Structured Outputs com JSON Schema tipado.
   6. **Design System & Tipografia**: Isolamento semântico estrito (Bordô `#812926` para marca, Verde `#16A34A` para sucesso/confiança) e importação otimizada de fontes via `next/font` (Poppins e GT Walsheim), eliminando CLS.
+  7. **CORS Obrigatório no Supabase Storage**: Políticas de CORS aplicadas nos buckets `invoices` e `payment-proofs` para permitir métodos `GET` e `HEAD` no download paralelo do JSZip via navegador.
+  8. **Runtime Node.js Explícito**: Declaração obrigatória de `export const runtime = 'nodejs';` em `src/app/api/extract/route.ts` para garantir execução em Serverless Node.js com suporte pleno a crypto, buffers e `maxDuration = 30`.
+  9. **Migrações e Seed Mandatório**: Criação de `supabase/migrations/` e `supabase/seed.sql` contendo o pré-cadastro das 4 empresas da holding, os 6 centros de custo e os 4 usuários de teste vinculados ao Supabase Auth e à tabela `users` para alimentar os atalhos de persona do login.
 
 ### [2026-09-15] — Integração e Ativação do MCP Server do Supabase na IDE
 - **Contexto**: Habilitação da integração nativa da IDE com o projeto Supabase (`DesafioIHF`) via protocolo MCP (Model Context Protocol) para gerenciamento de banco de dados, DDL, inspeção de tabelas e automações diretas.

@@ -23,7 +23,7 @@ flowchart TD
     end
 
     subgraph Vercel [Vercel Serverless Platform]
-        IngestRoute["/api/extract (maxDuration = 30s, Trava 4MB)"]
+        IngestRoute["/api/extract (runtime = 'nodejs', maxDuration = 30s, Trava 4MB)"]
         ServerActions["Server Actions (src/actions/*) com Validação de Sessão e RBAC"]
         SSR["@supabase/ssr (Cookies HTTP-Only)"]
     end
@@ -35,7 +35,7 @@ flowchart TD
     subgraph Supabase [Supabase BaaS (sa-east-1)]
         Auth[Supabase Auth + Seletor de Personas]
         Postgres[PostgreSQL 15+ com RLS e Schema iHubFiscal]
-        Storage["Object Storage (Buckets: invoices e payment-proofs)"]
+        Storage["Object Storage (Buckets: invoices e payment-proofs com CORS liberado)"]
     end
 
     UI --> IngestRoute
@@ -46,7 +46,7 @@ flowchart TD
     SSR --> Auth
     ServerActions -->|Mutação & Auditoria| Postgres
     ServerActions -->|Upload Comprovante| Storage
-    ZipClient -->|Download Paralelo de Blobs| Storage
+    ZipClient -->|Download Paralelo via CORS GET/HEAD| Storage
 ```
 
 ---
@@ -58,8 +58,27 @@ flowchart TD
 * **Decisão:** Eliminar qualquer rota de compilação de `.zip` no backend. A tela `/fechamento` solicita ao Supabase as URLs assinadas dos documentos do mês. O navegador realiza o download paralelo dos *blobs* e o empacotamento do arquivo `.zip` é executado **100% em memória no cliente através da biblioteca `jszip`** (com disparo de download nativo via navegador).
 * **Impacto:** Custo de servidor zero, imunidade a timeouts serverless e suporte a lotes de qualquer volumetria.
 
-### 2.2 Drag-and-Drop no Kanban com Interceptação por Modal (`@dnd-kit`)
-* **Problema:** O Kanban prevê movimentação ágil e fluida entre fases operacionais, porém transitar para `RECUSADO` exige preenchimento obrigatório de justificativa formal, e transitar para `PAGO` exige anexar o comprovante de liquidação bancária. Mover o card diretamente de forma puramente otimista quebraria a integridade das regras de negócio.
+### 2.2 Configuração Obrigatória de CORS no Supabase Storage
+* **Problema:** Ao realizar a compilação do `.zip` no cliente via `jszip`, o navegador dispara requisições `fetch()` diretas para as URLs assinadas dos buckets do Supabase Storage. Caso os buckets não tenham regras de CORS expressamente configuradas, o navegador bloqueará o download de todos os PDFs com o erro fatal `Cross-Origin Request Blocked (CORS)`.
+* **Decisão:** A configuração inicial e migrações do Supabase devem aplicar regras de CORS nos buckets `invoices` e `payment-proofs`:
+  * **Allowed Origins**: `http://localhost:3000`, `http://127.0.0.1:3000` e domínios Vercel (`https://*.vercel.app` e domínio customizado de produção).
+  * **Allowed Methods**: `GET`, `HEAD`, `OPTIONS`.
+  * **Allowed Headers**: `*`.
+  * **Max Age**: 3600 segundos.
+* **Impacto:** Garante que o download paralelo dos binários para o JSZip funcione fluidamente no navegador sem bloqueios de segurança.
+
+### 2.3 Runtime Node.js Explícito em `/api/extract/route.ts`
+* **Problema:** No Next.js 15, rotas sem declaração explícita de runtime podem sofrer comportamentos inesperados caso o bundler as posicione no runtime Edge. No Edge Runtime, APIs de manipulação de buffers, hashing criptográfico nativo e a diretiva `maxDuration = 30` da Vercel não funcionam adequadamente.
+* **Decisão:** Declarar formalmente e obrigatoriamente no topo de `src/app/api/extract/route.ts`:
+  ```typescript
+  export const runtime = 'nodejs';
+  export const maxDuration = 30;
+  export const dynamic = 'force-dynamic';
+  ```
+* **Impacto:** Garante que a rota opere em ambiente Node.js serverless completo, com suporte a streams, buffers, SDK oficial `@google/genai` e tempo máximo de 30 segundos concedido pela Vercel.
+
+### 2.4 Drag-and-Drop no Kanban com Interceptação por Modal (`@dnd-kit`)
+* **Problema:** O Kanban prevê movimentação ágil entre fases operacionais, porém transitar para `RECUSADO` exige preenchimento obrigatório de justificativa formal, e transitar para `PAGO` exige anexar o comprovante de liquidação bancária. Mover o card diretamente de forma puramente otimista quebraria as regras de governança fiscal.
 * **Decisão:** No evento `onDragEnd` do `@dnd-kit`:
   * Para destinos regulares (`TRIAGEM` $\to$ `AGUARDANDO_APROVACAO` $\to$ `AGENDADO_PAGAMENTO`): o estado é atualizado otimisticamente na tela e a persistência é sincronizada via Server Action em segundo plano (com *rollback* automático caso o gestor não possua teto de alçada).
   * Para destinos restritos (`RECUSADO` e `PAGO`): a movimentação imediata é **interceptada e pausada**. O card permanece provisoriamente na coluna de origem enquanto abre-se o modal correspondente:
@@ -67,13 +86,22 @@ flowchart TD
     * Modal de Pagamento: exige o anexo do comprovante bancário (PDF/imagem).
   * A transição só é efetivada se o modal for submetido com sucesso. Em caso de cancelamento pelo usuário, o card é destravado em sua coluna original.
 
-### 2.3 Isolamento Semântico e Fidelidade Estrita ao Design System
+### 2.5 Arquivo de Migração e Seed Mandatório (`supabase/seed.sql`)
+* **Problema:** A tela de login (`/`) possui botões de atalho rápido de personas para facilitar a validação imediata da banca avaliadora sem necessidade de digitação de senhas ou cadastros prévios manuais. Sem dados pré-carregados no banco, o sistema falharia ao tentar logar ou validar alçadas.
+* **Decisão:** Criar script `supabase/seed.sql` contendo:
+  1. As **4 empresas da holding**: Impact Hub Floripa, Salto Aceleradora, Impacta Mais e Seu PêJota com seus CNPJs oficiais.
+  2. Os **6 centros de custo** da taxonomia (`tecnologia_inovacao`, `facilities_coworking`, `marketing_comunicacao`, `eventos_producao`, `projetos_aceleracao`, `administrativo_legal`).
+  3. Os **4 usuários de teste** vinculados ao Supabase Auth e à tabela `users` com seus respectivos papéis (`analista`, `gestor`, `cfo`, `admin`).
+  4. Os **níveis de alçada** (`approval_levels`) associando tetos financeiros aos gestores e alçada extraordinária ao CFO.
+  5. As políticas de **CORS** nos buckets de storage.
+
+### 2.6 Isolamento Semântico e Fidelidade Estrita ao Design System
 * **Bordô (`--ihf-brand-primary: #812926`)**: Reservado exclusivamente para a identidade corporativa da marca (logo, cabeçalhos, títulos principais e botões de ação primária).
 * **Verde de Confiança (`--ihf-status-success: #16A34A` / `--ihf-brand-forest: #063b27`)**: Papel estritamente semântico de sucesso e alta confiança de leitura de IA ($\ge 90\%$).
 * **Amarelo Pulsante (`--ihf-status-warning: #D97706`)**: Papel semântico para dados inconclusivos ou de baixa confiança ($< 90\%$) que demandam revisão humana.
 * **Proibição de Desvios**: Elimina-se qualquer termo ambíguo como "verde bordô", mantendo papéis cromáticos completamente isolados conforme `docs/designIHF.md`.
 
-### 2.4 Prevenção de CLS com `next/font`
+### 2.7 Prevenção de CLS com `next/font`
 * As fontes oficiais são importadas em `src/app/layout.tsx`:
   * **Poppins** via `next/font/google` (pesos 400, 500, 600, 700) com variável CSS `--poppins`.
   * **GT Walsheim** via `next/font/local` (pesos 400, 600, 700) com variável CSS `--GT-Walsheim`.
@@ -87,10 +115,14 @@ flowchart TD
 d:/Etna/Projetos/DesafioIHF/
 ├── .env.local                          # Segredos locais (Supabase URLs, Service Keys, GEMINI_API_KEY)
 ├── .env.example                        # Modelo público versionado
-├── package.json                        # Dependências oficiais (Next 15, React 19, @google/genai, etc.)
+├── package.json                        # Dependências oficiais (Next 15, React 19, @google/genai, jszip, etc.)
 ├── tsconfig.json                       # Configuração TypeScript estrita com alias @/*
 ├── tailwind.config.ts                  # Tokens exatos de docs/designIHF.md injetados
 ├── next.config.ts                      # Configurações do Next.js
+├── supabase/
+│   ├── migrations/
+│   │   └── 20260915000000_initial_schema.sql # DDL completo, RLS e políticas de Storage
+│   └── seed.sql                        # Carga inicial (empresas, centros de custo, usuários, alçadas e CORS)
 ├── public/
 │   ├── portal/                         # Landing Page executiva da Fase 1 (index.html + assets)
 │   └── fonts/                          # Arquivos locais .woff2 da GT Walsheim
@@ -108,7 +140,7 @@ d:/Etna/Projetos/DesafioIHF/
 │   │   ├── fechamento/page.tsx         # Rota /fechamento (Conciliação e gerador JSZip no cliente)
 │   │   ├── configuracoes/page.tsx      # Rota /configuracoes (Empresas, alçadas e taxonomia)
 │   │   └── api/
-│   │       └── extract/route.ts        # Ingestão de PDF, SHA-256 e Gemini 2.5 Flash (maxDuration = 30)
+│   │       └── extract/route.ts        # Ingestão de PDF, SHA-256 e Gemini 2.5 Flash (runtime: nodejs)
 │   ├── actions/                        # Server Actions autenticadas com @supabase/ssr
 │   │   ├── invoices.ts                 # createInvoice, updateInvoiceStatus, rejectWithJustification, payInvoice
 │   │   ├── approvals.ts                # checkApprovalLimit, approveInvoice
@@ -147,16 +179,17 @@ d:/Etna/Projetos/DesafioIHF/
 ## 4. Especificação dos Componentes e Fluxos
 
 ### 4.1 Pipeline de Ingestão e IA (`/api/extract/route.ts`)
-1. **Configuração Serverless**:
+1. **Configuração Serverless Node.js**:
    ```typescript
-   export const maxDuration = 30; // Segundos (máximo permitido no plano Hobby da Vercel)
+   export const runtime = 'nodejs';
+   export const maxDuration = 30; // Segundos (limite no plano Hobby da Vercel)
    export const dynamic = 'force-dynamic';
    ```
 2. **Validações Iniciais**:
    * Verifica se a requisição contém um arquivo com `Content-Type: application/pdf`.
    * Verifica se `file.size <= 4 * 1024 * 1024` (4 MB). Caso exceda, retorna erro HTTP `413 Payload Too Large` com mensagem orientando a compressão do arquivo.
 3. **Criptografia & Upload**:
-   * Calcula o hash SHA-256 do `ArrayBuffer`.
+   * Calcula o hash SHA-256 do `ArrayBuffer` via `crypto.createHash('sha256')`.
    * Verifica duplicidade na tabela `invoices` (`hash_sha256 = :hash`). Se já existir, rejeita com protocolo existente.
    * Faz upload no bucket Supabase Storage: `invoices/raw/${sha256}.pdf`.
 4. **Chamada ao Google Gemini 2.5 Flash**:
@@ -184,19 +217,19 @@ d:/Etna/Projetos/DesafioIHF/
 
 ### 4.5 Fechamento Contábil e Pacote `.zip` (`/fechamento`)
 * Tabela de auditoria do mês com indicador de pareamento (100% das notas devem ter comprovante).
-* Botão "Compilar Pacote Contábil (.ZIP)":
+* **Compilação no Cliente via `jszip`**:
   * Busca lista de faturas do mês via Supabase.
-  * Baixa em paralelo os PDFs das notas e comprovantes via `fetch` de URLs assinadas.
+  * Dispara downloads paralelos dos PDFs e comprovantes via `fetch` contra as URLs assinadas do Storage (viabilizados pelas regras de CORS aplicadas nos buckets).
   * Gera manifesto de conciliação em `.csv`.
   * Cria estrutura de pastas no `.zip`:
     * `/notas_fiscais/`
     * `/comprovantes/`
     * `manifesto_conciliacao_MM_AAAA.csv`
-  * Dispara download direto no navegador do usuário via Blob URL.
+  * Dispara download direto no navegador via `Blob` URL.
 
 ### 4.6 Login e Demonstração para a Banca (`/`)
 * Card de autenticação institucional com bordô primário (`#812926`) e logo iHubFiscal.
-* Painel de atalhos rápidos de demonstração:
+* Painel de atalhos rápidos de demonstração alimentados pelos dados do `seed.sql`:
   * *"Entrar como Analista Financeiro (Operação & Triagem)"*
   * *"Entrar como Gestor de Inovação (Alçada até R$ 10.000)"*
   * *"Entrar como CFO (Alçada Ilimitada & Fechamento)"*
@@ -207,12 +240,15 @@ d:/Etna/Projetos/DesafioIHF/
 
 ## 5. Estratégia de Verificação e Testes
 
-1. **Testes Unitários e de Integração (Vitest)**:
+1. **Testes de Banco e Migrações**:
+   * Execução do schema DDL e do `supabase/seed.sql`.
+   * Validação de RLS e regras de integridade referencial.
+2. **Testes Unitários e de Integração (Vitest)**:
    * Validador matemático de deduções e retenções tributárias.
    * Regras de alçada hierárquica e transição de estados de `invoices`.
    * Geração e formatação de manifesto CSV contábil.
-2. **Testes de API e Ingestão**:
+3. **Testes de API e Ingestão**:
    * Mock da resposta do Gemini para garantir validação de contratos de saída JSON.
    * Validação de rejeição de arquivos $> 4\text{ MB}$ e formatos não-PDF.
-3. **Verificação de Interface Ponta a Ponta**:
+4. **Verificação de Interface Ponta a Ponta**:
    * Subagente de navegador validando o fluxo de envio em `/upload`, conferência e transição no `/kanban`.
