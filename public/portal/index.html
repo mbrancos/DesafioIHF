@@ -4,205 +4,372 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ImpactPay AI — Central Executiva do Desafio Técnico | Companhia de Impacto</title>
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google Fonts: Inter -->
+  
+  <!-- Google Fonts: Poppins (Oficial do Tema Labbo para Headings/UI) e Inter (para corpo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Configuração Oficial do Tailwind baseada estritamente em docs/designIHF.md -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            heading: ['Poppins', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
           },
           colors: {
-            brand: {
-              50: '#f0fdfa',
-              100: '#ccfbf1',
-              500: '#14b8a6',
-              600: '#0d9488',
-              700: '#0f766e',
-              800: '#115e59',
-              900: '#134e4a',
+            ihf: {
+              // Vermelho/Bordô institucional Labbo (docs/designIHF.md)
+              primary: '#812926',
+              'primary-hover': '#6b211f',
+              'primary-dark': '#551917',
+              'primary-soft': '#f2eae9',
+              
+              // Azuis corporativos da marca
+              navy: '#1c395c',
+              'navy-dark': '#102235',
+              'navy-light': '#264973',
+              'navy-soft': '#e1e5ea',
+              
+              // Ciano / Destaque vibrante
+              cyan: '#41bed0',
+              'cyan-hover': '#35a6b6',
+              'cyan-soft': '#cfeff3',
+              'cyan-card': '#e2f5f8',
+              
+              // Tons quentes
+              peach: '#fde2ce',
+              salmon: '#b06f52',
+              sand: '#e5c39e',
+              
+              // Verdes (Governança & Sucesso fiscal)
+              forest: '#063b27',
+              lime: '#b9ee8d',
+              success: '#16A34A',
+              'success-soft': '#dcfce7',
+              
+              // Superfícies e fundos oficiais
+              bg: '#f7f6f2',        // Off-white quente oficial (--branco-2)
+              card: '#ffffff',
+              light: '#f3f4f5',     // Cinza claro (--cinza-claro)
+              dark: '#212020',      // Preto oficial do footer (--preto-3)
+              'dark-line': '#333333',
+              
+              // Divisores e bordas
+              border: '#e5e5e5',
+              'border-subtle': 'rgba(28, 57, 92, 0.08)',
             }
+          },
+          boxShadow: {
+            'ihf-card': '0 10px 30px rgba(28, 57, 92, 0.06)',
+            'ihf-hover': '0 20px 40px rgba(28, 57, 92, 0.12)',
+            'ihf-glow': '0 0 25px rgba(129, 41, 38, 0.25)',
           }
         }
       }
     }
   </script>
-</head>
-<body class="bg-slate-50 text-slate-800 antialiased font-sans">
 
-  <!-- ==================== HEADER EXECUTIVO ==================== -->
-  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+  <style>
+    /* Estilos e animações oficiais extraídos de docs/designIHF.md */
+    .btn-ihf-primary {
+      background-color: #812926;
+      color: #ffffff;
+      border: 2px solid #812926;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      transition: all 0.3s ease-in-out;
+    }
+    .btn-ihf-primary:hover {
+      background-color: #ffffff;
+      color: #1c395c;
+      border-color: #1c395c;
+    }
+
+    .btn-ihf-navy {
+      background-color: #1c395c;
+      color: #ffffff;
+      border: 2px solid #1c395c;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      transition: all 0.3s ease-in-out;
+    }
+    .btn-ihf-navy:hover {
+      background-color: #ffffff;
+      color: #1c395c;
+      border-color: #1c395c;
+    }
+
+    .btn-ihf-cyan {
+      background-color: #41bed0;
+      color: #ffffff;
+      border: 2px solid #41bed0;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      transition: all 0.3s ease-in-out;
+    }
+    .btn-ihf-cyan:hover {
+      background-color: #ffffff;
+      color: #1c395c;
+      border-color: #1c395c;
+    }
+
+    .btn-learn-more {
+      transition: all 0.2s ease-in-out;
+    }
+    .btn-learn-more:hover .arrow-icon {
+      transform: translateX(6px);
+    }
+
+    /* Keyframes oficiais */
+    @keyframes downloadAnimation {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-3px); }
+      100% { transform: translateY(0); }
+    }
+    .animate-download:hover i {
+      animation: downloadAnimation 0.8s infinite;
+    }
+  </style>
+</head>
+<body class="bg-ihf-bg text-slate-800 antialiased font-sans selection:bg-ihf-primary selection:text-white">
+
+  <!-- ==================== HEADER EXECUTIVO OFICIAL ==================== -->
+  <header class="bg-ihf-navy-dark text-white border-b border-ihf-navy/50 sticky top-0 z-50 backdrop-blur-md bg-opacity-95 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-inner">
-          ⚡
+      
+      <!-- Marca & Identidade -->
+      <div class="flex items-center space-x-3.5">
+        <div class="w-11 h-11 rounded-2xl bg-ihf-primary flex items-center justify-center text-white font-bold text-xl shadow-inner border border-white/10">
+          <span class="font-heading">iH</span>
         </div>
         <div>
           <div class="flex items-center space-x-2">
-            <span class="text-lg font-bold tracking-tight text-white">ImpactPay <span class="text-brand-500">AI</span></span>
-            <span class="bg-brand-500/20 text-brand-300 text-xs px-2 py-0.5 rounded-full border border-brand-500/30 font-medium">Link Único Oficial</span>
+            <span class="text-xl font-bold tracking-tight text-white font-heading">
+              iHub<span class="text-ihf-cyan">Fiscal</span>
+            </span>
+            <span class="bg-ihf-primary/20 text-ihf-peach text-[11px] px-2.5 py-0.5 rounded-full border border-ihf-primary/30 font-semibold uppercase tracking-wider">
+              Desafio Técnico
+            </span>
           </div>
-          <p class="text-xs text-slate-400">Holding Companhia de Impacto • Desafio Técnico</p>
+          <p class="text-xs text-slate-300 font-medium">Holding Companhia de Impacto • Entrega Oficial</p>
         </div>
       </div>
 
-      <div class="hidden md:flex items-center space-x-6 text-sm">
-        <a href="#entregaveis" class="text-slate-300 hover:text-brand-400 transition-colors">4 Entregáveis</a>
-        <a href="#video-demo" class="text-slate-300 hover:text-brand-400 transition-colors">Vídeo (3 min)</a>
-        <a href="#arquitetura" class="text-slate-300 hover:text-brand-400 transition-colors">Arquitetura</a>
-        <a href="#simulador" class="text-slate-300 hover:text-brand-400 transition-colors">Simulador n8n</a>
-        <a href="#contingencia" class="text-slate-300 hover:text-brand-400 transition-colors">Contingência</a>
+      <!-- Links da Navegação -->
+      <div class="hidden lg:flex items-center space-x-7 text-sm font-medium">
+        <a href="#entregaveis" class="text-slate-300 hover:text-white transition-colors">4 Entregáveis</a>
+        <a href="#video-demo" class="text-slate-300 hover:text-white transition-colors">Vídeo Demo (3 min)</a>
+        <a href="#arquitetura" class="text-slate-300 hover:text-white transition-colors">Arquitetura</a>
+        <a href="#simulador" class="text-slate-300 hover:text-white transition-colors">Simulador n8n</a>
+        <a href="#contingencia" class="text-slate-300 hover:text-white transition-colors">Contingência</a>
       </div>
 
-      <div class="text-right">
-        <span class="text-xs text-slate-400 block">Candidato</span>
-        <span class="text-sm font-semibold text-white">Moisés Branco dos Santos</span>
+      <!-- Atalho Direto para a Aplicação Completa v2 & Candidato -->
+      <div class="flex items-center space-x-4">
+        <a href="/" class="hidden sm:inline-flex items-center space-x-2 bg-ihf-cyan hover:bg-ihf-cyan-hover text-ihf-navy-dark text-xs font-bold py-2.5 px-4 rounded-full transition-all shadow-md active:scale-95 font-heading">
+          <span>Abrir Central iHubFiscal v2</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </a>
+        <div class="text-right border-l border-slate-700 pl-4">
+          <span class="text-[11px] text-slate-400 block uppercase tracking-wider">Candidato</span>
+          <span class="text-xs font-bold text-white font-heading">Moisés Branco</span>
+        </div>
       </div>
+
     </div>
   </header>
 
-  <!-- ==================== HERO SECTION ==================== -->
-  <section class="bg-gradient-to-b from-slate-900 via-slate-850 to-slate-900 text-white py-14 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- ==================== HERO SECTION EXECUTIVO ==================== -->
+  <section class="relative bg-gradient-to-b from-ihf-navy-dark via-[#142942] to-ihf-navy-dark text-white py-16 border-b border-ihf-navy/60 overflow-hidden">
+    <!-- Efeito de iluminação sutil bordô e ciano no background -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-ihf-primary/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-ihf-cyan/15 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="max-w-3xl">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-300 text-xs font-semibold mb-4">
-          <i data-lucide="shield-check" class="w-4 h-4"></i>
+        
+        <!-- Badge da Vaga com tokens oficiais -->
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-ihf-peach text-xs font-semibold mb-5">
+          <span class="w-2 h-2 rounded-full bg-ihf-cyan animate-pulse"></span>
           <span>Vaga: Pessoa Analista Pleno de Inteligência Artificial e Produtos Digitais</span>
         </div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
-          Central Integrada de Contas a Pagar & Governança com IA
+
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-5 font-heading leading-tight">
+          Central Integrada de Contas a Pagar &amp; Governança com IA
         </h1>
-        <p class="text-base text-slate-300 leading-relaxed mb-8">
-          Uma solução ponta a ponta projetada para a holding <strong>Companhia de Impacto</strong>, unificando a recepção de notas fiscais das 4 verticais (<em>Impact Hubs</em>, <em>Salto</em>, <em>Impacta Mais</em> e <em>Seu PêJota</em>), com extração multimodal no n8n, blindagem contra duplicidades e esteira de aprovação com governança.
+        
+        <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
+          Uma solução ponta a ponta projetada para a holding <strong class="text-white">Companhia de Impacto</strong>, unificando a recepção de notas fiscais das 4 verticais (<em class="text-ihf-peach">Impact Hub Floripa</em>, <em class="text-ihf-peach">Instituto Salto</em>, <em class="text-ihf-peach">Impacta Mais</em> e <em class="text-ihf-peach">Seu PêJota</em>), com extração multimodal com IA, blindagem contra duplicidades e esteira de aprovação com governança por alçadas.
         </p>
 
-        <!-- KPI Badges -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
-            <span class="block text-2xl font-bold text-brand-400">&lt; 4h</span>
-            <span class="text-xs text-slate-400 uppercase font-medium">Tempo de Ciclo (de 72h)</span>
+        <!-- Bento Grid de KPIs (docs/designIHF.md: Azul Marinho, Bordô com Laranja e Ciano) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+          
+          <!-- KPI 1: Azul Marinho Corporativo -->
+          <div class="bg-ihf-navy/80 border border-ihf-navy-light/60 rounded-2xl p-4 text-center backdrop-blur-sm shadow-sm hover:border-ihf-cyan/50 transition-colors">
+            <span class="block text-2xl sm:text-3xl font-bold text-ihf-cyan font-heading">&lt; 4h</span>
+            <span class="text-[11px] text-slate-300 uppercase tracking-wider font-semibold block mt-1">Tempo de Ciclo (de 72h)</span>
           </div>
-          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
-            <span class="block text-2xl font-bold text-emerald-400">0%</span>
-            <span class="text-xs text-slate-400 uppercase font-medium">Multas por Atraso</span>
+
+          <!-- KPI 2: Verde Floresta / Sucesso -->
+          <div class="bg-ihf-forest/80 border border-emerald-500/30 rounded-2xl p-4 text-center backdrop-blur-sm shadow-sm hover:border-emerald-400 transition-colors">
+            <span class="block text-2xl sm:text-3xl font-bold text-emerald-300 font-heading">0%</span>
+            <span class="text-[11px] text-emerald-100 uppercase tracking-wider font-semibold block mt-1">Multas por Atraso</span>
           </div>
-          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
-            <span class="block text-2xl font-bold text-cyan-400">&ge; 98%</span>
-            <span class="text-xs text-slate-400 uppercase font-medium">Acurácia Fiscal (IA)</span>
+
+          <!-- KPI 3: Bordô Oficial com Números em Pêssego -->
+          <div class="bg-ihf-primary/85 border border-ihf-primary/40 rounded-2xl p-4 text-center backdrop-blur-sm shadow-sm hover:border-ihf-peach/50 transition-colors">
+            <span class="block text-2xl sm:text-3xl font-bold text-ihf-peach font-heading">&ge; 98%</span>
+            <span class="text-[11px] text-ihf-peach/90 uppercase tracking-wider font-semibold block mt-1">Acurácia Fiscal (IA)</span>
           </div>
-          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-3 text-center">
-            <span class="block text-2xl font-bold text-amber-400">-90%</span>
-            <span class="text-xs text-slate-400 uppercase font-medium">Digitação Manual</span>
+
+          <!-- KPI 4: Ciano Corporativo com Contraste -->
+          <div class="bg-white/10 border border-white/20 rounded-2xl p-4 text-center backdrop-blur-sm shadow-sm hover:border-ihf-cyan transition-colors">
+            <span class="block text-2xl sm:text-3xl font-bold text-ihf-cyan font-heading">-90%</span>
+            <span class="text-[11px] text-slate-200 uppercase tracking-wider font-semibold block mt-1">Digitação Manual</span>
           </div>
+
         </div>
+
       </div>
     </div>
   </section>
 
   <!-- ==================== OS 4 ENTREGÁVEIS OFICIAIS ==================== -->
-  <section id="entregaveis" class="py-12 bg-white border-b border-slate-200">
+  <section id="entregaveis" class="py-16 bg-white border-b border-ihf-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Os 4 Entregáveis Oficiais Obrigatórios</h2>
-        <p class="text-sm text-slate-600 mt-1">Acesso direto a todos os artefatos exigidos pela banca avaliadora da vaga.</p>
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-ihf-primary bg-ihf-primary-soft px-3 py-1 rounded-full">
+          Requisitos Formais do Desafio
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-ihf-navy tracking-tight font-heading mt-2">
+          Os 4 Entregáveis Oficiais Obrigatórios
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">Acesso direto e download de todos os artefatos técnicos exigidos pela banca avaliadora.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <!-- Card 1 -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-brand-500 transition-all shadow-sm flex flex-col justify-between">
+        <!-- Card 1: Desenho da Solução -->
+        <div class="bg-ihf-bg border border-ihf-border rounded-2xl p-6 hover:shadow-ihf-card hover:border-ihf-primary/40 transition-all flex flex-col justify-between group">
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2 py-0.5 rounded">Entregável 1</span>
-              <i data-lucide="file-text" class="w-5 h-5 text-brand-600"></i>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-ihf-primary bg-ihf-primary-soft border border-ihf-primary/20 px-2.5 py-1 rounded-full font-heading uppercase">
+                Entregável 1
+              </span>
+              <div class="p-2 bg-white rounded-xl shadow-xs text-ihf-primary">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+              </div>
             </div>
-            <h3 class="text-base font-bold text-slate-900 mb-2">Desenho da Solução Completa</h3>
-            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
-              Documento de exatamente 2 páginas A4: visão sistêmica, justificativa da stack, matriz RACI, mapa de riscos e conformidade LGPD.
+            <h3 class="text-base font-bold text-ihf-navy mb-2 font-heading">Desenho da Solução Completa</h3>
+            <p class="text-xs text-slate-600 mb-5 leading-relaxed">
+              Documento executivo de exatamente 2 páginas A4: visão sistêmica, justificativa da stack, matriz RACI, mapa de riscos e conformidade LGPD.
             </p>
           </div>
-          <div class="space-y-2">
-            <a href="downloads/entregavel-1-desenho-da-solucao.pdf" target="_blank" download class="w-full inline-flex items-center justify-center space-x-2 bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold py-2 px-3 rounded-lg transition-colors">
+          <div class="space-y-2 pt-2 border-t border-slate-200/60">
+            <a href="downloads/entregavel-1-desenho-da-solucao.pdf" target="_blank" download class="btn-ihf-primary w-full inline-flex items-center justify-center space-x-2 text-xs py-2.5 px-4 shadow-sm animate-download">
               <i data-lucide="download" class="w-3.5 h-3.5"></i>
               <span>Baixar PDF (2 Págs)</span>
             </a>
-            <a href="downloads/entregavel-1-desenho-da-solucao.pdf" target="_blank" class="w-full inline-flex items-center justify-center text-xs font-medium text-slate-600 hover:text-slate-900 py-1">
-              Visualizar no navegador ↗
+            <a href="downloads/entregavel-1-desenho-da-solucao.pdf" target="_blank" class="btn-learn-more w-full inline-flex items-center justify-center text-xs font-semibold text-ihf-navy hover:text-ihf-primary py-1.5 transition-colors">
+              <span>Visualizar no navegador</span>
+              <span class="arrow-icon ml-1 transition-transform">→</span>
             </a>
           </div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-brand-500 transition-all shadow-sm flex flex-col justify-between">
+        <!-- Card 2: Implementação do Trecho 1 -->
+        <div class="bg-ihf-bg border border-ihf-border rounded-2xl p-6 hover:shadow-ihf-card hover:border-ihf-navy/40 transition-all flex flex-col justify-between group">
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2 py-0.5 rounded">Entregável 2</span>
-              <i data-lucide="git-merge" class="w-5 h-5 text-brand-600"></i>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-ihf-navy bg-ihf-navy-soft border border-ihf-navy/20 px-2.5 py-1 rounded-full font-heading uppercase">
+                Entregável 2
+              </span>
+              <div class="p-2 bg-white rounded-xl shadow-xs text-ihf-navy">
+                <i data-lucide="git-merge" class="w-5 h-5"></i>
+              </div>
             </div>
-            <h3 class="text-base font-bold text-slate-900 mb-2">Implementação do Trecho 1</h3>
-            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            <h3 class="text-base font-bold text-ihf-navy mb-2 font-heading">Implementação do Trecho 1</h3>
+            <p class="text-xs text-slate-600 mb-5 leading-relaxed">
               Workflow n8n 100% autocontido em JSON: Webhook, Hash SHA-256 nativo, IA Multimodal com Strict Null e validação matemática.
             </p>
           </div>
-          <div class="space-y-2">
-            <a href="downloads/fluxo-n8n-trecho1-extracao-nf.json" download class="w-full inline-flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2 px-3 rounded-lg transition-colors">
+          <div class="space-y-2 pt-2 border-t border-slate-200/60">
+            <a href="downloads/fluxo-n8n-trecho1-extracao-nf.json" download class="btn-ihf-navy w-full inline-flex items-center justify-center space-x-2 text-xs py-2.5 px-4 shadow-sm animate-download">
               <i data-lucide="code" class="w-3.5 h-3.5"></i>
               <span>Baixar JSON n8n</span>
             </a>
-            <a href="#simulador" class="w-full inline-flex items-center justify-center text-xs font-medium text-slate-600 hover:text-slate-900 py-1">
-              Ver teste ao vivo ↓
+            <a href="#simulador" class="btn-learn-more w-full inline-flex items-center justify-center text-xs font-semibold text-ihf-navy hover:text-ihf-primary py-1.5 transition-colors">
+              <span>Ver teste ao vivo</span>
+              <span class="arrow-icon ml-1 transition-transform">↓</span>
             </a>
           </div>
         </div>
 
-        <!-- Card 3 -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-brand-500 transition-all shadow-sm flex flex-col justify-between">
+        <!-- Card 3: Manual Operacional do Financeiro -->
+        <div class="bg-ihf-bg border border-ihf-border rounded-2xl p-6 hover:shadow-ihf-card hover:border-ihf-primary/40 transition-all flex flex-col justify-between group">
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2 py-0.5 rounded">Entregável 3</span>
-              <i data-lucide="book-open" class="w-5 h-5 text-brand-600"></i>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-ihf-primary bg-ihf-primary-soft border border-ihf-primary/20 px-2.5 py-1 rounded-full font-heading uppercase">
+                Entregável 3
+              </span>
+              <div class="p-2 bg-white rounded-xl shadow-xs text-ihf-primary">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+              </div>
             </div>
-            <h3 class="text-base font-bold text-slate-900 mb-2">Manual Operacional do Financeiro</h3>
-            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+            <h3 class="text-base font-bold text-ihf-navy mb-2 font-heading">Manual Operacional do Financeiro</h3>
+            <p class="text-xs text-slate-600 mb-5 leading-relaxed">
               Manual em linguagem humanizada e descomplicada para a equipe de contas a pagar, com a matriz prática <em>"O que fazer se quebrar"</em>.
             </p>
           </div>
-          <div class="space-y-2">
-            <a href="downloads/entregavel-3-manual-operacional-financeiro.pdf" target="_blank" download class="w-full inline-flex items-center justify-center space-x-2 bg-brand-700 hover:bg-brand-800 text-white text-xs font-semibold py-2 px-3 rounded-lg transition-colors">
+          <div class="space-y-2 pt-2 border-t border-slate-200/60">
+            <a href="downloads/entregavel-3-manual-operacional-financeiro.pdf" target="_blank" download class="btn-ihf-primary w-full inline-flex items-center justify-center space-x-2 text-xs py-2.5 px-4 shadow-sm animate-download">
               <i data-lucide="download" class="w-3.5 h-3.5"></i>
               <span>Baixar Manual (PDF)</span>
             </a>
-            <a href="#contingencia" class="w-full inline-flex items-center justify-center text-xs font-medium text-slate-600 hover:text-slate-900 py-1">
-              Ver matriz interativa ↓
+            <a href="#contingencia" class="btn-learn-more w-full inline-flex items-center justify-center text-xs font-semibold text-ihf-navy hover:text-ihf-primary py-1.5 transition-colors">
+              <span>Ver matriz interativa</span>
+              <span class="arrow-icon ml-1 transition-transform">↓</span>
             </a>
           </div>
         </div>
 
-        <!-- Card 4 -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-brand-500 transition-all shadow-sm flex flex-col justify-between">
+        <!-- Card 4: Vídeo Demonstrativo (docs/designIHF.md: Ciano Vibrante .btn-download) -->
+        <div class="bg-ihf-bg border border-ihf-border rounded-2xl p-6 hover:shadow-ihf-card hover:border-ihf-cyan/50 transition-all flex flex-col justify-between group">
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2 py-0.5 rounded">Entregável 4</span>
-              <i data-lucide="video" class="w-5 h-5 text-brand-600"></i>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-ihf-cyan bg-ihf-cyan-soft border border-ihf-cyan/30 px-2.5 py-1 rounded-full font-heading uppercase">
+                Entregável 4
+              </span>
+              <div class="p-2 bg-white rounded-xl shadow-xs text-ihf-cyan">
+                <i data-lucide="video" class="w-5 h-5"></i>
+              </div>
             </div>
-            <h3 class="text-base font-bold text-slate-900 mb-2">Vídeo Demonstrativo</h3>
-            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
-              Demonstração executiva fluida de até 3 minutos: fluxo rodando na prática, extração em tempo real e tratamento de erros.
+            <h3 class="text-base font-bold text-ihf-navy mb-2 font-heading">Vídeo Demonstrativo</h3>
+            <p class="text-xs text-slate-600 mb-5 leading-relaxed">
+              Demonstração executiva de até 3 minutos: fluxo rodando na prática, extração em tempo real e tratamento de erros.
             </p>
           </div>
-          <div class="space-y-2">
-            <a href="#video-demo" class="w-full inline-flex items-center justify-center space-x-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold py-2 px-3 rounded-lg transition-colors">
+          <div class="space-y-2 pt-2 border-t border-slate-200/60">
+            <a href="#video-demo" class="btn-ihf-cyan w-full inline-flex items-center justify-center space-x-2 text-xs py-2.5 px-4 shadow-sm">
               <i data-lucide="play-circle" class="w-3.5 h-3.5"></i>
               <span>Assistir Demonstração</span>
             </a>
-            <span class="block text-center text-xs text-slate-400 py-1">Duração: &lt; 3 minutos</span>
+            <span class="block text-center text-xs text-slate-500 py-1 font-medium">Duração: &lt; 3 minutos</span>
           </div>
         </div>
 
@@ -211,85 +378,105 @@
   </section>
 
   <!-- ==================== PLAYER DO VÍDEO (3 MIN) ==================== -->
-  <section id="video-demo" class="py-14 bg-slate-900 text-white">
+  <section id="video-demo" class="py-16 bg-ihf-navy-dark text-white border-b border-ihf-navy/60">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-8">
-        <span class="text-xs font-bold text-brand-400 uppercase tracking-widest">Entregável 4</span>
-        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mt-1 text-white">Vídeo Demonstrativo de até 3 Minutos</h2>
-        <p class="text-sm text-slate-400 mt-2 max-w-2xl mx-auto">
+      
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold text-ihf-cyan uppercase tracking-widest font-heading bg-ihf-navy px-3 py-1 rounded-full border border-ihf-cyan/30">
+          Entregável 4
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mt-3 text-white font-heading">
+          Vídeo Demonstrativo de até 3 Minutos
+        </h2>
+        <p class="text-sm text-slate-300 mt-2 max-w-2xl mx-auto">
           Demonstração do Trecho 1 no n8n rodando ao vivo: upload de NFS-e, geração de Hash SHA-256 nativo, leitura multimodal e bloqueio de falhas.
         </p>
       </div>
 
-      <!-- Video Container -->
-      <div class="relative bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700 aspect-video flex items-center justify-center group">
-        <!-- Placeholder ou Player incorporado -->
+      <!-- Video Container com design escuro e acentos oficiais -->
+      <div class="relative bg-ihf-navy rounded-3xl overflow-hidden shadow-2xl border border-ihf-navy-light/60 aspect-video flex items-center justify-center group">
         <div class="text-center p-8">
-          <div class="w-16 h-16 rounded-full bg-brand-600/90 text-white flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg cursor-pointer">
-            <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
+          <div class="w-20 h-20 rounded-full bg-ihf-primary text-white flex items-center justify-center mx-auto mb-5 group-hover:scale-110 group-hover:bg-ihf-primary-hover transition-all shadow-ihf-glow cursor-pointer border-2 border-white/20">
+            <i data-lucide="play" class="w-9 h-9 fill-current ml-1 text-white"></i>
           </div>
-          <h3 class="text-lg font-bold text-white mb-2">Demonstração Prática do ImpactPay AI</h3>
-          <p class="text-xs text-slate-400 max-w-md mx-auto mb-4">
+          <h3 class="text-xl font-bold text-white mb-2 font-heading">Demonstração Prática do ImpactPay AI</h3>
+          <p class="text-xs text-slate-300 max-w-md mx-auto mb-5 leading-relaxed">
             Roteiro de 2m45s cronometrado cobrindo: Apresentação, Execução no n8n com NF da holding, Teste de Duplicidade barrada e Governança LGPD.
           </p>
-          <div class="inline-flex items-center space-x-2 text-xs text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-full border border-slate-700">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Roteiro Homologado em: docs/entregavel-4-roteiro-video-demo.md</span>
+          <div class="inline-flex items-center space-x-2 text-xs text-slate-200 bg-ihf-navy-dark/90 px-4 py-2 rounded-full border border-ihf-cyan/30">
+            <span class="w-2 h-2 rounded-full bg-ihf-cyan animate-pulse"></span>
+            <span class="font-mono">Roteiro Homologado: docs/entregavel-4-roteiro-video-demo.md</span>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
   <!-- ==================== ARQUITETURA SISTÊMICA ==================== -->
-  <section id="arquitetura" class="py-14 bg-slate-50 border-b border-slate-200">
+  <section id="arquitetura" class="py-16 bg-ihf-bg border-b border-ihf-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-bold text-brand-700 uppercase tracking-widest">Visão Arquitetural</span>
-        <h2 class="text-2xl font-bold text-slate-900 tracking-tight mt-1">Como o ImpactPay AI Protege a Holding</h2>
-        <p class="text-sm text-slate-600 mt-2">Fluxo de ponta a ponta: da recepção à conciliação e repasse contábil.</p>
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold text-ihf-navy uppercase tracking-widest bg-ihf-navy-soft px-3 py-1 rounded-full font-heading">
+          Visão Arquitetural
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-ihf-navy tracking-tight mt-2 font-heading">
+          Como o ImpactPay AI Protege a Holding
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">Fluxo de ponta a ponta: da recepção à conciliação e fechamento contábil.</p>
       </div>
 
-      <!-- Pipeline Steps -->
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <!-- Pipeline Steps (5 Fases Oficiais do iHubFiscal) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-          <div class="w-8 h-8 rounded-lg bg-teal-50 text-brand-700 flex items-center justify-center font-bold text-sm mb-3">1</div>
-          <h4 class="font-bold text-slate-900 text-sm mb-1">Ingestão Central</h4>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:-translate-y-1 transition-transform">
+          <div class="w-9 h-9 rounded-xl bg-ihf-cyan-soft text-ihf-navy flex items-center justify-center font-bold text-sm mb-3 font-heading">
+            1
+          </div>
+          <h4 class="font-bold text-ihf-navy text-sm mb-1.5 font-heading">Ingestão Central</h4>
           <p class="text-xs text-slate-600 leading-relaxed">
-            E-mail monitorado ou formulário web de contingência recebendo PDFs e imagens de notas fiscais.
+            E-mail monitorado ou formulário web de contingência recebendo PDFs de notas fiscais das verticais.
           </p>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-          <div class="w-8 h-8 rounded-lg bg-teal-50 text-brand-700 flex items-center justify-center font-bold text-sm mb-3">2</div>
-          <h4 class="font-bold text-slate-900 text-sm mb-1">Hash SHA-256</h4>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:-translate-y-1 transition-transform">
+          <div class="w-9 h-9 rounded-xl bg-ihf-cyan-soft text-ihf-navy flex items-center justify-center font-bold text-sm mb-3 font-heading">
+            2
+          </div>
+          <h4 class="font-bold text-ihf-navy text-sm mb-1.5 font-heading">Hash SHA-256</h4>
           <p class="text-xs text-slate-600 leading-relaxed">
-            Cálculo criptográfico nativo no n8n. Bloqueia instantaneamente duplicidades sem depender de banco externo.
+            Cálculo criptográfico nativo. Bloqueia instantaneamente duplicidades sem depender de banco externo.
           </p>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-          <div class="w-8 h-8 rounded-lg bg-teal-50 text-brand-700 flex items-center justify-center font-bold text-sm mb-3">3</div>
-          <h4 class="font-bold text-slate-900 text-sm mb-1">IA Multimodal</h4>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:-translate-y-1 transition-transform">
+          <div class="w-9 h-9 rounded-xl bg-ihf-cyan-soft text-ihf-navy flex items-center justify-center font-bold text-sm mb-3 font-heading">
+            3
+          </div>
+          <h4 class="font-bold text-ihf-navy text-sm mb-1.5 font-heading">IA Multimodal</h4>
           <p class="text-xs text-slate-600 leading-relaxed">
-            GPT-4o-mini com prompt <em>Strict Null</em>. Extrai tomador, prestador, vencimento e retenções tributárias.
+            Extração tipada via Structured Outputs. Extrai tomador, prestador, vencimento e retenções tributárias.
           </p>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-          <div class="w-8 h-8 rounded-lg bg-teal-50 text-brand-700 flex items-center justify-center font-bold text-sm mb-3">4</div>
-          <h4 class="font-bold text-slate-900 text-sm mb-1">Alçada no Chat</h4>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:-translate-y-1 transition-transform">
+          <div class="w-9 h-9 rounded-xl bg-ihf-cyan-soft text-ihf-navy flex items-center justify-center font-bold text-sm mb-3 font-heading">
+            4
+          </div>
+          <h4 class="font-bold text-ihf-navy text-sm mb-1.5 font-heading">Alçada de Governança</h4>
           <p class="text-xs text-slate-600 leading-relaxed">
-            Card no Slack/Teams com botões. Gestor aprova em 1 clique com trava de auto-auditoria obrigatória.
+            Alçadas orçamentárias (Gestor até R$ 10k e CFO extraordinário) com trava formal de autorização.
           </p>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-          <div class="w-8 h-8 rounded-lg bg-teal-50 text-brand-700 flex items-center justify-center font-bold text-sm mb-3">5</div>
-          <h4 class="font-bold text-slate-900 text-sm mb-1">Repasse Contábil</h4>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:-translate-y-1 transition-transform">
+          <div class="w-9 h-9 rounded-xl bg-ihf-cyan-soft text-ihf-navy flex items-center justify-center font-bold text-sm mb-3 font-heading">
+            5
+          </div>
+          <h4 class="font-bold text-ihf-navy text-sm mb-1.5 font-heading">Fechamento Contábil</h4>
           <p class="text-xs text-slate-600 leading-relaxed">
-            Baixa via Pix e geração de lote compactado em .ZIP com link de expiração temporária (máx 15 dias).
+            Quitação com Pix em 1 clique e compilação do pacote contábil mensal (.ZIP) com manifesto CSV.
           </p>
         </div>
 
@@ -298,23 +485,28 @@
   </section>
 
   <!-- ==================== SIMULADOR DE EXTRAÇÃO (TESTE AO VIVO) ==================== -->
-  <section id="simulador" class="py-14 bg-white border-b border-slate-200">
+  <section id="simulador" class="py-16 bg-white border-b border-ihf-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-bold text-brand-700 uppercase tracking-widest">Simulador Interativo do Trecho 1</span>
-        <h2 class="text-2xl font-bold text-slate-900 tracking-tight mt-1">Valide a Extração Fiscal em Tempo Real</h2>
-        <p class="text-sm text-slate-600 mt-2">Clique nas notas simuladas das verticais da holding e veja os dados processados pelo pipeline do n8n.</p>
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold text-ihf-primary uppercase tracking-widest bg-ihf-primary-soft px-3 py-1 rounded-full font-heading">
+          Simulador Interativo do Trecho 1
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-ihf-navy tracking-tight mt-2 font-heading">
+          Valide a Extração Fiscal em Tempo Real
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">Clique nas notas simuladas das verticais da holding e veja os dados processados pelo pipeline fiscal.</p>
       </div>
 
-      <!-- Tabs de seleção -->
-      <div class="flex justify-center space-x-2 sm:space-x-4 mb-8">
-        <button onclick="selecionarNota(0)" id="btn-nota-0" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-700 text-white shadow-sm">
+      <!-- Tabs de seleção com design pill oficial do tema Labbo -->
+      <div class="flex flex-wrap justify-center gap-3 mb-8">
+        <button onclick="selecionarNota(0)" id="btn-nota-0" class="tab-btn px-5 py-2.5 rounded-full text-xs font-bold transition-all bg-ihf-primary text-white shadow-md font-heading">
           NF 01: Impact Hub Floripa
         </button>
-        <button onclick="selecionarNota(1)" id="btn-nota-1" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+        <button onclick="selecionarNota(1)" id="btn-nota-1" class="tab-btn px-5 py-2.5 rounded-full text-xs font-bold transition-all bg-ihf-light text-slate-700 hover:bg-ihf-navy-soft font-heading">
           NF 02: Salto Inclusão (MEI)
         </button>
-        <button onclick="selecionarNota(2)" id="btn-nota-2" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+        <button onclick="selecionarNota(2)" id="btn-nota-2" class="tab-btn px-5 py-2.5 rounded-full text-xs font-bold transition-all bg-ihf-light text-slate-700 hover:bg-ihf-navy-soft font-heading">
           NF 03: Impacta Mais Eventos
         </button>
       </div>
@@ -322,73 +514,82 @@
       <!-- Grid Visualizador + JSON -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         
-        <!-- Painel Esquerdo: Card da Nota -->
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <!-- Painel Esquerdo: Card da Nota (Inspirado no tema do iHubFiscal) -->
+        <div class="bg-ihf-bg border border-ihf-border rounded-3xl p-6 shadow-ihf-card">
           <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-4">
             <div>
-              <span id="card-tag" class="text-xs font-bold text-brand-700 bg-brand-100/60 border border-brand-300 px-2 py-0.5 rounded">Impact Hub Florianópolis</span>
-              <h3 id="card-titulo" class="text-lg font-bold text-slate-900 mt-1">NFS-e Nº 2026001</h3>
+              <span id="card-tag" class="text-xs font-bold text-ihf-primary bg-ihf-primary-soft border border-ihf-primary/30 px-3 py-0.5 rounded-full font-heading uppercase">
+                Impact Hub Florianópolis
+              </span>
+              <h3 id="card-titulo" class="text-xl font-bold text-ihf-navy mt-1.5 font-heading">NFS-e Nº 2026001</h3>
             </div>
-            <a id="card-link-pdf" href="downloads/NF-2026001-ImpactHub-Floripa.pdf" target="_blank" class="text-xs text-brand-700 font-semibold hover:underline flex items-center space-x-1">
+            <a id="card-link-pdf" href="downloads/NF-2026001-ImpactHub-Floripa.pdf" target="_blank" class="text-xs text-ihf-primary hover:text-ihf-primary-hover font-bold flex items-center space-x-1.5 font-heading transition-colors">
               <span>Abrir PDF Original</span>
               <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
             </a>
           </div>
 
-          <div class="space-y-3 text-xs">
-            <div class="grid grid-cols-2 gap-3">
-              <div class="bg-white p-3 rounded-lg border border-slate-200">
-                <span class="text-slate-500 block">Prestador (Emissor)</span>
-                <strong id="card-prestador" class="text-slate-800 block text-xs mt-0.5">TechSolutions IA Ltda</strong>
-                <span id="card-prestador-cnpj" class="text-slate-500">12.345.678/0001-90</span>
+          <div class="space-y-3.5 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="bg-white p-3.5 rounded-xl border border-ihf-border">
+                <span class="text-slate-500 block uppercase tracking-wider text-[10px] font-bold">Prestador (Emissor)</span>
+                <strong id="card-prestador" class="text-ihf-navy block text-xs mt-1 font-semibold">TechSolutions IA Ltda</strong>
+                <span id="card-prestador-cnpj" class="text-slate-500 font-mono text-[11px]">12.345.678/0001-90</span>
               </div>
-              <div class="bg-white p-3 rounded-lg border border-slate-200">
-                <span class="text-slate-500 block">Tomador (Holding)</span>
-                <strong id="card-tomador" class="text-slate-800 block text-xs mt-0.5">Assoc. Impact Hub Floripa</strong>
-                <span id="card-tomador-cnpj" class="text-slate-500">19.456.789/0001-12</span>
+              <div class="bg-white p-3.5 rounded-xl border border-ihf-border">
+                <span class="text-slate-500 block uppercase tracking-wider text-[10px] font-bold">Tomador (Holding)</span>
+                <strong id="card-tomador" class="text-ihf-navy block text-xs mt-1 font-semibold">Assoc. Impact Hub Floripa</strong>
+                <span id="card-tomador-cnpj" class="text-slate-500 font-mono text-[11px]">19.456.789/0001-12</span>
               </div>
             </div>
 
-            <div class="bg-white p-3 rounded-lg border border-slate-200">
-              <span class="text-slate-500 block mb-1">Discriminação Resumida dos Serviços</span>
-              <p id="card-servico" class="text-slate-700">Consultoria técnica em inteligência artificial e automação n8n de contas a pagar.</p>
-              <span class="inline-block mt-2 font-semibold text-brand-700 bg-brand-50 px-2 py-0.5 rounded border border-brand-200" id="card-centro-custo">
-                Centro de Custo: Tecnologia & Inovação
+            <div class="bg-white p-3.5 rounded-xl border border-ihf-border">
+              <span class="text-slate-500 block uppercase tracking-wider text-[10px] font-bold mb-1">Discriminação dos Serviços</span>
+              <p id="card-servico" class="text-slate-700 leading-relaxed">Consultoria técnica em inteligência artificial e automação de contas a pagar.</p>
+              <span class="inline-block mt-2 font-bold text-ihf-navy bg-ihf-navy-soft px-2.5 py-0.5 rounded-md text-[11px]" id="card-centro-custo">
+                Centro de Custo: Tecnologia &amp; Inovação
               </span>
             </div>
 
-            <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4">
+            <!-- Quadro de Valores Financeiros -->
+            <div class="bg-ihf-cyan-card border border-ihf-cyan/30 rounded-2xl p-4">
               <div class="flex justify-between items-center mb-2">
-                <span class="text-emerald-800 font-medium">Valor Bruto dos Serviços:</span>
-                <span class="font-bold text-slate-800" id="card-bruto">R$ 5.000,00</span>
+                <span class="text-ihf-navy font-medium">Valor Bruto dos Serviços:</span>
+                <span class="font-bold text-ihf-navy font-mono" id="card-bruto">R$ 5.000,00</span>
               </div>
               <div class="flex justify-between items-center mb-2 text-rose-700">
                 <span>(-) Total de Retenções Fiscais:</span>
-                <span class="font-semibold" id="card-retencoes">- R$ 175,00</span>
+                <span class="font-semibold font-mono" id="card-retencoes">- R$ 175,00</span>
               </div>
-              <div class="border-t border-emerald-200 pt-2 flex justify-between items-center text-sm font-bold text-emerald-900">
-                <span>(=) VALOR LÍQUIDO A PAGAR:</span>
-                <span class="text-base" id="card-liquido">R$ 4.825,00</span>
+              <div class="border-t border-ihf-cyan/30 pt-2.5 flex justify-between items-center text-sm font-bold text-ihf-navy">
+                <span class="font-heading">(=) VALOR LÍQUIDO A PAGAR:</span>
+                <span class="text-lg font-heading text-ihf-primary font-mono" id="card-liquido">R$ 4.825,00</span>
               </div>
             </div>
 
-            <div class="flex items-center justify-between text-slate-500 pt-1">
-              <span>Vencimento: <strong id="card-vencimento" class="text-slate-800">25/09/2026</strong></span>
-              <span>Status: <strong class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">AGUARDANDO_APROVAÇÃO</strong></span>
+            <div class="flex items-center justify-between text-slate-600 pt-1">
+              <span>Vencimento: <strong id="card-vencimento" class="text-ihf-navy font-mono">25/09/2026</strong></span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                AGUARDANDO_APROVAÇÃO
+              </span>
             </div>
           </div>
         </div>
 
         <!-- Painel Direito: Saída JSON Estruturada -->
-        <div class="bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-800 text-slate-200 font-mono text-xs">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
-            <span class="text-brand-400 font-semibold">Saída Sanitizada n8n (Payload JSON)</span>
-            <button onclick="copiarJson()" class="text-slate-400 hover:text-white flex items-center space-x-1 text-xs bg-slate-800 px-2.5 py-1 rounded transition-colors">
+        <div class="bg-ihf-navy-dark rounded-3xl p-6 shadow-xl border border-ihf-navy/60 text-slate-200 font-mono text-xs">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-700/60 mb-3">
+            <div class="flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-ihf-cyan"></span>
+              <span class="text-ihf-cyan font-bold font-sans text-xs">Payload Estruturado (JSON Output)</span>
+            </div>
+            <button onclick="copiarJson()" class="text-slate-300 hover:text-white flex items-center space-x-1.5 text-xs bg-ihf-navy hover:bg-ihf-navy-light px-3 py-1.5 rounded-full transition-colors border border-slate-700">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i>
               <span id="btn-copiar-text">Copiar JSON</span>
             </button>
           </div>
-          <pre class="overflow-x-auto max-h-[380px] text-[11px] leading-relaxed text-slate-300" id="json-display"></pre>
+          <pre class="overflow-x-auto max-h-[400px] text-[11px] leading-relaxed text-slate-300 font-mono scrollbar-thin" id="json-display"></pre>
         </div>
 
       </div>
@@ -396,24 +597,29 @@
   </section>
 
   <!-- ==================== MATRIZ DE CONTINGÊNCIA INTERATIVA ==================== -->
-  <section id="contingencia" class="py-14 bg-slate-50 border-b border-slate-200">
+  <section id="contingencia" class="py-16 bg-ihf-bg border-b border-ihf-border">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-10">
-        <span class="text-xs font-bold text-brand-700 uppercase tracking-widest">Entregável 3 em Ação</span>
-        <h2 class="text-2xl font-bold text-slate-900 tracking-tight mt-1">Guia Rápido: "O Que Fazer Se Quebrar?"</h2>
-        <p class="text-sm text-slate-600 mt-1">Resolução prática de incidentes para manter a operação financeira ininterrupta.</p>
+      
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold text-ihf-primary uppercase tracking-widest bg-ihf-primary-soft px-3 py-1 rounded-full font-heading">
+          Entregável 3 em Ação
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-ihf-navy tracking-tight mt-2 font-heading">
+          Guia Rápido: "O Que Fazer Se Quebrar?"
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">Resolução prática de incidentes para manter a operação financeira ininterrupta.</p>
       </div>
 
       <div class="space-y-4">
         
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div class="flex items-start space-x-3">
-            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
-              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:border-amber-400 transition-colors">
+          <div class="flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 mt-0.5 border border-amber-200">
+              <i data-lucide="alert-triangle" class="w-5 h-5"></i>
             </div>
             <div>
-              <h4 class="font-bold text-slate-900 text-sm">Nota fiscal borrada, ilegível ou foto escura</h4>
-              <p class="text-xs text-slate-600 mt-1">
+              <h4 class="font-bold text-ihf-navy text-sm font-heading">Nota fiscal borrada, ilegível ou foto escura</h4>
+              <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                 <strong>Comportamento:</strong> A IA aciona o <em>Strict Null</em> e direciona a nota para <code>REVISÃO_MANUAL</code>.<br>
                 <strong>Procedimento:</strong> O analista abre a tela em split-view, confere o PDF e, se não for possível ler, clica em <em>"Solicitar Reenvio ao Prestador"</em> para disparo de e-mail automático.
               </p>
@@ -421,14 +627,14 @@
           </div>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div class="flex items-start space-x-3">
-            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center shrink-0 mt-0.5">
-              <i data-lucide="copy-x" class="w-4 h-4"></i>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:border-rose-400 transition-colors">
+          <div class="flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center shrink-0 mt-0.5 border border-rose-200">
+              <i data-lucide="copy-x" class="w-5 h-5"></i>
             </div>
             <div>
-              <h4 class="font-bold text-slate-900 text-sm">Fornecedor reenvia a mesma nota fiscal (Tentativa de Duplicata)</h4>
-              <p class="text-xs text-slate-600 mt-1">
+              <h4 class="font-bold text-ihf-navy text-sm font-heading">Fornecedor reenvia a mesma nota fiscal (Tentativa de Duplicata)</h4>
+              <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
                 <strong>Comportamento:</strong> O hash SHA-256 e a chave <code>[CNPJ + Número]</code> barram a inserção na hora.<br>
                 <strong>Procedimento:</strong> O sistema emite alerta visual com o ID da nota já cadastrada, garantindo zero risco de duplicidade de pagamento.
               </p>
@@ -436,30 +642,30 @@
           </div>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div class="flex items-start space-x-3">
-            <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-800 flex items-center justify-center shrink-0 mt-0.5">
-              <i data-lucide="calculator" class="w-4 h-4"></i>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:border-ihf-primary transition-colors">
+          <div class="flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-ihf-primary-soft text-ihf-primary flex items-center justify-center shrink-0 mt-0.5 border border-ihf-primary/30">
+              <i data-lucide="calculator" class="w-5 h-5"></i>
             </div>
             <div>
-              <h4 class="font-bold text-slate-900 text-sm">A soma das retenções de impostos não bate com o valor líquido</h4>
-              <p class="text-xs text-slate-600 mt-1">
-                <strong>Comportamento:</strong> O nó validador detecta <code>|Bruto - Retenções - Líquido| &gt; R$ 0,05</code> e marca alerta tributário.<br>
+              <h4 class="font-bold text-ihf-navy text-sm font-heading">A soma das retenções de impostos não bate com o valor líquido</h4>
+              <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                <strong>Comportamento:</strong> O nó validador detecta <code>|Bruto - Retenções - Líquido| &gt; R$ 0,02</code> e marca alerta tributário.<br>
                 <strong>Procedimento:</strong> A analista confere as alíquotas (ISS, IRRF, PIS/COFINS/CSLL). Se for arredondamento, corrige em 1 clique; se for erro do prestador, rejeita com motivo formal.
               </p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-          <div class="flex items-start space-x-3">
-            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0 mt-0.5">
-              <i data-lucide="clock" class="w-4 h-4"></i>
+        <div class="bg-white border border-ihf-border rounded-2xl p-5 shadow-ihf-card hover:border-ihf-cyan transition-colors">
+          <div class="flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-ihf-cyan-soft text-ihf-navy flex items-center justify-center shrink-0 mt-0.5 border border-ihf-cyan/30">
+              <i data-lucide="clock" class="w-5 h-5"></i>
             </div>
             <div>
-              <h4 class="font-bold text-slate-900 text-sm">O gestor da vertical não responde à aprovação no prazo</h4>
-              <p class="text-xs text-slate-600 mt-1">
-                <strong>Comportamento:</strong> Lembretes automáticos são enviados no WhatsApp/Slack com 48h e 24h antes do vencimento.<br>
+              <h4 class="font-bold text-ihf-navy text-sm font-heading">O gestor da vertical não responde à aprovação no prazo</h4>
+              <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                <strong>Comportamento:</strong> Lembretes automáticos são enviados com 48h e 24h antes do vencimento.<br>
                 <strong>Procedimento:</strong> Ao atingir 24h sem resposta, o sistema aciona o <strong>escalonamento automático</strong> para o Diretor de Operações da vertical.
               </p>
             </div>
@@ -470,16 +676,34 @@
     </div>
   </section>
 
-  <!-- ==================== FOOTER EXECUTIVO ==================== -->
-  <footer class="bg-slate-950 text-slate-400 py-10 border-t border-slate-900 text-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div>
-        <p class="font-semibold text-white">ImpactPay AI — Central Executiva do Desafio Técnico</p>
-        <p class="text-slate-500 mt-0.5">Holding Companhia de Impacto • Vaga de Analista Pleno de IA e Produtos Digitais</p>
+  <!-- ==================== FOOTER EXECUTIVO OFICIAL ==================== -->
+  <footer class="bg-ihf-dark text-slate-400 py-12 border-t border-ihf-dark-line text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-xl bg-ihf-primary flex items-center justify-center text-white font-bold text-sm">
+            iH
+          </div>
+          <div>
+            <p class="font-bold text-white font-heading text-sm">iHubFiscal — Central Integrada de Governança</p>
+            <p class="text-slate-500 text-xs">Holding Companhia de Impacto • Vaga de Analista Pleno de IA e Produtos Digitais</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <a href="/" class="text-xs font-semibold text-ihf-cyan hover:underline font-heading">
+            Acessar Sistema v2
+          </a>
+          <span class="text-slate-600">•</span>
+          <a href="#entregaveis" class="text-xs font-semibold text-slate-400 hover:text-white">
+            Downloads Oficiais
+          </a>
+        </div>
       </div>
-      <div class="text-center sm:text-right">
-        <p class="text-slate-300 font-medium">Candidato: Moisés Branco dos Santos</p>
-        <p class="text-slate-500 mt-0.5">Prazo Fatal: 16/09/2026 às 23:59 (Horário de Brasília)</p>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
+        <p>Candidato: <strong class="text-slate-300 font-heading">Moisés Branco dos Santos</strong></p>
+        <p>Prazo de Entrega: 16/09/2026 às 23:59 (Horário de Brasília)</p>
       </div>
     </div>
   </footer>
@@ -495,7 +719,7 @@
         prestadorCnpj: "12.345.678/0001-90",
         tomador: "Assoc. Impact Hub Floripa",
         tomadorCnpj: "19.456.789/0001-12",
-        servico: "Consultoria técnica em IA, engenharia de prompts e automação n8n de contas a pagar.",
+        servico: "Consultoria técnica em IA, engenharia de prompts e automação de contas a pagar.",
         centroCusto: "Tecnologia & Inovação",
         bruto: "R$ 5.000,00",
         retencoes: "- R$ 175,00 (ISS: R$ 100 | IRRF: R$ 75)",
@@ -666,13 +890,13 @@
 
       document.getElementById('json-display').innerText = JSON.stringify(n.json, null, 2);
 
-      // Atualiza botões
+      // Atualiza botões com estilos oficiais
       for (let i = 0; i < 3; i++) {
         const btn = document.getElementById('btn-nota-' + i);
         if (i === idx) {
-          btn.className = "tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-700 text-white shadow-sm";
+          btn.className = "tab-btn px-5 py-2.5 rounded-full text-xs font-bold transition-all bg-ihf-primary text-white shadow-md font-heading";
         } else {
-          btn.className = "tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200";
+          btn.className = "tab-btn px-5 py-2.5 rounded-full text-xs font-bold transition-all bg-ihf-light text-slate-700 hover:bg-ihf-navy-soft font-heading";
         }
       }
     }
@@ -681,14 +905,14 @@
       const jsonText = JSON.stringify(DADOS_NOTAS[notaAtualIndex].json, null, 2);
       navigator.clipboard.writeText(jsonText).then(() => {
         const btn = document.getElementById('btn-copiar-text');
-        btn.innerText = "Copiado!";
+        btn.innerText = "Copiado com Sucesso!";
         setTimeout(() => {
           btn.innerText = "Copiar JSON";
         }, 2000);
       });
     }
 
-    // Inicializa
+    // Inicializa ícones e nota inicial
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       selecionarNota(0);

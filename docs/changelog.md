@@ -46,6 +46,21 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Redesign Executivo da Landing Page (/portal) Alinhado ao designIHF.md
+- **Commit**: `style(portal): aplica identidade visual oficial de designIHF.md na landing page executiva`
+- **Contexto**: Harmonização estética completa da Landing Page executiva (`/portal`) com os tokens oficiais do Impact Hub Floripa (tema Labbo Digital), eliminando paletas genéricas (teal e laranja padrão) e aplicando a tipografia oficial Poppins e GT Walsheim.
+- **Arquivos**: `public/portal/index.html`, `portal/index.html`.
+- **Decisões e Resultados**:
+  1. **Tipografia Oficial**: Importação e aplicação rigorosa da fonte **Poppins** (Google Fonts `weights: 400, 500, 600, 700, 800`) em títulos, botões e indicadores numéricos, com sans-serif limpo para corpo de texto.
+  2. **Paleta Cromática Oficial da Labbo**:
+     - Cor primária da marca: **Bordô / Vermelho `#812926`** em badges, botões principais e destaques.
+     - Azuis corporativos: **`#1c395c`** (azul-marinho corporativo) e **`#102235`** (azul noite escuro do hero e header).
+     - Acentos vibrantes: **Ciano `#41bed0`** em CTAs e destaques, e **Pêssego `#fde2ce`** para números em fundos escuros/bordô.
+     - Fundo off-white: **`#f7f6f2`** (`--branco-2`) e ciano pastel para quadros de valores (`#e2f5f8`).
+  3. **Bento Grid de KPIs**: Cards reformulados com iluminação suave, contrastes adequados e tipografia Poppins.
+  4. **Botões com Design Pill e Micro-interações**: Botões com `border-radius: 100px`, variantes em Bordô, Azul-marinho e Ciano, e efeito hover com translação da seta em `.btn-learn-more`.
+  5. **Conexão Direta com o iHubFiscal v2**: Inserção de botão CTA de alto destaque no header direcionando a banca para a central v2 (`/`), integrando a apresentação dos entregáveis ao sistema real.
+
 ### [2026-09-15] — Tarefas 11 e 12 Concluídas: Fechamento Contábil com JSZip, Configurações e Blindagem de Integridade
 - **Commit**: `feat(closing): implementa fechamento contabil jszip, configuracoes da holding e recalibragem de integridade B2B`
 - **Contexto**: Implementação das telas finais `/fechamento` e `/configuracoes`, resolução da armadilha de 4.5 MB da Vercel via compilação no cliente (`jszip`), eliminação de erro de hidratação e recalibragem de escala financeira B2B e alçadas.
