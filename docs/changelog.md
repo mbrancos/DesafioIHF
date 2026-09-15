@@ -46,6 +46,16 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Tarefa 3 Concluída: Design System, Tokens CSS e Root Layout com next/font
+- **Commit**: `b8e52f6`
+- **Contexto**: Implementação dos tokens oficiais do Impact Hub Floripa (`docs/designIHF.md`), injeção de fontes nativas sem CLS e componentes atômicos essenciais (`Button`, `Badge`, `Modal`).
+- **Arquivos**: `src/app/globals.css`, `src/app/layout.tsx`, `src/components/common/Button.tsx`, `src/components/common/Badge.tsx`, `src/components/common/Modal.tsx`, `tests/unit/design-system.test.ts`.
+- **Decisões e Resultados**:
+  1. Configuração do `globals.css` e variáveis `:root` preservando o Bordô institucional (`#812926`) e isolando o Verde semântico de sucesso/confiança (`#16A34A`).
+  2. Implementação de `src/app/layout.tsx` carregando **Poppins** via `next/font/google` com preloading nativo.
+  3. Criação de componentes base altamente tipados: `Button` com micro-interações do tema oficial, `Badge` com mapeamento fiscal e `Modal` acessível com backdrop blur.
+  4. Validação completa via Vitest (`tests/unit/design-system.test.ts`).
+
 ### [2026-09-15] — Tarefa 2 Concluída: Migrações PostgreSQL, RLS, Storage com CORS e Seed Inicial
 - **Commit**: `aff611a`
 - **Contexto**: Modelagem das 7 tabelas relacionais do iHubFiscal v2, regras estritas de enums e alçadas, políticas de segurança RLS, buckets de storage e script de seed para a banca.
