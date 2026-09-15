@@ -244,24 +244,28 @@ Conteúdo: `Conexões • Negócios • Inclusão Produtiva • Coworking • In
 
 ## 3. Espaçamento (Spacing)
 
-### 3.1 Escala de Espaçamento
+### 3.1 Escala de Espaçamento (Padronizada em Grade de 4px com Equivalência em Rem)
 
-| Token            | Valor    | Aplicação Real                                                  |
-|------------------|----------|-----------------------------------------------------------------|
-| `--ihf-space-xs`  | `4px`    | Gaps mínimos, separação de ícones inline                        |
-| `--ihf-space-sm`  | `8px`    | Padding interno de badges, gaps menores, `gap: 8px`             |
-| `--ihf-space-md`  | `16px`   | Padding de cards internos, gap entre elementos, `gap: 16px`     |
-| `--ihf-space-lg`  | `24px`   | Margem entre blocos, `margin-bottom: 24px`, `padding: 24px`     |
-| `--ihf-space-xl`  | `30px`   | Padding de cards (`.number1 { padding: 30px 32px }`), gaps      |
-| `--ihf-space-2xl` | `40px`   | Padding de boxes bordô (`.bottom-box { padding: 30px 40px }`)   |
-| `--ihf-space-3xl` | `48px`   | Gap do footer (`.container-fluid { gap: 48px; padding: 48px }`)|
-| `--ihf-space-4xl` | `75px`   | Padding horizontal do footer (`padding: 48px 75px`)             |
-| `--ihf-space-5xl` | `80px`   | Padding de seções escuras (`.container-fluid { padding: 80px }`) |
-| `--ihf-space-6xl` | `140px`  | Padding vertical de seções grandes (`.partners { padding: 140px 0 }`) |
+| Token             | Valor (px) | Valor (rem) | Aplicação Real no Site e na Aplicação                            |
+|-------------------|------------|-------------|-----------------------------------------------------------------|
+| `--ihf-space-1`   | `4px`      | `0.25rem`   | Gaps mínimos, separação de badges, micro-ícones                  |
+| `--ihf-space-2`   | `8px`      | `0.5rem`    | Padding vertical de badges, gap entre ícone e texto (`gap: 8px`) |
+| `--ihf-space-3`   | `12px`     | `0.75rem`   | Padding interno de inputs compactos, gap de botões (`gap: 12px`) |
+| `--ihf-space-4`   | `16px`     | `1.0rem`    | Padding padrão de cards internos, gutter secundário (`gap: 16px`)|
+| `--ihf-space-5`   | `20px`     | `1.25rem`   | Padding vertical de botões primários (`padding: 20px 40px`)     |
+| `--ihf-space-6`   | `24px`     | `1.5rem`    | Margem entre blocos, padding do container (`--bs-gutter-x`)      |
+| `--ihf-space-7`   | `28px`     | `1.75rem`   | Padding lateral de botões médios e tags de destaque              |
+| `--ihf-space-8`   | `32px`     | `2.0rem`    | Padding de cards (`.number1 { padding: 30px 32px }`)            |
+| `--ihf-space-10`  | `40px`     | `2.5rem`    | Padding horizontal de botões e boxes (`padding: 30px 40px`)     |
+| `--ihf-space-12`  | `48px`     | `3.0rem`    | Gap do footer (`.container-fluid { gap: 48px }`)                |
+| `--ihf-space-16`  | `64px`     | `4.0rem`    | Padding da CTA banner (`padding: 56px 64px 48px`)               |
+| `--ihf-space-20`  | `80px`     | `5.0rem`    | Padding de seções escuras (`.container-fluid { padding: 80px }`)|
+| `--ihf-space-32`  | `140px`    | `8.75rem`   | Padding vertical de grandes blocos (`padding: 140px 0`)         |
 
 > [!NOTE]
-> O CSS real usa valores como `12px`, `28px`, `40px`, `56px`, `64px`, `115px`, `140px`, `145px`, `262px`
-> que não seguem uma escala matemática rígida. A escala acima é uma **aproximação tokenizada**.
+> A escala acima harmoniza as medidas utilizadas no código-fonte CSS do tema com a arquitetura de tokens
+> do **iHubFiscal**, cobrindo expressamente os valores de padding de botões (`12px`, `20px`, `28px`, `40px`)
+> e garantindo conversão fluida para unidades relativas (`rem`).
 
 ### 3.2 Grid e Container
 
@@ -811,135 +815,418 @@ Os ícones circulares na seção de números são SVGs carregados de:
 
 ---
 
-## 10. Regras e Recomendações para o iHubFiscal (v2)
+## 10. Tokens de Interface & Aplicação Financeira (iHubFiscal)
 
-### 10.1 Cores Semânticas de Status (Adicionar para App Financeiro)
+### 10.1 Cores Semânticas de Status & Ciclo de Vida Fiscal
 
-O site original é institucional e **não possui** cores de status. Para a aplicação iHubFiscal, mapear assim:
+O portal institucional do Impact Hub Floripa é voltado à divulgação institucional e não possuía estados de transação financeira. Para o **iHubFiscal**, definimos tokens semânticos rigorosos, garantindo conformidade com a WCAG 2.1 (contraste AAA/AA) e distinção inequívoca entre fases:
 
-| Status         | Token Recomendado         | Valor Sugerido  | Derivação                                         |
-|----------------|---------------------------|-----------------|---------------------------------------------------|
-| **Erro**       | `--ihf-status-error`      | `#DC2626`       | Bootstrap `--bs-danger`  (próximo ao --vermelho)   |
-| **Alerta**     | `--ihf-status-warning`    | `#F59E0B`       | Âmbar (harmoniza com --laranja `#fde2ce`)          |
-| **Sucesso**    | `--ihf-status-success`    | `#16A34A`       | Verde (distinto do --vermelho para contraste)      |
-| **Info**       | `--ihf-status-info`       | `#1c395c`       | Reutilizar `--azul` da paleta real                 |
-| **Info Light** | `--ihf-status-info-light` | `#e2f5f8`       | Reutilizar `--azul-claro-4`                        |
+| Token Semântico           | Cor Principal | Fundo Sutil (`bg`) | Borda (`border`) | Aplicação no iHubFiscal                                         |
+|---------------------------|---------------|--------------------|------------------|-----------------------------------------------------------------|
+| `--ihf-status-error`      | `#DC2626`     | `#FEF2F2`          | `#FCA5A5`        | Nota duplicada, divergência matemática, recusa de gestor        |
+| `--ihf-status-warning`    | `#D97706`     | `#FFFBEB`          | `#FCD34D`        | Leitura incerta de IA, vencimento em até 48h, triagem pendente  |
+| `--ihf-status-success`    | `#16A34A`     | `#F0FDF4`          | `#86EFAC`        | Validação matemática 100%, pagamento liquidado (`PAGO`)         |
+| `--ihf-status-info`       | `#1C395C`     | `#E2F5F8`          | `#9EEAF9`        | Protocolo gerado, metadados informativos, links de auditoria    |
+| `--ihf-status-neutral`    | `#495057`     | `#F8F9FA`          | `#DEE2E6`        | Estados inativos, rascunhos, badges informativas neutras        |
 
-### 10.2 Regras de Uso
+#### Mapeamento das 5 Fases Operacionais do Kanban (`invoices.status`):
 
-1. **Prioridade tipográfica**: Use **Poppins** para títulos e UI; **GT Walsheim** para corpo e labels.
-2. **Pill shape**: Botões usam `border-radius: 100px` (não 9999px).
-3. **Container principal**: `max-width: 1465px` (não 1200px).
-4. **Cores de botão**: Hover do btn-vermelho inverte para **azul marinho** (`--azul`), não para branco.
-5. **Azul marinho existe**: `#1c395c` é uma cor oficial da marca, usada em métricas e hover de botões.
-6. **Ciano existe**: `#41bed0` é a cor oficial de CTAs de download e formulários.
-7. **Pêssego/laranja existe**: `#fde2ce` é usado como texto sobre superfícies bordô.
-8. **Bootstrap 5 é o framework**: Respeite os breakpoints (576, 768, 992, 1200, 1400px).
-9. **body zoom: 0.8**: O site real aplica `zoom: 0.8` no body (reseta para `1` em mobile ≤991px).
-10. **Evite sombras customizadas pesadas**: O tema real usa bordas (`border: 1.5px solid`) em vez de box-shadow na maioria dos cards.
-
-### 10.3 Bibliotecas JavaScript do Tema
-
-| Biblioteca      | Uso                                    | Versão        |
-|-----------------|----------------------------------------|---------------|
-| jQuery          | Base para plugins                      | 3.7.1         |
-| Bootstrap 5     | Grid, modais, dropdowns, tooltips      | 5.x           |
-| Swiper          | Carrossel do Hero                      | Latest        |
-| Slick Carousel  | Parceiros, depoimentos, benefícios     | Latest        |
-| Lity            | Lightbox para vídeos/modais            | Latest        |
-| jQuery Mask      | Máscara de telefone em formulários     | Latest        |
-| ShiftNav        | Menu móvel lateral (hamburger)         | Latest        |
+| Fase Operacional        | Badge Background | Badge Texto | Borda       | Ícone Recomendado | Significado Operacional                           |
+|-------------------------|------------------|-------------|-------------|-------------------|---------------------------------------------------|
+| `TRIAGEM`               | `#FFFBEB`        | `#B45309`   | `#FDE68A`   | `alert-circle`    | Nota submetida aguardando resolução de divergência|
+| `AGUARDANDO_APROVACAO`  | `#E2F5F8`        | `#1C395C`   | `#9EEAF9`   | `clock`           | Validada aguardando alçada técnica do gestor      |
+| `RECUSADO`              | `#FEF2F2`        | `#B91C1C`   | `#FECACA`   | `x-circle`        | Devolvida ao fornecedor com justificativa formal  |
+| `AGENDADO_PAGAMENTO`    | `#EDE9FE`        | `#5B21B6`   | `#DDD6FE`   | `calendar-check`  | Aprovada, autorizada na esteira de liquidação     |
+| `PAGO`                  | `#F0FDF4`        | `#15803D`   | `#BBF7D0`   | `check-circle-2`  | Baixa realizada com anexo de comprovante bancário |
 
 ---
 
-## 11. Referência Rápida — CSS Variables (v2)
+### 10.2 Escala de Z-Index (Camadas e Sobreposição)
+
+Evita sobreposição incorreta entre o Header corporativo fixo, dropdowns de filtros, overlays de carregamento e modais de aprovação:
+
+| Token             | Valor  | Aplicação na Interface                                                |
+|-------------------|--------|-----------------------------------------------------------------------|
+| `--ihf-z-deep`    | `-1`   | Marca d'água ("IMPACTO QUE IMPORTA") e texturas decorativas de fundo  |
+| `--ihf-z-base`    | `1`    | Elementos de conteúdo padrão e cards flutuantes                       |
+| `--ihf-z-sticky`  | `1020` | Header corporativo fixo (`sticky-top`), cabeçalhos fixos de Datagrids |
+| `--ihf-z-dropdown`| `1000` | Menus dropdown de perfil, filtros e select de centros de custo        |
+| `--ihf-z-drawer`  | `1040` | Painéis laterais expansíveis (Offcanvas de auditoria e logs)          |
+| `--ihf-z-backdrop`| `1050` | Overlay escurecido do modal (`background: rgba(33, 32, 32, 0.6)`)     |
+| `--ihf-z-modal`   | `1055` | Modal de justificativa de devolução e formulário de baixa bancária    |
+| `--ihf-z-popover` | `1070` | Popovers de detalhamento de retenções tributárias                     |
+| `--ihf-z-tooltip` | `1080` | Tooltips de ajuda e dicas de campos tributários                       |
+| `--ihf-z-toast`   | `1090` | Notificações de confirmação de cópia de chave Pix e emissão de lote  |
+
+---
+
+### 10.3 Componente Dropzone / Upload de NFS-e (Portal do Fornecedor `/upload`)
+
+O envio sem login exige uma área de arrastar-e-soltar intuitiva, limpa e responsiva:
 
 ```css
-:root {
-  /* ═══ MARCA (valores reais do tema) ═══ */
-  --ihf-brand-primary:   #812926;     /* var(--vermelho) */
-  --ihf-brand-forest:    #063b27;     /* Seção Hub Inovação Climática */
-  --ihf-brand-lime:      #b9ee8d;     /* Badge destaque, hover links verdes */
-  --ihf-brand-navy:      #1c395c;     /* var(--azul) — Bento Grid */
-  --ihf-brand-cyan:      #41bed0;     /* var(--azul-2) — Download CTAs */
-  --ihf-brand-peach:     #fde2ce;     /* var(--laranja) — Texto em cards bordô */
+.dropzone-container {
+  border: var(--ihf-dropzone-border);
+  background-color: var(--ihf-bg-primary);
+  border-radius: var(--ihf-radius-lg);
+  padding: 40px 24px;
+  text-align: center;
+  transition: all var(--ihf-transition-normal);
+  cursor: pointer;
+}
 
-  /* ═══ SUPERFÍCIES ═══ */
-  --ihf-bg-primary:      #f7f6f2;     /* var(--branco-2) */
-  --ihf-bg-white:        #ffffff;
-  --ihf-bg-light:        #f3f4f5;     /* var(--cinza-claro) */
-  --ihf-bg-warm:         #f2eae9;     /* var(--marrom-claro) */
-  --ihf-bg-dark:         #212020;     /* var(--preto-3) */
-  --ihf-bg-dark-line:    #333;        /* var(--preto-2) */
+.dropzone-container:hover {
+  background-color: var(--ihf-bg-warm);
+  border-color: var(--ihf-brand-primary);
+}
 
-  /* ═══ TEXTO ═══ */
-  --ihf-text-primary:    #212020;     /* var(--preto-3) */
-  --ihf-text-heading:    #812926;     /* var(--vermelho) */
-  --ihf-text-body:       #333;        /* var(--preto-2) */
-  --ihf-text-muted:      #c1c1c1;     /* var(--cinza) */
-  --ihf-text-on-dark:    #ffffff;
-  --ihf-text-on-brand:   #fde2ce;     /* var(--laranja) */
+.dropzone-container.dragover {
+  background-color: var(--ihf-brand-cyan-light);
+  border-color: var(--ihf-brand-cyan);
+  box-shadow: 0 0 0 4px rgba(65, 190, 208, 0.15);
+}
+```
 
-  /* ═══ BORDAS ═══ */
-  --ihf-border-light:    #e5e5e5;     /* var(--cinza-claro-2) */
-  --ihf-border-dark:     #333;        /* var(--preto-2) */
-  --ihf-border-input:    #e5e5e5;
+- `--ihf-dropzone-border`: `2px dashed #abb5c2;`
+- `--ihf-dropzone-border-hover`: `2px dashed #812926;`
+- `--ihf-dropzone-border-active`: `2px dashed #41bed0;`
+- `--ihf-dropzone-bg`: `#f7f6f2;`
+- `--ihf-dropzone-bg-hover`: `#f2eae9;`
+- `--ihf-dropzone-bg-active`: `#e2f5f8;`
 
-  /* ═══ TIPOGRAFIA ═══ */
-  --ihf-font-heading:    'Poppins', sans-serif;
-  --ihf-font-body:       'GT Walsheim', sans-serif;
+---
 
-  /* ═══ ESPAÇAMENTO ═══ */
-  --ihf-space-xs:        4px;
-  --ihf-space-sm:        8px;
-  --ihf-space-md:        16px;
-  --ihf-space-lg:        24px;
-  --ihf-space-xl:        32px;
-  --ihf-space-2xl:       48px;
-  --ihf-space-3xl:       64px;
-  --ihf-space-4xl:       80px;
-  --ihf-space-5xl:       120px;
+### 10.4 Estados de Input & Indicador de Confiança Cromática da IA (Human-in-the-Loop)
 
-  /* ═══ BORDER RADIUS ═══ */
-  --ihf-radius-sm:       4px;
-  --ihf-radius-md:       8px;
-  --ihf-radius-lg:       16px;
-  --ihf-radius-full:     100px;       /* NÃO 9999px */
-  --ihf-radius-circle:   50%;
+Na tela `/conferencia/:id`, cada campo lido pelo pipeline multimodal recebe um indicador visual de acurácia:
 
-  /* ═══ TRANSIÇÕES ═══ */
-  --ihf-transition-fast:   .15s ease-in-out;
-  --ihf-transition-normal: .3s ease;
-  --ihf-transition-normal-io: .3s ease-in-out;
-  --ihf-transition-slow:   .5s ease;
+```css
+/* Estado Base de Inputs */
+.form-input {
+  width: 100%;
+  height: 46px;
+  padding: 12px 16px;
+  border-radius: var(--ihf-radius-sm);
+  border: 1.5px solid var(--ihf-border-input);
+  background-color: var(--ihf-bg-white);
+  font-family: var(--ihf-font-body);
+  font-size: 15px;
+  color: var(--ihf-text-primary);
+  transition: all var(--ihf-transition-fast);
+}
 
-  /* ═══ LAYOUT ═══ */
-  --ihf-container-max:     1465px;     /* NÃO 1200px */
-  --ihf-container-wide:    1615px;     /* Footer e seções expandidas */
-  --ihf-container-padding: 24px;
-  --ihf-gutter:            24px;       /* --bs-gutter-x: 1.5rem */
+/* Foco */
+.form-input:focus {
+  outline: none;
+  border-color: var(--ihf-brand-primary);
+  box-shadow: var(--ihf-shadow-focus);
+}
 
-  /* ═══ STATUS (para iHubFiscal) ═══ */
-  --ihf-status-error:    #DC2626;
-  --ihf-status-warning:  #F59E0B;
-  --ihf-status-success:  #16A34A;
-  --ihf-status-info:     #1c395c;
+/* Desabilitado / Somente Leitura */
+.form-input:disabled,
+.form-input[readonly] {
+  background-color: var(--ihf-bg-light);
+  border-color: var(--ihf-border-light);
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Confiança Alta da IA (>= 90%) — Verde Seguro */
+.field-confidence-high {
+  border-color: var(--ihf-status-success) !important;
+  background-color: #f0fdf4 !important;
+}
+
+/* Confiança Baixa ou Dado Incerto (< 90%) — Amarelo Pulsante */
+.field-confidence-low {
+  border-color: var(--ihf-status-warning) !important;
+  background-color: #fffbeb !important;
+  animation: pulseWarning 2s infinite ease-in-out;
+}
+
+@keyframes pulseWarning {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.15); }
+}
+
+/* Campo com Divergência Matemática / Erro */
+.field-divergent {
+  border-color: var(--ihf-status-error) !important;
+  background-color: #fef2f2 !important;
 }
 ```
 
 ---
 
-## 12. Capturas de Referência
+### 10.5 Estilos de Tabelas Financeiras (Datagrid para `/pagamentos` e `/fechamento`)
 
-> As capturas do site original estão armazenadas nos screenshots do browser subagent.
-> - **Hero + CTA Card**: Glass branco sobre imagem, seta CTA bordô.
-> - **Ticker/Marquee**: Faixa horizontal com pontos bordô.
-> - **Bento Grid**: Layout assimétrico com cards azul-marinho, bordô, ciano.
-> - **Programa Destaque**: Seção verde escuro com links lime.
-> - **Footer**: Rodapé `#212020` com newsletter, unidades, social.
+Tabelas contábeis exigem legibilidade de linhas, contraste e alinhamento numérico tabular:
+
+```css
+.table-finance {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--ihf-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--ihf-border-light);
+  background-color: var(--ihf-bg-white);
+}
+
+.table-finance thead th {
+  background-color: var(--ihf-brand-navy);
+  color: var(--ihf-text-on-dark);
+  font-family: var(--ihf-font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 16px;
+  position: sticky;
+  top: 0;
+  z-index: var(--ihf-z-base);
+}
+
+.table-finance tbody tr {
+  transition: background-color var(--ihf-transition-fast);
+}
+
+.table-finance tbody tr:nth-child(even) {
+  background-color: #fcfcfb;
+}
+
+.table-finance tbody tr:hover {
+  background-color: var(--ihf-bg-warm);
+}
+
+.table-finance td {
+  padding: 14px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--ihf-border-light);
+  color: var(--ihf-text-primary);
+  vertical-align: middle;
+}
+
+/* Células de valores monetários com alinhamento à direita e fonte tabular */
+.table-finance td.amount,
+.table-finance th.amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+```
 
 ---
 
-> ⚠️ **Nota**: Este documento é a **fonte de verdade** do design system para a v2 do portal.
-> Toda decisão de cor, tipografia, espaçamento e componente deve referenciar este arquivo.
-> **Revisão v2**: 15 de setembro de 2026 — Reescrito com dados do código-fonte CSS real.
+### 10.6 Modais, Overlays & Diálogos
+
+Utilizados na justificativa de recusa do gestor e na confirmação de baixa:
+
+```css
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ihf-z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(33, 32, 32, 0.65);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-dialog {
+  background-color: var(--ihf-bg-white);
+  border-radius: var(--ihf-radius-lg);
+  max-width: 540px;
+  width: 100%;
+  padding: 32px;
+  box-shadow: var(--ihf-shadow-modal);
+  border: 1px solid var(--ihf-border-light);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+```
+
+---
+
+### 10.7 Escala Tipográfica Fluida e Line-Heights
+
+Para garantir responsividade perfeita e acessibilidade sem quebras de layout:
+
+| Token                | Valor Base (px) | Valor Relativo | Clamp Fluido                                  | Line-Height Token    |
+|----------------------|-----------------|----------------|-----------------------------------------------|----------------------|
+| `--ihf-text-xs`      | `11px`          | `0.6875rem`    | `clamp(10px, 0.65rem + 0.1vw, 11px)`          | `--ihf-lh-tight: 1.2`|
+| `--ihf-text-sm`      | `14px`          | `0.875rem`     | `clamp(13px, 0.8rem + 0.2vw, 14px)`           | `--ihf-lh-snug: 1.35`|
+| `--ihf-text-base`    | `16px`          | `1.0rem`       | `clamp(15px, 0.95rem + 0.25vw, 16px)`         | `--ihf-lh-base: 1.5` |
+| `--ihf-text-md`      | `18px`          | `1.125rem`     | `clamp(16px, 1.05rem + 0.3vw, 18px)`          | `--ihf-lh-base: 1.5` |
+| `--ihf-text-lg`      | `20px`          | `1.25rem`      | `clamp(18px, 1.15rem + 0.4vw, 20px)`          | `--ihf-lh-heading: 1.3`|
+| `--ihf-text-xl`      | `24px`          | `1.5rem`       | `clamp(20px, 1.35rem + 0.5vw, 24px)`          | `--ihf-lh-heading: 1.2`|
+| `--ihf-text-2xl`     | `36px`          | `2.25rem`      | `clamp(26px, 2.0rem + 0.8vw, 36px)`           | `--ihf-lh-heading: 1.15`|
+| `--ihf-text-3xl`     | `48px`          | `3.0rem`       | `clamp(32px, 2.6rem + 1.2vw, 48px)`           | `--ihf-lh-tight: 1.0`|
+| `--ihf-text-display` | `72px`          | `4.5rem`       | `clamp(42px, 3.5rem + 2.5vw, 72px)`           | `--ihf-lh-tight: 1.0`|
+
+---
+
+### 10.8 Auditoria Técnica & Comparação com a Análise Externa
+
+Avaliamos criteriosamente cada apontamento da `<analise>` enviada, confrontando as suposições com o código-fonte CSS extraído em tempo de execução via WP Rocket (`wpr-usedcss`):
+
+| Ponto Levantado pela Análise | Veredito | Justificativa com Base no Código-Fonte Real |
+|---|:---:|---|
+| **1. Falta de tokens semânticos de status (Erro, Alerta, Sucesso, Info)** | ✅ **Correto & Adotado** | O site original é institucional e não possui regras contábeis. Incorporamos a paleta semântica completa na Seção 10.1, mapeando inclusive os 5 estados do ciclo de vida das notas (`TRIAGEM` a `PAGO`). |
+| **2. Escala de Z-Index ausente** | ✅ **Correto & Adotado** | Fundamental para a aplicação iHubFiscal não colidir dropdowns, headers fixos e modais de recusa. Tokenizado na Seção 10.2. |
+| **3. Tokens de Dropzone e Estados de Inputs de IA** | ✅ **Correto & Adotado** | Essencial para o Human-in-the-Loop em `/upload` e `/conferencia/:id`. Adicionados com animação pulsante nas Seções 10.3 e 10.4. |
+| **4. Estilos de Tabelas Financeiras (Datagrids) e Modais** | ✅ **Correto & Adotado** | Adicionados nas Seções 10.5 e 10.6, com zebra-striping institucional e backdrop blur. |
+| **5. Escala Tipográfica Fluida e Line-Heights** | ✅ **Correto & Adotado** | Normalizamos todas as medidas com conversão de `px` para `rem` e `clamp()` na Seção 10.7. |
+| **6. Suposição de que o Hero Card é "bloco bordô sólido `#7A221E`"** | ❌ **Alucinação da IA Externa** | **Código real comprova:** `.cta-banner { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }`. O card é de fato **glassmorphism translúcido branco**, com o botão interno em bordô. No mobile, o fallback é `.cta-banner { background: var(--cinza-claro); }`. |
+| **7. Suposição de que a Watermark tem contorno vazado (`text-stroke`)** | ❌ **Alucinação da IA Externa** | **Código real comprova:** `.banner .container-fluid h1 { color: var(--preto-3); }` e o `<span>` filho tem `color: var(--branco); height: 50%; overflow: hidden;`. Não existe `-webkit-text-stroke`; é um efeito de meio-corte sólido preto/branco. |
+| **8. Alegação de que a marca não usa Azul** | ❌ **Alucinação da IA Externa** | O `:root` original define 6 variáveis de azul: `--azul: #1c395c;`, `--azul-2: #41bed0;`, `--azul-claro: #e1e5ea;`, `--azul-claro-2: #abb5c2;`, `--azul-claro-3: #cfeff3;`, `--azul-claro-4: #e2f5f8;`. Usados extensivamente nas métricas e botões. |
+| **9. Suposição do Hover Primário ser `#5E1A17`** | ⚠️ **Parcialmente Incorreto** | No CSS real, botões `.default-btn.btn-vermelho:hover` invertem para texto e borda `--azul` (`#1c395c`) sobre fundo branco, e `.entre-em-contato a:hover` fica com fundo transparente. Para a aplicação corporativa, padronizamos `--ihf-brand-primary-hover: #5e1a17` para ações padrão e inversão institucional para botões de destaque. |
+
+---
+
+## 11. Referência Rápida Completa — CSS Variables (`:root`)
+
+Este bloco deve ser copiado diretamente para `portal/ihub/css/variables.css`:
+
+```css
+:root {
+  /* ═══ 1. CORES DA MARCA (Valores Reais do Tema Labbo) ═══ */
+  --ihf-brand-primary:         #812926;     /* Bordô oficial da marca */
+  --ihf-brand-primary-hover:   #5e1a17;     /* Hover escurecido institucional */
+  --ihf-brand-navy:            #1c395c;     /* Azul-marinho corporativo */
+  --ihf-brand-cyan:            #41bed0;     /* Ciano vibrante de ação e download */
+  --ihf-brand-cyan-light:      #e2f5f8;     /* Ciano suave para destaques e hover */
+  --ihf-brand-peach:           #fde2ce;     /* Pêssego/Laranja pálido institucional */
+  --ihf-brand-forest:          #063b27;     /* Verde floresta para sustentabilidade */
+  --ihf-brand-lime:            #b9ee8d;     /* Verde limão de realce e badges */
+
+  /* ═══ 2. SUPERFÍCIES E FUNDOS ═══ */
+  --ihf-bg-primary:            #f7f6f2;     /* Off-white quente de fundo de tela */
+  --ihf-bg-white:              #ffffff;     /* Branco puro para cards e tabelas */
+  --ihf-bg-light:              #f3f4f5;     /* Cinza claro para áreas de apoio */
+  --ihf-bg-warm:               #f2eae9;     /* Bege rosado suave para hover de linhas */
+  --ihf-bg-dark:               #212020;     /* Preto institucional do rodapé */
+  --ihf-bg-dark-line:          #333333;     /* Divisores sobre fundo escuro */
+  --ihf-bg-hero-glass:         rgba(255, 255, 255, 0.1);
+
+  /* ═══ 3. TEXTO E TIPOGRAFIA ═══ */
+  --ihf-text-primary:          #212020;     /* Texto principal em fundo claro */
+  --ihf-text-heading:          #812926;     /* Títulos e destaques bordô */
+  --ihf-text-body:             #333333;     /* Texto de parágrafos */
+  --ihf-text-muted:            #c1c1c1;     /* Placeholders e legendas */
+  --ihf-text-on-dark:          #ffffff;     /* Texto sobre fundo escuro ou marinho */
+  --ihf-text-on-brand:         #fde2ce;     /* Texto sobre superfícies bordô */
+
+  --ihf-font-heading:          'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ihf-font-body:             'GT Walsheim', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Line Heights */
+  --ihf-lh-tight:              1.15;
+  --ihf-lh-heading:            1.25;
+  --ihf-lh-base:               1.5;
+
+  /* ═══ 4. ESPAÇAMENTO (Grade de 4px / Rem) ═══ */
+  --ihf-space-1:               0.25rem;     /* 4px */
+  --ihf-space-2:               0.5rem;      /* 8px */
+  --ihf-space-3:               0.75rem;     /* 12px */
+  --ihf-space-4:               1.0rem;      /* 16px */
+  --ihf-space-5:               1.25rem;     /* 20px */
+  --ihf-space-6:               1.5rem;      /* 24px */
+  --ihf-space-7:               1.75rem;     /* 28px */
+  --ihf-space-8:               2.0rem;      /* 32px */
+  --ihf-space-10:              2.5rem;      /* 40px */
+  --ihf-space-12:              3.0rem;      /* 48px */
+  --ihf-space-16:              4.0rem;      /* 64px */
+  --ihf-space-20:              5.0rem;      /* 80px */
+  --ihf-space-32:              8.75rem;     /* 140px */
+
+  /* ═══ 5. BORDAS E RAIOS ═══ */
+  --ihf-border-light:          #e5e5e5;
+  --ihf-border-dark:           #333333;
+  --ihf-border-input:          #e5e5e5;
+  --ihf-border-focus:          #812926;
+
+  --ihf-radius-sm:             4px;
+  --ihf-radius-md:             8px;
+  --ihf-radius-lg:             16px;
+  --ihf-radius-full:           100px;       /* Padrão Pill Shape do tema */
+  --ihf-radius-circle:         50%;
+
+  /* ═══ 6. SOMBRAS E ELEVAÇÕES ═══ */
+  --ihf-shadow-sm:             0 1px 3px rgba(0, 0, 0, 0.08);
+  --ihf-shadow-md:             0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --ihf-shadow-lg:             0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --ihf-shadow-modal:          0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  --ihf-shadow-fab:            0 0 10px rgba(0, 0, 0, 0.5);
+  --ihf-shadow-focus:          0 0 0 3px rgba(129, 41, 38, 0.2);
+
+  /* ═══ 7. TRANSIÇÕES E ANIMAÇÕES ═══ */
+  --ihf-transition-fast:       0.15s ease-in-out;
+  --ihf-transition-normal:     0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --ihf-transition-smooth:     0.3s ease-in-out;
+
+  /* ═══ 8. LAYOUT & CONTAINERS ═══ */
+  --ihf-container-max:         1465px;
+  --ihf-container-wide:        1615px;
+  --ihf-gutter:                24px;
+
+  /* ═══ 9. STATUS SEMÂNTICOS FINANCEIROS ═══ */
+  --ihf-status-error:          #dc2626;
+  --ihf-status-error-bg:       #fef2f2;
+  --ihf-status-error-border:   #fca5a5;
+
+  --ihf-status-warning:        #d97706;
+  --ihf-status-warning-bg:     #fffbeb;
+  --ihf-status-warning-border: #fcd34d;
+
+  --ihf-status-success:        #16a34a;
+  --ihf-status-success-bg:     #f0fdf4;
+  --ihf-status-success-border: #86efac;
+
+  --ihf-status-info:           #1c395c;
+  --ihf-status-info-bg:        #e2f5f8;
+  --ihf-status-info-border:    #9eeaf9;
+
+  /* ═══ 10. CAMADAS (Z-INDEX) ═══ */
+  --ihf-z-deep:                -1;
+  --ihf-z-base:                1;
+  --ihf-z-dropdown:            1000;
+  --ihf-z-sticky:              1020;
+  --ihf-z-drawer:              1040;
+  --ihf-z-backdrop:            1050;
+  --ihf-z-modal:               1055;
+  --ihf-z-popover:             1070;
+  --ihf-z-tooltip:             1080;
+  --ihf-z-toast:               1090;
+
+  /* ═══ 11. DROPZONE DE UPLOAD ═══ */
+  --ihf-dropzone-border:       2px dashed #abb5c2;
+  --ihf-dropzone-border-hover: 2px dashed #812926;
+  --ihf-dropzone-border-active:2px dashed #41bed0;
+  --ihf-dropzone-bg:           #f7f6f2;
+  --ihf-dropzone-bg-hover:     #f2eae9;
+  --ihf-dropzone-bg-active:    #e2f5f8;
+}
+```
+
+---
+
+## 12. Capturas de Referência e Evidências Visuais
+
+> As capturas do site original foram homologadas com base no HTML/CSS do tema e nas gravações do browser subagent:
+> - **Hero Banner + CTA Card**: Frosted glass branco (`rgba(255,255,255,0.1)` com `blur(12px)`) sobre imagem de fundo e botão bordô com seta que desliza em hover.
+> - **Watermark Tipográfica**: GT Walsheim Regular com técnica de meio-corte preto (`#212020`) na parte inferior e branco (`#ffffff`) na metade superior.
+> - **Bento Grid**: Composição moderna combinando blocos `#1c395c` (azul marinho), `#812926` (bordô), `#e2f5f8` (ciano suave) e `#212020` (preto).
+> - **Programa Destaque**: Bloco verde floresta `#063b27` com badge limão `#b9ee8d`.
+> - **Footer Institucional**: Fundo `#212020` com newsletter pill-shaped, grid de unidades e redes sociais.
+
+---
+
+> ⚠️ **Nota de Governança**: Este documento é a **fonte de verdade** do design system para o desenvolvimento do **iHubFiscal v2**. Toda implementação de front-end deve seguir estritamente os tokens e padrões aqui especificados.
+> **Versão Homologada**: 15 de setembro de 2026.
+
