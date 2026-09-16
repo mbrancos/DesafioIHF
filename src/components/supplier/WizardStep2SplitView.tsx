@@ -45,6 +45,12 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
   const [submittedProtocol, setSubmittedProtocol] = useState<string | null>(null);
   const [copiedProtocol, setCopiedProtocol] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [submissionFeedback, setSubmissionFeedback] = useState<{
+    type: 'DUPLICATE' | 'SERVER_ERROR';
+    title: string;
+    message: string;
+    protocol?: string | null;
+  } | null>(null);
 
   const isContingency = initialData?.confidence_score === 0 || initialData?.is_contingency;
 
@@ -63,11 +69,13 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (validationError) setValidationError(null);
+    if (submissionFeedback) setSubmissionFeedback(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError(null);
+    setSubmissionFeedback(null);
 
     // Validação estrita de campos obrigatórios para prevenir erros NOT NULL no banco
     if (!formData.numero_nota.trim()) {
@@ -128,13 +136,39 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
       }
 
       try {
+        setSubmissionFeedback(null);
         const res = await submitSupplierInvoice(payload);
 
         if (res.success && res.protocol) {
           setSubmittedProtocol(res.protocol);
+          return;
         }
+
+        // Caso de nota fiscal já existente
+        if (res.errorType === 'DUPLICATE_INVOICE') {
+          setSubmissionFeedback({
+            type: 'DUPLICATE',
+            title: 'Esta Nota Fiscal Já Foi Enviada Anteriormente',
+            message: `Identificamos que a NFS-e nº ${res.invoiceNumber || formData.numero_nota} deste prestador já consta registrada em nosso sistema.${
+              res.protocol ? ` Protocolo ativo: ${res.protocol}.` : ''
+            } Não é necessário reenviá-la.`,
+            protocol: res.protocol,
+          });
+          return;
+        }
+
+        // Outro erro retornado do servidor
+        setSubmissionFeedback({
+          type: 'SERVER_ERROR',
+          title: 'Não Foi Possível Concluir o Envio',
+          message: res.message || 'Houve uma instabilidade temporária ao registrar a nota. Por favor, tente novamente em instantes.',
+        });
       } catch (err: any) {
-        setValidationError(err?.message || 'Falha ao enviar fatura para triagem.');
+        setSubmissionFeedback({
+          type: 'SERVER_ERROR',
+          title: 'Instabilidade Temporária no Envio',
+          message: 'Os dados da nota estão corretos, mas o servidor encontrou uma oscilação momentânea ao emitir o protocolo. Por favor, tente clicar novamente no botão abaixo.',
+        });
       }
     });
   };
@@ -246,6 +280,48 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
                 <div>
                   <p className="font-bold font-['Poppins']">Preenchimento Incompleto</p>
                   <p className="mt-0.5">{validationError}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Alerta Estruturado de Resposta do Envio (Duplicidade ou Erro) */}
+            {submissionFeedback && (
+              <div
+                className={`p-4 rounded-xl border flex items-start gap-3 animate-fadeIn ${
+                  submissionFeedback.type === 'DUPLICATE'
+                    ? 'border-[#fde68a] bg-[#fffbeb] text-[#92400e]'
+                    : 'border-[#fecaca] bg-[#fee2e2] text-[#991b1b]'
+                }`}
+              >
+                {submissionFeedback.type === 'DUPLICATE' ? (
+                  <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#D97706]" />
+                ) : (
+                  <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#DC2626]" />
+                )}
+                <div className="flex-1 text-xs">
+                  <p className="font-bold text-sm font-['Poppins'] text-[#212020] mb-1">
+                    {submissionFeedback.title}
+                  </p>
+                  <p className="leading-relaxed text-[#484848] mb-3">
+                    {submissionFeedback.message}
+                  </p>
+
+                  {submissionFeedback.type === 'DUPLICATE' && (
+                    <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-[#fef3c7]">
+                      {submissionFeedback.protocol && (
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-white border border-[#fde68a] font-mono font-bold text-xs text-[#1c395c]">
+                          Protocolo: {submissionFeedback.protocol}
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={onBack}
+                        className="px-3 py-1 text-xs font-semibold rounded-md bg-[#812926] text-white hover:bg-[#6b2220] transition-colors"
+                      >
+                        Enviar Outra Nota Fiscal
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

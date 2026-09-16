@@ -42,6 +42,18 @@ timeline
         Central Operacional iHubFiscal v2 : Implementação SPA em portal/ihub/
 ```
 
+### [2026-09-16] — Tratamento de Duplicidade de Notas e Mensagens Humanas no Portal do Fornecedor
+- **Commit**: `fix(supplier): trata duplicidade de nfs-e e humaniza feedback de submissao no wizard`
+- **Contexto**: Diagnóstico de erro 500 no botão "Confirmar e Emitir Protocolo" em produção (`ihubfiscal.vercel.app`):
+  1. **Causa-Raiz**: O usuário submeteu uma nota fiscal que já existia no banco de dados. A constraint única `uq_invoice_supplier_number UNIQUE (supplier_id, invoice_number)` do PostgreSQL no Supabase barrou a inserção. Por segurança, o Next.js ocultou a mensagem original em produção, exibindo *"An error occurred in the Server Components render..."* sob o título genérico *"Preenchimento Incompleto"*.
+  2. **Tratamento no Backend (`src/actions/invoices.ts`)**:
+     - Implementada consulta prévia por `supplier_id` + `invoice_number` antes de tentar inserir.
+     - Captura resiliente do erro Postgres código `23505` (violação de unicidade) com retorno estruturado `{ success: false, errorType: 'DUPLICATE_INVOICE', protocol, invoiceNumber }` em vez de disparar exceção não tratada.
+  3. **Interface Humanizada (`WizardStep2SplitView.tsx`)**:
+     - Substituído o erro genérico por um card contextual âmbar: **"Esta Nota Fiscal Já Foi Enviada Anteriormente"**, informando o número da nota, o protocolo ativo sob o qual ela já se encontra registrada no financeiro e botão para "Enviar Outra Nota Fiscal".
+     - Tratamento específico para instabilidade de rede/servidor com orientação acolhedora e sem termos técnicos de compilação.
+     - Validação completa com compilação de produção (`npm run build`) bem-sucedida.
+
 ---
 
 ### [2026-09-16] — Limpeza do Header Superior, Redesign Harmonioso do Hero e Padronização Nominal

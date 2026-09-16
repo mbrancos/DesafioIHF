@@ -244,6 +244,25 @@ export async function submitSupplierInvoice(formData: FormData) {
     costCenterId = cc?.id || null;
   }
 
+  // 4.1. Verificação prévia de duplicidade (mesmo prestador + mesmo número de nota)
+  const { data: existingInvoice } = await adminSupabase
+    .from('invoices')
+    .select('id, protocol, status, created_at')
+    .eq('supplier_id', supplierId)
+    .eq('invoice_number', numeroNota)
+    .maybeSingle();
+
+  if (existingInvoice) {
+    return {
+      success: false,
+      errorType: 'DUPLICATE_INVOICE',
+      protocol: existingInvoice.protocol,
+      invoiceNumber: numeroNota,
+      status: existingInvoice.status,
+      message: `A nota fiscal nº ${numeroNota} já foi enviada anteriormente sob o protocolo ${existingInvoice.protocol}.`,
+    };
+  }
+
   // 5. Insere a fatura na tabela invoices com status TRIAGEM
   const invoicePayload = {
     protocol,
@@ -274,7 +293,30 @@ export async function submitSupplierInvoice(formData: FormData) {
 
   if (invoiceError) {
     console.error('Erro ao persistir invoice no Supabase:', invoiceError);
-    throw new Error(`Falha ao registrar fatura: ${invoiceError.message}`);
+    // Trata caso de concorrência ou colisão de constraint única no Postgres
+    if (invoiceError.code === '23505') {
+      // Busca o protocolo existente
+      const { data: dup } = await adminSupabase
+        .from('invoices')
+        .select('protocol, status')
+        .eq('supplier_id', supplierId)
+        .eq('invoice_number', numeroNota)
+        .maybeSingle();
+
+      return {
+        success: false,
+        errorType: 'DUPLICATE_INVOICE',
+        protocol: dup?.protocol || null,
+        invoiceNumber: numeroNota,
+        message: `Esta nota fiscal (nº ${numeroNota}) já consta registrada em nosso sistema.`,
+      };
+    }
+
+    return {
+      success: false,
+      errorType: 'SERVER_ERROR',
+      message: 'Instabilidade temporária ao salvar os dados da nota. Por favor, tente novamente.',
+    };
   }
 
   const invoiceId = invoice.id;
@@ -285,18 +327,22 @@ export async function submitSupplierInvoice(formData: FormData) {
     (extractedData as any)?.is_contingency;
 
   // 6. Registra o evento de auditoria imutável
-  await adminSupabase.from('invoice_events').insert({
-    invoice_id: invoiceId,
-    action: 'UPLOADED',
-    metadata: {
-      protocol,
-      hash_sha256: hashSha256,
-      file_pdf_url: filePdfUrl,
-      origin: 'portal_fornecedor',
-      manual_entry: !!isContingency,
-      ai_fallback: !!isContingency,
-    },
-  });
+  try {
+    await adminSupabase.from('invoice_events').insert({
+      invoice_id: invoiceId,
+      action: 'UPLOADED',
+      metadata: {
+        protocol,
+        hash_sha256: hashSha256,
+        file_pdf_url: filePdfUrl,
+        origin: 'portal_fornecedor',
+        manual_entry: !!isContingency,
+        ai_fallback: !!isContingency,
+      },
+    });
+  } catch (eventErr) {
+    console.warn('Aviso: falha não bloqueante ao registrar evento de auditoria:', eventErr);
+  }
 
   revalidatePath('/kanban');
 
