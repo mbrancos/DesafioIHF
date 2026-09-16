@@ -44,6 +44,19 @@ timeline
 
 ---
 
+### [2026-09-16] — Contatos no Rodapé, Downloads da Visão Unificada Completa e Amostra de Teste no Portal
+- **Commit**: `feat(portal): adiciona contatos de email/whatsapp no rodape, downloads da visao unificada e amostra de teste`
+- **Contexto**: Atendimento aos refinamentos de experiência do usuário e entrega da banca avaliadora:
+  1. **Contatos Oficiais no Rodapé**: Inseridos botões interativos de E-mail (`mailto:iiioises@gmail.com`) e WhatsApp (`https://wa.me/5592984276611`) ao lado do nome do candidato *Moisés Branco dos Santos*.
+  2. **Banner da Visão Unificada Completa**:
+     - No **Hero Section**: Criado card executivo de destaque disponibilizando os PDFs consolidados (`entregavel-1-desenho-da-solucao.pdf` e `entregavel-3-manual-operacional-financeiro.pdf`) que integram as Soluções A e B.
+     - No **Rodapé**: Incluída faixa de acesso rápido aos documentos consolidados.
+  3. **Amostra de PDF para Teste no Entregável 3-A e na Demonstração**:
+     - Disponibilizado atalho direto para download do arquivo `NF-2026001-ImpactHub-Floripa.pdf` no card do Entregável 3-A e no cabeçalho do Prompt Mestre do Gemini Spark na seção de Demonstração.
+     - Criada e sincronizada a pasta pública `public/test-samples/` para garantir redundância total contra qualquer requisição direta da banca.
+  4. **Conferência Rigorosa do Apps Script**: Confirmada a utilização estrita dos índices de array corretos em `solucao-a-codigo-apps-script.js`: `data[i][5]` para Número da Nota e `data[i][2]` para Prestador / Razão Social.
+  5. **Sincronia Estrita**: Hashes SHA-256 de `portal/index.html` e `public/portal/index.html` rigorosamente idênticos. Suíte Vitest com 44/44 testes passando.
+
 ### [2026-09-16] — Separação e Criação de PDFs Específicos para a Solução A e Solução B
 - **Commit**: `feat(portal): separa downloads de PDFs com arquivos especificos para Solucao A e Solucao B`
 - **Contexto**: Diagnóstico de que ambos os botões da Solução A e da Solução B no portal apontavam anteriormente para os mesmos arquivos genéricos. Criação de 4 documentos executivos PDF independentes e dedicados para cada abordagem.
