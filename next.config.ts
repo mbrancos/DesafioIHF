@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         source: '/portal',
         destination: '/portal/index.html',
       },
+      {
+        source: '/downloads/:path*',
+        destination: '/portal/downloads/:path*',
+      },
     ];
   },
 };

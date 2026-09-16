@@ -44,6 +44,17 @@ timeline
 
 ---
 
+### [2026-09-16] — Correção de Causa-Raiz de Erro 404 nos Downloads do Portal Executivo
+- **Commit**: `fix(portal): corrige links de download para caminhos absolutos e adiciona rewrite de fallback`
+- **Contexto**: Diagnóstico de erro 404 ao clicar nos botões de download de PDF, .js e .txt quando o portal é acessado na rota `https://ihubfiscal.vercel.app/portal` (sem trailing slash).
+- **Causa-Raiz Identificada**: Quando o navegador carrega uma rota sem barra final (`/portal`), a URL base para links relativos como `href="downloads/arquivo.pdf"` é resolvida pelo browser como `https://ihubfiscal.vercel.app/downloads/arquivo.pdf` (na raiz do domínio) em vez de `https://ihubfiscal.vercel.app/portal/downloads/arquivo.pdf`.
+- **Arquivos**: `portal/index.html`, `public/portal/index.html`, `public/downloads/`, `next.config.ts`, `docs/changelog.md`.
+- **Blindagem em 3 Níveis (Bulletproof)**:
+  1. **Links Absolutos no HTML**: Todos os atributos `href` de downloads atualizados de `downloads/...` para `/portal/downloads/...` em `portal/index.html` e `public/portal/index.html`.
+  2. **Pasta Estática na Raiz (`public/downloads/`)**: Cópia espelho de todos os 7 arquivos de download colocada em `public/downloads/`, permitindo que requisições para `/downloads/...` também respondam com status HTTP 200 diretamente pelo CDN da Vercel.
+  3. **Rewrite no Next.js (`next.config.ts`)**: Adicionado rewrite de `/downloads/:path*` para `/portal/downloads/:path*`, garantindo roteamento dinâmico no servidor Next.js.
+- **Validação**: Testes unitários (44/44 vitest) e compilação do Next.js aprovados sem erros.
+
 ### [2026-09-16] — Inclusão do Link Oficial do Repositório GitHub na Solução B e no Portal Executivo
 - **Commit**: `feat(solucao-b): adiciona links do repositorio GitHub no portal executivo e na Navbar do Web App`
 - **Contexto**: Facilitação do acesso ao código-fonte da Solução B (`https://github.com/mbrancos/DesafioIHF`) para a banca avaliadora da vaga de Analista Pleno de IA e Produtos Digitais.

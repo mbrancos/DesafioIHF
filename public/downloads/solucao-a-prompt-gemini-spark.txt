@@ -1,0 +1,29 @@
+Por favor, configure uma automação autônoma de contas a pagar com as seguintes especificações:
+
+Gatilho da Rotina:
+Quando eu receber um novo e-mail contendo anexo com o filtro:
+has:attachment subject:(Nota OR NFS-e OR NF-e OR Fiscal)
+
+Fluxo de Execução da Rotina:
+1. Localizar e ler a mensagem recente recebida, identificando o remetente original (e-mail do fornecedor) e o anexo da nota fiscal em PDF.
+2. Salvar o arquivo físico em PDF da nota na minha pasta do Google Drive:
+   URL da Pasta: [COLE_AQUI_O_LINK_DA_PASTA_DO_DRIVE]
+3. Extrair os campos fiscais estruturados:
+   - Número da Nota
+   - Data de Emissão e Vencimento
+   - Prestador (Razão Social e CNPJ)
+   - Tomador (Vertical/Empresa)
+   - Descrição dos serviços
+   - Centro de Custo compatível
+   - Valor Bruto, Retenções e Valor Líquido (converter para formato numérico)
+   - Chave Pix ou Dados Bancários
+4. Acessar minha planilha no Google Sheets:
+   ID da Planilha: [COLE_AQUI_O_ID_DA_SUA_PLANILHA]
+   Aba: "Contas_a_Pagar"
+5. Inserir uma nova linha com todos os 18 campos preenchidos, gerando protocolo sequencial (ex: IHF-2026-0001), vinculando o link do PDF salvo no Drive e definindo o Status inicial obrigatoriamente como "AGUARDANDO_APROVACAO".
+6. Enviar um e-mail de notificação para mim com:
+   - Resumo claro da fatura.
+   - Link de acesso ao PDF no Drive e à planilha.
+   - Botão APROVAR NOTA configurado exatamente com o link do meu Web App de 1 clique:
+     [COLE_AQUI_A_SUA_URL_DO_WEBAPP_DO_APPS_SCRIPT]?id={ID_PROTOCOLO}&acao=aprovar
+   - Botão REPROVAR NOTA com comando mailto apontando diretamente para o e-mail do fornecedor que enviou a nota, com assunto "REPROVADO - NF {NUMERO} {PRESTADOR}" para envio do motivo da recusa.
