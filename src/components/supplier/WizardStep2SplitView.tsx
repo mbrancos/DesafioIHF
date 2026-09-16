@@ -7,7 +7,7 @@ import { Badge } from '@/components/common/Badge';
 import { validateTaxMath } from '@/lib/math';
 import { formatBRL, formatCNPJ, parseCentavos } from '@/lib/formatters';
 import { submitSupplierInvoice } from '@/actions/invoices';
-import { CheckCircle2, AlertTriangle, ShieldCheck, ArrowLeft, Copy, Check } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, AlertCircle, ShieldCheck, ArrowLeft, Copy, Check } from 'lucide-react';
 
 interface WizardStep2SplitViewProps {
   initialData: any;
@@ -127,12 +127,14 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
         payload.append('extracted_data', JSON.stringify(initialData));
       }
 
-      const res = await submitSupplierInvoice(payload);
+      try {
+        const res = await submitSupplierInvoice(payload);
 
-      if (res.success && res.protocol) {
-        setSubmittedProtocol(res.protocol);
-      } else if (res.error) {
-        setValidationError(res.error);
+        if (res.success && res.protocol) {
+          setSubmittedProtocol(res.protocol);
+        }
+      } catch (err: any) {
+        setValidationError(err?.message || 'Falha ao enviar fatura para triagem.');
       }
     });
   };

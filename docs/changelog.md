@@ -46,6 +46,15 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-16] — Correção de Server Actions e Desacoplamento de Utilitários para Deploy na Vercel
+- **Commit**: `fix(build): extrai generateProtocol para src/lib/protocol.ts e corrige tipagem em WizardStep2SplitView`
+- **Contexto**: Resolução de falha de compilação do Next.js 15 durante o deploy na Vercel (`Server Actions must be async functions`).
+- **Arquivos**: `src/lib/protocol.ts`, `src/actions/invoices.ts`, `src/components/supplier/WizardStep2SplitView.tsx`, `tests/unit/supplier-wizard.test.ts`, `docs/changelog.md`.
+- **Decisões e Resultados**:
+  1. **Desacoplamento de Funções Síncronas**: Criado `src/lib/protocol.ts` contendo `generateProtocol()` sem a diretiva `'use server'`, eliminando a exigência do Next.js de tratar funções utilitárias síncronas como Server Actions assíncronas.
+  2. **Tratamento de Tipos e Exceções**: Ajustada a Server Action `submitSupplierInvoice` com declaração estrita de `invoiceId` e tratamento via try/catch em `WizardStep2SplitView.tsx` com importação de `AlertCircle`.
+  3. **Validação de Build e Testes**: `next build` aprovado localmente (todas as 12 rotas estáticas e dinâmicas geradas com sucesso) e 100% da suíte de testes passando no Vitest (44/44 testes).
+
 ### [2026-09-16] — Unificação Formal da Versão 2 na Master via Pull Request #1
 - **Pull Request**: [#1 — `feat(v2): unificacao do iHubFiscal v2 na master com pipeline de IA e governanca`](https://github.com/mbrancos/DesafioIHF/pull/1) (Status: `MERGED`)
 - **Contexto**: Consolidação completa da versão 2 do **iHubFiscal** da branch `feat/ihubfiscal-v2` para a branch principal `master` no GitHub, preservando o histórico integral de commits, a Landing Page executiva da Fase 1 (`/portal`) e validando todas as entregas técnicas de governança e inteligência artificial.

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getCurrentUser } from '@/actions/auth';
 import { revalidatePath } from 'next/cache';
+import { generateProtocol } from '@/lib/protocol';
 
 export interface CreateInvoiceInput {
   cnpj_prestador: string;
@@ -25,15 +26,6 @@ export interface CreateInvoiceInput {
   file_pdf_url?: string;
   hash_sha256: string;
   extracted_data?: any;
-}
-
-/**
- * Gera protocolo único e auditável para o fornecedor acompanhar o status
- * Formato: IHF-2026-XXXX (ex: IHF-2026-AB72)
- */
-export function generateProtocol(): string {
-  const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
-  return `IHF-2026-${randomPart}`;
 }
 
 /**
@@ -284,6 +276,8 @@ export async function submitSupplierInvoice(formData: FormData) {
     console.error('Erro ao persistir invoice no Supabase:', invoiceError);
     throw new Error(`Falha ao registrar fatura: ${invoiceError.message}`);
   }
+
+  const invoiceId = invoice.id;
 
   const isContingency =
     formData.get('is_contingency') === 'true' ||

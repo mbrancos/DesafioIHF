@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { generateProtocol } from '../../src/actions/invoices';
+import { generateProtocol } from '../../src/lib/protocol';
 
 describe('Portal do Fornecedor (Wizard /upload e Split-View)', () => {
   const dynamicViewerPath = path.resolve(__dirname, '../../src/components/pdf/DynamicPdfViewer.tsx');
