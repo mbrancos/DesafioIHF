@@ -46,15 +46,15 @@ flowchart LR
 
 ---
 
-### 2. Stack Tecnológica Escolhida & Racional de Decisão
+### 2. Stack Tecnológica Escolhida & Racional de Decisão (Modelo Dual)
 
-| Camada | Tecnologia Adotada | Racional Técnico & Vantagem Competitiva |
-|---|---|---|
-| **Orquestração** | **n8n** (Self-hosted / Cloud) | Padrão ouro em automação com IA; nós modulares, controle total de webhooks, execução assíncrona e zero dependência de código proprietário. |
-| **Inteligência Artificial** | **OpenAI GPT-4o-mini / Vision** | Excelente custo-benefício por token, velocidade (< 5s por nota) e alta acurácia na leitura de tabelas tributárias de NFS-e. |
-| **Estratégia de Prompt** | **Strict Null Framework** | Proíbe alucinações: se o campo não estiver explícito, a IA retorna estritamente `null` e delega a decisão para revisão humana. |
-| **Idempotência** | **Hash SHA-256 Nativo** | Impede duplicidade no próprio pipeline do n8n comparando o hash do arquivo binário e a tupla `[CNPJ + Número NF]`. |
-| **Visibilidade Operacional** | **Google Sheets / Base Relacional** | Visão centralizada em tempo real para o financeiro, sem fricção de adoção para analistas de negócio. |
+| Camada | Solução A (Google Workspace) | Solução B (iHubFiscal Full-Stack) | Racional Técnico & Vantagem Estratégica |
+|---|---|---|---|
+| **Orquestração & Core** | **Google Apps Script & Gemini Spark** | **Next.js 15 & Vercel Serverless** | A Solução A viabiliza início imediato com custo zero; a Solução B oferece plataforma enterprise independente. |
+| **Inteligência Artificial** | **Gemini Spark Multimodal** | **Google Gemini 2.5 Flash via API** | Alta acurácia na leitura visual de tabelas tributárias de NFS-e, com velocidade (< 4s) e suporte a saídas estruturadas. |
+| **Estratégia de Prompt** | **Strict Null Framework** | **Zod Schema / Structured Outputs** | Eliminação completa de alucinações: campos ausentes retornam nulos e são auditados por humanos. |
+| **Storage & Banco** | **Google Drive & Google Sheets** | **Supabase PostgreSQL & Object Storage** | Planilha simples para equipes enxutas; banco relacional com RLS e alçadas estritas para alta governança. |
+| **Aprovações** | **Web App 1-Clique (doGet)** | **Central de Alçadas (Kanban 6 Fases)** | Aprovação sem fricção direto do e-mail (Solução A) ou governança com teto de R$ 10k e alçada de CFO (Solução B). |
 
 ---
 

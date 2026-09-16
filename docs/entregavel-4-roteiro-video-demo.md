@@ -1,19 +1,20 @@
-# 🎬 Entregável 4 — Roteiro Segundo a Segundo do Vídeo Demonstrativo
-**Produto**: ImpactPay AI — Central de Contas a Pagar com Inteligência Artificial  
-**Vaga**: Pessoa Analista Pleno de Inteligência Artificial e Produtos Digitais  
+# 🎬 Entregável 4 — Roteiro de Gravação do Vídeo Demonstrativo
+**Produto**: iHubFiscal — Modelo Dual de Contas a Pagar & Governança com IA  
+**Público-Alvo**: Banca Avaliadora do Desafio Técnico & Liderança da Companhia de Impacto  
 **Candidato**: Moisés Branco dos Santos  
-**Organização**: Holding Companhia de Impacto  
-**Duração Alvo**: **2 minutos e 45 segundos** (Teto Rigoroso do Edital: **3 minutos**)  
+**Duração Máxima**: Exatamente 3 minutos (Meta: 2m45s a 2m50s)  
+**Formato**: Vídeo em alta definição (1080p), áudio limpo, tela compartilhada com webcam no canto inferior  
 
 ---
 
-## ⏱️ Cronograma do Vídeo (Visão Panorâmica)
+## ⏱️ Estrutura Macro do Tempo (Cronograma dos 3 Minutos)
 
-```
-0:00 ───[ 30s ]─── 0:30 ───────[ 65s ]─────── 1:35 ─────[ 45s ]───── 2:20 ───[ 25s ]─── 2:45 (Fim)
-  Apresentação &         Execução Prática              Resiliência &             Governança,
-  Dores da Holding       do Trecho 1 no n8n            Casos de Exceção          LGPD & Fechamento
-```
+| Bloco | Tema Central | Tempo Sugerido | Acumulado |
+|---|---|---|---|
+| **Bloco 1** | Abertura Executiva & Dores das 4 Verticais | 30 segundos | 0:00 a 0:30 |
+| **Bloco 2** | Solução A: Automação Ágil com Gemini Spark & Google Workspace | 50 segundos | 0:30 a 1:20 |
+| **Bloco 3** | Solução B: Plataforma Full-Stack iHubFiscal v2 (Alçadas & Kanban 6 Fases) | 60 segundos | 1:20 a 2:20 |
+| **Bloco 4** | Matriz de Decisão, Fechamento Contábil & Conclusão | 30 segundos | 2:20 a 2:50 |
 
 ---
 
@@ -22,68 +23,64 @@
 ### 🟦 Bloco 1: Abertura Executiva & O Problema da Holding (0:00 a 0:30)
 * **Tempo**: 30 segundos
 * **O que mostrar na tela**:
-  - *0:00 a 0:10*: Câmera aberta no candidato (postura firme, profissional e receptiva) ou tela com slide executivo do ImpactPay AI.
-  - *0:10 a 0:30*: Transição suave para o diagrama de arquitetura da Companhia de Impacto destacando as 4 verticais (*Impact Hubs*, *Salto*, *Impacta Mais*, *Seu PêJota*).
+  - *0:00 a 0:10*: Câmera aberta no candidato ou tela inicial do portal executivo (`/portal`).
+  - *0:10 a 0:30*: Mostrar o diagrama da Companhia de Impacto destacando as 4 verticais (*Impact Hub Floripa*, *Salto*, *Impacta Mais*, *Seu PêJota*).
 * **Fala do Candidato (Script)**:
-  > *"Olá! Sou Moisés Branco e apresento o **ImpactPay AI**, a solução que desenhei para transformar o contas a pagar da **Companhia de Impacto**.*  
-  > *Atualmente, a holding recebe notas fiscais em 3 caixas de e-mail descentralizadas, digita dados manualmente em planilhas e aprova despesas por mensagens soltas no WhatsApp. O resultado? Notas perdidas, multas por atraso e zero visibilidade da diretoria.*  
-  > *Para resolver isso na raiz, construí uma automação no n8n com IA multimodal para o Trecho 1, aliada a um modelo de governança financeira ponta a ponta. Vamos ver funcionando na prática."*
+  > *"Olá banca avaliadora! Sou Moisés Branco e apresento o **iHubFiscal**, a solução desenhada para transformar a gestão de contas a pagar da **Companhia de Impacto**.*  
+  > *Atualmente, a holding recebe notas fiscais em caixas descentralizadas, digita dados manualmente em planilhas e aprova despesas por WhatsApp. Isso gera risco de multas, notas perdidas e zero auditoria.*  
+  > *Para resolver isso de forma realista, estruturei duas abordagens: a **Solução A**, uma automação ágil com custo zero no Google Workspace, e a **Solução B**, uma plataforma profissional full-stack para alta governança. Vamos ver as duas funcionando na prática."*
 
 ---
 
-### 🟩 Bloco 2: Execução ao Vivo do Trecho 1 no n8n (0:30 a 1:35)
-* **Tempo**: 65 segundos
+### 🟩 Bloco 2: Solução A — Gemini Spark no Google Workspace (0:30 a 1:20)
+* **Tempo**: 50 segundos
 * **O que mostrar na tela**:
-  - *0:30 a 0:45*: Tela do n8n com o workflow aberto e visualmente limpo. Mostrar o nó Webhook e disparar o envio de um dos PDFs de teste (`NF-2026001-ImpactHub-Floripa.pdf`).
-  - *0:45 a 1:05*: Mostrar o fluxo executando em tempo real:
-    1. O nó de **Hash SHA-256 nativo** gerando a impressão digital do arquivo.
-    2. O nó da **IA Multimodal (GPT-4o-mini)** processando a imagem com a diretriz *Strict Null*.
-  - *1:05 a 1:35*: Clicar no nó de saída e abrir o JSON estruturado:
-    - Destacar a extração perfeita: Razão Social do Prestador, CNPJ, Data de Emissão e Vencimento.
-    - Destacar a identificação automática da vertical: `"Impact Hub Florianópolis"` e centro de custo `"Tecnologia & Inovação"`.
-    - Mostrar o cálculo tributário: Bruto de R$ 5.000,00, retenção de ISS (R$ 100) e IRRF (R$ 75), resultando no líquido exato de R$ 4.825,00.
+  - *0:30 a 0:45*: Mostrar a caixa de entrada do Gmail recebendo uma nota fiscal e o Gemini Spark processando a rotina autônoma.
+  - *0:45 a 1:00*: Abrir a planilha **`Contas_a_Pagar`** no Google Sheets:
+    - Mostrar a nova linha preenchida nas 18 colunas (protocolo sequencial, prestador, CNPJ, retenções e valor líquido com fórmulas).
+    - Mostrar a aba **`Dashboard`** com os KPIs calculados automaticamente.
+  - *1:00 a 1:20*: Abrir o e-mail de notificação gerado para o gestor:
+    - Clicar no botão verde **APROVAR NOTA**: mostrar a tela do Web App Apps Script confirmando a liberação em 1 clique e a planilha mudando para `APROVADO`.
+    - Mostrar o botão de recusa direta apontando para o fornecedor.
 * **Fala do Candidato (Script)**:
-  > *"Aqui no n8n temos a implementação prática do Trecho 1, totalmente autocontida e sem dependências externas.*  
-  > *Ao receber o PDF da nota fiscal, o fluxo gera imediatamente um Hash SHA-256 nativo para garantir rastreabilidade e idempotência.*  
-  > *Em seguida, nosso nó de IA multimodal lê o documento usando a diretriz 'Strict Null': se um dado não estiver explícito, a IA retorna null em vez de alucinar.*  
-  > *Observem a saída: a IA identificou com precisão a vertical Tomadora como Impact Hub Floripa, extraiu o vencimento, discriminou as retenções de ISS e IRRF e validou matematicamente que o valor bruto menos as deduções bate rigorosamente com o líquido de R$ 4.825,00, transicionando a nota para 'Aguardando Aprovação'."*
+  > *"A Solução A foi criada para implantação imediata, aproveitando o ecossistema Google Workspace que a holding já possui.*  
+  > *Quando o fornecedor envia a nota por e-mail, o Gemini Spark detecta o anexo, salva o PDF no Google Drive e extrai os dados estruturados diretamente para a nossa planilha de controle fiscal.*  
+  > *O gestor recebe uma notificação instantânea no e-mail com resumo e um botão de 'Aprovação em 1 Clique'. Ao clicar, nosso Web App no Apps Script atualiza a planilha para APROVADO em tempo real, sem necessidade de logins complexos."*
 
 ---
 
-### 🟧 Bloco 3: Demonstração de Resiliência & Gestão de Riscos (1:35 a 2:20)
-* **Tempo**: 45 segundos
+### 🟧 Bloco 3: Solução B — Plataforma Full-Stack iHubFiscal v2 (1:20 a 2:20)
+* **Tempo**: 60 segundos
 * **O que mostrar na tela**:
-  - *1:35 a 1:55*: Simular o reenvio da mesma nota fiscal (mesmo arquivo ou mesmo CNPJ+Número). Mostrar o n8n bloqueando a duplicidade e emitindo o alerta de que a nota já foi cadastrada.
-  - *1:55 a 2:20*: Mostrar o segundo caso de exceção (uma nota com divergência matemática ou com campo ilegível) caindo na rota de **Status: REVISÃO_MANUAL**, com o motivo detalhado no JSON.
+  - *1:20 a 1:40*: Portal do Fornecedor (`/upload`) mostrando a tela dividida (*Split-View*): PDF original na esquerda e campos extraídos pela IA na direita com chave Pix.
+  - *1:40 a 2:00*: Quadro Kanban operacional de **6 Fases** (`/kanban`):
+    - Mostrar as colunas: *Triagem*, *Aguardando Aprovação*, *Recusado*, *Agendar Pagamento*, *Agendado* e *Pago & Liquidado*.
+    - Demonstrar os **tooltips informativos** ao passar o mouse sobre cada coluna.
+    - Demonstrar a **trava de alçada**: entrar como Gestor de Inovação e tentar aprovar fatura acima de R$ 10.000 (sistema bloqueia); alternar pelo dropdown da Navbar para o CFO e aprovar com alçada extraordinária.
+  - *2:00 a 2:20*: Tela de Pagamentos (`/pagamentos`) com cópia de Pix em 1 clique e anexo de comprovante, finalizando na tela de Fechamento Contábil (`/fechamento`) gerando o arquivo `.ZIP` auditável com manifesto CSV.
 * **Fala do Candidato (Script)**:
-  > *"Mas um sistema corporativo não pode funcionar apenas no 'caminho feliz'. Vamos testar duas contingências críticas.*  
-  > *Primeiro: se o fornecedor tentar reenviar a mesma nota fiscal, o hash e a chave combinada bloqueiam a inserção na hora, impedindo pagamentos duplicados.*  
-  > *Segundo: se a nota apresentar rasuras ou inconsistência de alíquota, o nó validador detecta a diferença matemática e roteia o documento imediatamente para 'Revisão Manual', alertando o time financeiro com a causa exata em vez de travar o fluxo silenciosamente."*
+  > *"Para operações que exigem segregação rigorosa de funções e alta escala, desenvolvi a Solução B: o iHubFiscal v2, em Next.js 15 e Supabase.*  
+  > *O fornecedor conta com um portal de autoatendimento com split-view PDF e conferência assistida por IA. No financeiro, o Kanban de 6 fases organiza o fluxo ponta a ponta.*  
+  > *Aqui temos governança estrita de alçadas: gestores de área só aprovam faturas de até R$ 10.000. Acima disso, o sistema bloqueia e exige deliberação do CFO. No fechamento mensal, o sistema compila um pacote .ZIP com todas as notas e comprovantes pareados 1 a 1 para o BPO contábil."*
 
 ---
 
-### 🟪 Bloco 4: Governança, LGPD & Conclusão Executiva (2:20 a 2:45)
-* **Tempo**: 25 segundos
+### 🟪 Bloco 4: Matriz de Decisão & Conclusão Executiva (2:20 a 2:50)
+* **Tempo**: 30 segundos
 * **O que mostrar na tela**:
-  - *2:20 a 2:35*: Mostrar rapidamente o diagrama de 2 páginas do Desenho da Solução ou a página do Portal Executivo, destacando a trava de auto-auditoria, o cartão de aprovação e o repasse para o contador em .ZIP.
-  - *2:35 a 2:45*: Câmera de volta para o candidato para encerramento elegante.
+  - *2:20 a 2:35*: Mostrar a tabela comparativa de decisão no portal executivo (`#comparativo`).
+  - *2:35 a 2:50*: Câmera aberta no candidato para encerramento profissional.
 * **Fala do Candidato (Script)**:
-  > *"Na visão completa da holding, a solução conta com trava de auto-auditoria para impedir que gestores aprovem as próprias notas, conformidade plena com a LGPD para proteção de dados de MEIs e autônomos, e geração de lotes em .ZIP para a contabilidade externa.*  
-  > *Com o ImpactPay AI, o financeiro ganha velocidade, a diretoria tem controle em tempo real e a Companhia de Impacto opera com governança de ponta. Muito obrigado!"*
+  > *"Essa arquitetura dual oferece flexibilidade estratégica para a Companhia de Impacto: a Solução A permite colocar a operação para rodar hoje mesmo com custo zero, enquanto a Solução B consolida uma plataforma enterprise pronta para escalar com as verticais.*  
+  > *Ambos os caminhos garantem eficiência, conformidade fiscal e tranquilidade para o contas a pagar. Muito obrigado!"*
 
 ---
 
-## 🎯 Dicas de Ouro para a Gravação (Checklist do Candidato)
+## 🎯 Dicas de Ouro para a Gravação
 
-1. **Iluminação e Áudio**:
-   - Utilize fone de ouvido com microfone próximo à boca para eliminar eco de sala.
-   - Iluminação frontal (evitar luz forte atrás das costas).
-2. **Software de Gravação**:
-   - Utilize o **OBS Studio** ou **Loom** gravando tela cheia (1080p).
-   - Configure a câmera em um círculo pequeno no canto inferior direito para manter a humanização sem tapar os nós do n8n.
-3. **Controle Estrito do Cronômetro**:
-   - Coloque um cronômetro no celular ao lado do monitor.
-   - Se o ensaio passar de 2m55s, corte pequenos respiros para garantir que nunca ultrapasse a marca fatídica de 3m00s.
-4. **Preparação Prévia dos Arquivos**:
-   - Deixe o n8n aberto no navegador em aba cheia.
-   - Deixe os 3 PDFs de teste já baixados na área de trabalho para arrastar com agilidade.
+1. **Software Recomendado**: OBS Studio ou Loom gravando em 1080p a 60fps.
+2. **Abas Prontas no Navegador**:
+   * Aba 1: Portal Executivo (`https://ihubfiscal.vercel.app/portal`)
+   * Aba 2: Planilha do Google Sheets (Solução A)
+   * Aba 3: Aplicação iHubFiscal v2 logada como Gestor e CFO (`https://ihubfiscal.vercel.app/kanban`)
+3. **Controle Estrito do Tempo**: Mantenha o cronômetro visível para finalizar rigorosamente abaixo dos 3 minutos.

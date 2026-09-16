@@ -44,6 +44,19 @@ timeline
 
 ---
 
+### [2026-09-16] — Arquitetura Dual no Portal (/portal), Transição do n8n para Gemini Spark e Sincronia Vercel
+- **Commit**: `feat(portal): implementa arquitetura dual Solucao A (Gemini Spark) vs Solucao B (Full-Stack), reposiciona video demo e remove n8n`
+- **Contexto**: Reposicionamento estratégico da entrega do desafio técnico da vaga de Analista Pleno de IA e Produtos Digitais:
+  1. **Descarte Integral do n8n**: Excluído o workflow `fluxo-n8n-trecho1-extracao-nf.json` e todos os binários/referências legadas do n8n.
+  2. **Adoção da Solução A (Google Workspace & Gemini Spark)**: Documentada a automação nativa e autônoma funcional no Workspace (Gmail, Drive, Google Sheets com 18 colunas, Dashboard de KPIs, Web App Apps Script com aprovação 1-clique e acionador de recusas). Correção dos índices de array (`data[i][5]` para número da nota e `data[i][2]` para prestador) no script gerado para download.
+  3. **Adoção da Solução B (Plataforma Enterprise iHubFiscal v2)**: Demonstração da aplicação corporativa em Next.js 15, Vercel e Supabase com Kanban de 6 fases, segregação de funções, alçadas hierárquicas e fechamento contábil .ZIP.
+  4. **Redesign do Portal Executivo (`/portal`)**:
+     - Seção do **Vídeo Demo** reposicionada logo abaixo do Hero para destaque à banca avaliadora.
+     - Todas as seções subsequentes divididas em **layout lado a lado (Solução A à esquerda e Solução B à direita)**: 4 Entregáveis Obrigatórios, Visão Arquitetural, Demonstração & Códigos e Matriz de Contingência.
+     - Inclusão do **Quadro Comparativo Executivo** (Matriz de decisão: Custo, Tempo, SoD, Alçadas e Volume).
+  5. **Sincronia Estrita com a Vercel**: Atualizados simultaneamente `portal/` e `public/portal/` (arquivos `index.html` e downloads `solucao-a-codigo-apps-script.js`, `solucao-a-prompt-gemini-spark.txt`), com hashes idênticos.
+  6. **Atualização de Documentos**: `docs/entregavel-1-desenho-da-solucao.md`, `docs/entregavel-4-roteiro-video-demo.md` e criação de `docs/solucao-a-manual-gemini-spark.md`.
+
 ### [2026-09-16] — Evolução do Kanban para 6 Fases (Nova Etapa "Agendado"), Tooltips Informativos e Dropdown de Alçadas na Navbar
 - **Commit**: `feat(kanban): adiciona fase Agendado (6 fases), tooltips informativos e dropdown de troca de personas na Navbar`
 - **Contexto**: Refinamento da esteira operacional de contas a pagar e da experiência de avaliação de alçadas:
