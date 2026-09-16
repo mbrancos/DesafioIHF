@@ -42,6 +42,13 @@ timeline
         Central Operacional iHubFiscal v2 : Implementação SPA em portal/ihub/
 ```
 
+### [2026-09-16] — Remoção das Caixas de Minutagem Abaixo do Player de Vídeo no Portal
+- **Commit**: `style(portal): remove caixas de minutagem abaixo do player de video de demonstracao`
+- **Contexto**: Eliminação das caixas de tópicos de minutagem (`0:00 - 0:30`, `0:30 - 1:15`, etc.) logo abaixo do player de vídeo na seção `#video-demo` dos arquivos `portal/index.html` e `public/portal/index.html`.
+- **Benefício**: Visual mais limpo e focado diretamente no player em tela inteira sem duplicações de conteúdo, permitindo foco exclusivo na apresentação.
+
+---
+
 ### [2026-09-16] — Incorporação do Vídeo Oficial de Demonstração (YouTube Embed) no Portal
 - **Commit**: `feat(portal): incorpora player oficial do youtube no entregavel 4 de demonstracao executiva`
 - **Contexto**: Substituição do placeholder estático da seção **Entregável 4 Oficial • Demonstração Executiva** (`#video-demo`) pelo player responsivo do YouTube (`https://www.youtube-nocookie.com/embed/vhVVJOEx-wE`) nos arquivos `portal/index.html` e `public/portal/index.html`.
