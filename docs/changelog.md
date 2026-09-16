@@ -46,6 +46,18 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-16] — Unificação Formal da Versão 2 na Master via Pull Request #1
+- **Pull Request**: [#1 — `feat(v2): unificacao do iHubFiscal v2 na master com pipeline de IA e governanca`](https://github.com/mbrancos/DesafioIHF/pull/1) (Status: `MERGED`)
+- **Contexto**: Consolidação completa da versão 2 do **iHubFiscal** da branch `feat/ihubfiscal-v2` para a branch principal `master` no GitHub, preservando o histórico integral de commits, a Landing Page executiva da Fase 1 (`/portal`) e validando todas as entregas técnicas de governança e inteligência artificial.
+- **Arquivos Afetados**: 79 arquivos atualizados na branch `master` (+15.086 adições, -241 remoções).
+- **Destaques de Engenharia e Arquitetura**:
+  1. **Scaffolding Enterprise & Design System**: Next.js 15, React 19, TypeScript estrito e tokens CSS oficiais de `floripa.impacthub.net` aplicados rigorosamente nas 10 telas operacionais.
+  2. **Resiliência de IA Fail-Fast (Google Gemini)**: Fallback em tempo real entre `gemini-flash-latest` e `gemini-flash-lite-latest` sem backoffs demorados, mantendo tempo total de resposta abaixo de 18 segundos e respeitando o teto de `maxDuration = 30` da Vercel.
+  3. **Modo Contingência para 503**: Tratamento elegante na UI do fornecedor com banner amigável, opção *"Continuar e Preencher Manualmente"* e registro semântico `{ manual_entry: true, ai_fallback: true }` nos eventos imutáveis de auditoria (`invoice_events`).
+  4. **Bypass de Limite Serverless (JSZip)**: Empacotamento de notas fiscais e relatórios contábeis `.zip` compilados inteiramente no navegador do cliente, contornando a trava de payload de 4.5 MB da Vercel.
+  5. **Governança Estrita de Alçadas**: Gestor de Centro de Custo com limite de até R$ 10.000,00 e CFO com aprovação ilimitada, bloqueando aprovações cruzadas e validando consistência fiscal com tolerância de centavos (R$ 0,02).
+  6. **Qualidade e Testes**: Build de produção verde (`npm run build`) e 100% da suíte de testes unitários aprovada (11 arquivos, 44 testes passando no Vitest).
+
 ### [2026-09-15] — Ativação Real da IA Gemini e Persistência Completa no Supabase (Storage + DB)
 - **Commit**: `feat(ai-storage): ativação real do Google Gemini com structured outputs e upload no Supabase Storage`
 - **Contexto**: Eliminação definitiva de fallbacks mockados na ingestão de notas fiscais, configuração da chave real da API do Google AI Studio no `.env.local`, criação de cliente administrativo (`createAdminClient`) com `SUPABASE_SERVICE_ROLE_KEY` para upload seguro no bucket público `invoices`, tratamento de status 503 com retry automático e persistência ponta a ponta na tabela `invoices` e `invoice_events`.
