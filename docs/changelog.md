@@ -44,6 +44,20 @@ timeline
 
 ---
 
+### [2026-09-16] — Reescrita Integral dos PDFs dos Entregáveis 1 e 3 Alinhados ao iHubFiscal v2 e Modelo Dual
+- **Commit**: `docs(entregaveis): reescreve PDFs dos entregaveis 1 e 3 alinhados com o produto real iHubFiscal v2 e modelo dual`
+- **Contexto**: Eliminação definitiva de incongruências conceituais da Fase 1 legada nos PDFs oficiais para download (`entregavel-1-desenho-da-solucao.pdf` e `entregavel-3-manual-operacional-financeiro.pdf`).
+- **Inconsistências Eliminadas**:
+  1. **Substituição de Naming**: O produto foi renomeado de *"ImpactPay AI"* para **"iHubFiscal"** / **"iHubFiscal v2"**.
+  2. **Stack Real**: Removidas todas as menções a *n8n* e *OpenAI GPT-4o-mini*. Documentada a estratégia do **Modelo Dual**: **Solução A** (Gemini Spark, Gmail, Drive, Sheets 18 colunas, Apps Script) vs **Solução B** (Next.js 15, Vercel, Supabase PostgreSQL com RLS, Google Gemini 2.5 Flash API).
+  3. **Esteira de 6 Fases do Kanban**: Substituídos os 5 status antigos pelas 6 colunas oficiais do Kanban: `1. Triagem & Divergências`, `2. Aguardando Aprovação`, `3. Recusado`, `4. Agendar Pagamento`, `5. Agendado`, `6. Pago & Liquidado`.
+  4. **Matriz Rígida de Alçadas**: Incorporada a regra de negócio real: **Gestor aprova até R$ 10.000,00; despesas acima desse teto são exclusivas do CFO Rodrigo**.
+  5. **Autoatendimento com Split-View**: Incorporado o portal do fornecedor (`/upload`) e a conferência assistida (`/conferencia/[id]`).
+  6. **Fechamento Contábil .ZIP em Lote**: Substituídos links temporários de 15 dias pelo empacotamento contábil mensal gerado em memória no navegador via `jszip` (PDFs renomeados + CSV analítico).
+  7. **Resiliência e Contingência**: Documentado o pool fail-fast síncrono (`gemini-flash-latest` -> `gemini-flash-lite-latest`) e modo contingencial de entrada manual em caso de HTTP 503.
+- **Arquivos**: `scripts/render_entregavel_1_pdf.py`, `scripts/render_entregavel_3_pdf.py`, `docs/entregavel-1-*`, `docs/entregavel-3-*`, `portal/downloads/`, `public/portal/downloads/`, `public/downloads/`, `docs/changelog.md`.
+- **Validação**: PDFs renderizados via Chrome headless com 2 páginas A4 cada; sincronizados em todos os 3 diretórios de distribuição; 44/44 testes unitários aprovados no Vitest.
+
 ### [2026-09-16] — Correção de Causa-Raiz de Erro 404 nos Downloads do Portal Executivo
 - **Commit**: `fix(portal): corrige links de download para caminhos absolutos e adiciona rewrite de fallback`
 - **Contexto**: Diagnóstico de erro 404 ao clicar nos botões de download de PDF, .js e .txt quando o portal é acessado na rota `https://ihubfiscal.vercel.app/portal` (sem trailing slash).

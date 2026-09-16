@@ -2,19 +2,20 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Entregável 1 — Desenho da Solução Completa (ImpactPay AI)</title>
+<title>Entregável 1 — Desenho da Solução Completa (iHubFiscal Modelo Dual)</title>
 <style>
   @page {
     size: A4 portrait;
-    margin: 12mm 15mm;
+    margin: 10mm 13mm;
   }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 9.5pt;
-    line-height: 1.35;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+    line-height: 1.32;
     color: #1e293b;
     margin: 0;
     padding: 0;
+    background: #ffffff;
   }
   .page {
     page-break-after: always;
@@ -22,82 +23,88 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
   }
   .page:last-child {
     page-break-after: avoid;
   }
   .header {
-    border-bottom: 2px solid #0f766e;
-    padding-bottom: 6px;
-    margin-bottom: 10px;
+    border-bottom: 2px solid #812926;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
   }
   .header-left h1 {
-    font-size: 14pt;
-    color: #0f766e;
+    font-size: 13.5pt;
+    color: #812926;
     margin: 0 0 2px 0;
     text-transform: uppercase;
     letter-spacing: -0.3px;
+    font-weight: 800;
   }
   .header-left p {
-    font-size: 8.5pt;
-    color: #64748b;
+    font-size: 8.2pt;
+    color: #1c395c;
     margin: 0;
-    font-weight: 500;
+    font-weight: 600;
   }
   .badge-candidate {
-    background: #f0fdfa;
-    border: 1px solid #99f6e4;
-    color: #0f766e;
-    font-size: 8pt;
+    background: #f2eae9;
+    border: 1px solid #e5c39e;
+    color: #812926;
+    font-size: 7.8pt;
     font-weight: 600;
     padding: 3px 8px;
     border-radius: 4px;
     text-align: right;
+    line-height: 1.25;
   }
   h2 {
-    font-size: 10.5pt;
-    color: #0f172a;
-    margin: 8px 0 4px 0;
-    border-left: 3px solid #0f766e;
+    font-size: 9.8pt;
+    color: #1c395c;
+    margin: 7px 0 3px 0;
+    border-left: 3px solid #812926;
     padding-left: 6px;
     text-transform: uppercase;
     letter-spacing: 0.2px;
+    font-weight: 700;
   }
   p {
-    margin: 0 0 6px 0;
-    font-size: 9pt;
+    margin: 0 0 5px 0;
+    font-size: 8.6pt;
     color: #334155;
     text-align: justify;
   }
   .highlight-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 5px;
-    padding: 8px 10px;
-    margin-bottom: 8px;
-    font-size: 8.5pt;
+    background: #f7f6f2;
+    border: 1px solid #e5e5e5;
+    border-left: 3px solid #1c395c;
+    border-radius: 4px;
+    padding: 6px 9px;
+    margin-bottom: 6px;
+    font-size: 8.2pt;
+    line-height: 1.3;
   }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 8px;
-    font-size: 8pt;
+    margin-bottom: 6px;
+    font-size: 7.8pt;
   }
   th {
-    background: #0f766e;
+    background: #1c395c;
     color: #ffffff;
     font-weight: 600;
     text-align: left;
-    padding: 5px 6px;
-    border: 1px solid #0f766e;
+    padding: 4px 6px;
+    border: 1px solid #1c395c;
     text-transform: uppercase;
-    font-size: 7.5pt;
+    font-size: 7.2pt;
   }
   td {
-    padding: 4px 6px;
+    padding: 3.5px 5px;
     border: 1px solid #cbd5e1;
     vertical-align: middle;
   }
@@ -113,24 +120,24 @@
   .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    margin-bottom: 8px;
+    gap: 5px;
+    margin-bottom: 6px;
   }
   .kpi-card {
-    background: #f0fdfa;
-    border: 1px solid #ccfbf1;
+    background: #f7f6f2;
+    border: 1px solid #e2e8f0;
     border-radius: 4px;
-    padding: 6px 8px;
+    padding: 5px 6px;
     text-align: center;
   }
   .kpi-val {
-    font-size: 11pt;
+    font-size: 10.5pt;
     font-weight: 700;
-    color: #0f766e;
+    color: #812926;
     display: block;
   }
   .kpi-label {
-    font-size: 7pt;
+    font-size: 6.8pt;
     color: #475569;
     text-transform: uppercase;
     font-weight: 600;
@@ -139,37 +146,37 @@
     background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 4px;
-    padding: 6px;
-    margin-bottom: 8px;
+    padding: 5px;
+    margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   .flow-step {
     flex: 1;
-    background: #f1f5f9;
+    background: #f8fafc;
     border: 1px solid #cbd5e1;
     border-radius: 3px;
-    padding: 5px 4px;
+    padding: 4px 3px;
     text-align: center;
-    font-size: 7.5pt;
+    font-size: 7.2pt;
   }
   .flow-step strong {
     display: block;
-    color: #0f766e;
-    font-size: 8pt;
+    color: #812926;
+    font-size: 7.6pt;
     margin-bottom: 1px;
   }
   .flow-arrow {
-    padding: 0 4px;
-    color: #94a3b8;
+    padding: 0 3px;
+    color: #1c395c;
     font-weight: bold;
-    font-size: 10pt;
+    font-size: 9pt;
   }
   .footer {
     border-top: 1px solid #e2e8f0;
-    padding-top: 4px;
-    font-size: 7.5pt;
+    padding-top: 3px;
+    font-size: 7.2pt;
     color: #94a3b8;
     display: flex;
     justify-content: space-between;
@@ -183,8 +190,8 @@
   <div>
     <div class="header">
       <div class="header-left">
-        <h1>ImpactPay AI — Desenho da Solução Completa</h1>
-        <p>Automação Inteligente de Contas a Pagar & Governança • Holding Companhia de Impacto</p>
+        <h1>iHubFiscal — Desenho da Solução Completa</h1>
+        <p>Modelo Dual de Central de Contas a Pagar & Governança com IA • Holding Companhia de Impacto</p>
       </div>
       <div class="badge-candidate">
         Candidato: Moisés Branco dos Santos<br>
@@ -194,71 +201,83 @@
 
     <h2>1. Contexto & Diagnóstico da Holding</h2>
     <p>
-      A <strong>Companhia de Impacto</strong> gerencia 4 verticais com CNPJs distintos: <em>Impact Hubs (Floripa, SP, POA e Cuiabá)</em>, <em>Salto (Inclusão Produtiva)</em>, <em>Impacta Mais (Eventos)</em> e <em>Seu PêJota</em>. O processo atual opera com <strong>3 caixas de e-mail descentralizadas</strong>, digitação manual em planilhas e <strong>aprovações informais via WhatsApp</strong>. Consequências críticas: perda de notas fiscais, multas e juros por atraso em vencimentos, ausência de visibilidade para a diretoria financeira e passivos trabalhistas/fiscais.
+      A <strong>Companhia de Impacto</strong> gerencia 4 verticais com CNPJs distintos: <em>Impact Hub Floripa</em> (coworking e inovação), <em>Instituto Salto</em> (inclusão produtiva), <em>Impacta Mais</em> (eventos) e <em>Seu PêJota</em>. O processo anterior operava com <strong>3 caixas de e-mail descentralizadas</strong>, digitação manual e aprovações informais por WhatsApp. Isso gerava perda de notas, multas por atraso e falta de visibilidade da liderança. O <strong>iHubFiscal</strong> implementa uma governança moderna com arquitetura dual: <strong>Solução A</strong> (Google Workspace ágil) e <strong>Solução B</strong> (Web App Full-Stack Enterprise).
     </p>
 
     <h2>2. Visão Sistêmica Ponta a Ponta (Arquitetura To-Be)</h2>
     <div class="flow-diagram">
       <div class="flow-step">
-        <strong>1. Ingestão Central</strong>
-        E-mail Unificado + Upload Web de Contingência
+        <strong>1. Ingestão & Autoatendimento</strong>
+        Upload do Fornecedor (/upload) com Split-View + E-mail
       </div>
       <div class="flow-arrow">➔</div>
       <div class="flow-step">
-        <strong>2. Triagem & Hash</strong>
-        Idempotência SHA-256 (Anti-Duplicidade nativa)
+        <strong>2. Hash & Idempotência</strong>
+        Trava SHA-256 e chave composta [CNPJ + Nº NF]
       </div>
       <div class="flow-arrow">➔</div>
       <div class="flow-step">
-        <strong>3. IA Multimodal</strong>
-        LLM Vision + Prompt Strict Null (Sem alucinação)
+        <strong>3. IA Google Gemini</strong>
+        Gemini 2.5 Flash / Spark com saídas estruturadas estritas
       </div>
       <div class="flow-arrow">➔</div>
       <div class="flow-step">
-        <strong>4. Alçadas no Chat</strong>
-        Aprovação com 1 clique (Slack/Teams/Whats)
+        <strong>4. Alçadas Hierárquicas</strong>
+        Gestor até R$ 10k | CFO ilimitado | Kanban 6 Fases
       </div>
       <div class="flow-arrow">➔</div>
       <div class="flow-step">
-        <strong>5. Repasse Fiscal</strong>
-        Baixa Pix + Pacote .ZIP para a Contabilidade
+        <strong>5. Liquidação & Fechamento</strong>
+        Baixa bancária com Pix e pacote .ZIP mensal (jszip)
       </div>
     </div>
 
-    <h2>3. Stack Tecnológica & Racional de Decisão</h2>
+    <h2>3. Matriz Tecnológica do Modelo Dual (Solução A vs Solução B)</h2>
     <table>
       <thead>
         <tr>
-          <th style="width: 22%;">Camada</th>
-          <th style="width: 28%;">Tecnologia Escolhida</th>
-          <th>Justificativa Técnica & Racional de Negócio</th>
+          <th style="width: 20%;">Camada</th>
+          <th style="width: 28%;">Solução A (Google Workspace)</th>
+          <th style="width: 28%;">Solução B (iHubFiscal Full-Stack)</th>
+          <th>Racional Técnico & Estratégico</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="bold">Orquestrador Central</td>
-          <td><strong>n8n</strong> (Self-hosted / Cloud)</td>
-          <td>Padrão ouro corporativo em automação com IA; nós modulares, controle total de webhooks, escalabilidade assíncrona e exportação limpa em JSON.</td>
+          <td class="bold">Front-end & UX</td>
+          <td>Gmail, Google Drive & Google Sheets</td>
+          <td><strong>Next.js 15 (App Router) + Tailwind CSS</strong></td>
+          <td>Solução A usa ferramentas que o time já domina; Solução B entrega SPA interativa com design de floripa.impacthub.net.</td>
+        </tr>
+        <tr>
+          <td class="bold">Backend & API</td>
+          <td>Google Apps Script (Web App <code>doGet</code>)</td>
+          <td><strong>Route Handlers & Server Actions na Vercel</strong></td>
+          <td>Apps Script não requer infraestrutura; Next.js 15 oferece alta performance, rotas tipadas e escalabilidade serverless.</td>
         </tr>
         <tr>
           <td class="bold">Inteligência Artificial</td>
-          <td><strong>OpenAI GPT-4o-mini Vision</strong></td>
-          <td>Excelente custo por token, tempo de inferência &lt; 4s e precisão multimodal na extração de tabelas tributárias de NFS-e do Brasil.</td>
+          <td><strong>Google Gemini Spark</strong> no Gmail/Drive</td>
+          <td><strong>Google Gemini 2.5 Flash API</strong> multimodal</td>
+          <td>Extração visual precisa de tabelas tributárias, retenções e chave Pix com velocidade inferior a 4 segundos.</td>
         </tr>
         <tr>
-          <td class="bold">Engenharia de Prompt</td>
-          <td><strong>Strict Null Framework</strong></td>
-          <td>Mitigação de risco financeiro: se um campo não estiver explícito na nota, a IA retorna estritamente <code>null</code>, forçando a conferência humana.</td>
+          <td class="bold">Persistência & RLS</td>
+          <td>Google Sheets (18 colunas + Dashboard)</td>
+          <td><strong>Supabase PostgreSQL com RLS por empresa</strong></td>
+          <td>Planilha atende operações enxutas; banco relacional com Row Level Security blinda dados confidenciais multi-tenant.</td>
         </tr>
         <tr>
-          <td class="bold">Deduplicação / Hash</td>
-          <td><strong>Hash SHA-256 Nativo no n8n</strong></td>
-          <td>Calcula o hash do binário da NF no próprio fluxo, eliminando dependência de funções externas no banco de dados e travando duplicatas.</td>
+          <td class="bold">Alçadas & Aprovação</td>
+          <td>Link de 1 clique direto no e-mail (Web App)</td>
+          <td><strong>Quadro Kanban de 6 Fases com alçada CFO</strong></td>
+          <td>Aprovação sem fricção por e-mail na Solução A; segregação estrita com teto de R$ 10k para gestores na Solução B.</td>
         </tr>
         <tr>
-          <td class="bold">Repositório & Painel</td>
-          <td><strong>Google Sheets / PostgreSQL</strong></td>
-          <td>Garante visibilidade em tempo real para a diretoria, com controle de status relacional e zero barreira de adoção para analistas de negócio.</td>
+          <td class="bold">Fechamento Fiscal</td>
+          <td>Planilha compartilhada com contabilidade</td>
+          <td><strong>Download de lote .ZIP compilado no navegador</strong></td>
+          <td>Biblioteca <code>jszip</code> gera arquivo compactado com PDFs renomeados e CSV analítico em lote na hora.</td>
         </tr>
       </tbody>
     </table>
@@ -269,58 +288,73 @@
         <tr>
           <th>Etapa do Processo Operacional</th>
           <th class="center" style="width: 14%;">Fornecedor PJ</th>
-          <th class="center" style="width: 14%;">Time Financeiro</th>
-          <th class="center" style="width: 16%;">Gestor da Vertical</th>
-          <th class="center" style="width: 16%;">ImpactPay AI</th>
+          <th class="center" style="width: 15%;">Carlos (Analista)</th>
+          <th class="center" style="width: 15%;">Beatriz (Gestora)</th>
+          <th class="center" style="width: 15%;">Rodrigo (CFO)</th>
+          <th class="center" style="width: 14%;">iHubFiscal IA</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Envio da Nota Fiscal legível no canal centralizado</td>
+          <td>Submissão e conferência prévia da NFS-e (/upload)</td>
           <td class="center bold">R</td>
           <td class="center">I</td>
           <td class="center">I</td>
-          <td class="center">A</td>
+          <td class="center">I</td>
+          <td class="center bold">A (Extrai)</td>
         </tr>
         <tr>
-          <td>Deduplicação, extração inteligente e checagem matemática</td>
+          <td>Deduplicação (SHA-256) e checagem de retenções fiscais</td>
+          <td class="center">I</td>
           <td class="center">I</td>
           <td class="center">I</td>
           <td class="center">I</td>
           <td class="center bold">A / R</td>
         </tr>
         <tr>
-          <td>Triagem e saneamento de notas retidas em exceção</td>
+          <td>Triagem, saneamento de divergências e validação cadastral</td>
           <td class="center">I</td>
           <td class="center bold">A / R</td>
           <td class="center">C</td>
           <td class="center">I</td>
-        </tr>
-        <tr>
-          <td>Aprovação formal da contratação (Alçada de Despesa)</td>
-          <td class="center">I</td>
-          <td class="center">I</td>
-          <td class="center bold">A / R</td>
           <td class="center">I</td>
         </tr>
         <tr>
-          <td>Agendamento bancário, liquidação e anexo do Pix</td>
+          <td>Aprovação de despesas operacionais (até R$ 10.000,00)</td>
+          <td class="center">I</td>
           <td class="center">I</td>
           <td class="center bold">A / R</td>
           <td class="center">I</td>
           <td class="center">I</td>
         </tr>
         <tr>
-          <td>Repasse do lote mensal de PDFs/XMLs para a contabilidade</td>
+          <td>Deliberação executiva de despesas elevadas (&gt; R$ 10.000,00)</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+          <td class="center">C</td>
+          <td class="center bold">A / R</td>
+          <td class="center">I</td>
+        </tr>
+        <tr>
+          <td>Agendamento bancário, liquidação com comprovante Pix</td>
+          <td class="center">I</td>
+          <td class="center bold">A / R</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+          <td class="center">I</td>
+        </tr>
+        <tr>
+          <td>Geração do pacote contábil mensal (.ZIP + CSV)</td>
           <td class="center">I</td>
           <td class="center bold">A</td>
           <td class="center">I</td>
-          <td class="center bold">R (Gera .ZIP)</td>
+          <td class="center">I</td>
+          <td class="center bold">R (Compila)</td>
         </tr>
       </tbody>
     </table>
-    <p style="font-size: 7.5pt; color: #64748b; margin-top: -2px;">
-      <em>Legenda: <strong>R</strong> = Responsável pela Execução (Responsible) | <strong>A</strong> = Aprovador / Dono (Accountable) | <strong>C</strong> = Consultado (Consulted) | <strong>I</strong> = Informado (Informed)</em>
+    <p style="font-size: 7.2pt; color: #64748b; margin-top: -2px;">
+      <em>Legenda: <strong>R</strong> = Responsável pela Execução | <strong>A</strong> = Aprovador / Dono | <strong>C</strong> = Consultado | <strong>I</strong> = Informado</em>
     </p>
   </div>
 
@@ -335,8 +369,8 @@
   <div>
     <div class="header">
       <div class="header-left">
-        <h1>ImpactPay AI — Riscos, Governança & Tratamento de Falhas</h1>
-        <p>Políticas de Contingência, LGPD e Indicadores de Sucesso do Produto</p>
+        <h1>iHubFiscal — Riscos, Governança & Tratamento de Falhas</h1>
+        <p>Políticas de Contingência, LGPD, Segregação de Funções e Métricas de Sucesso</p>
       </div>
       <div class="badge-candidate">
         Entregável 1 • Página 2 de 2
@@ -355,51 +389,51 @@
       </thead>
       <tbody>
         <tr>
-          <td class="bold">Nota fiscal borrada, cortada ou ilegível</td>
+          <td class="bold">Nota fiscal ilegível, foto borrada ou cortada</td>
           <td class="center" style="color: #d97706; font-weight: bold;">MÉDIA</td>
-          <td>Prompt aciona <em>Strict Null</em> e calcula <code>confidence_score &lt; 0.8</code>, direcionando para <code>REVISAO_MANUAL</code>.</td>
-          <td>Analista abre a tela de revisão em split-view, confere o PDF lado a lado e ajusta o campo ou clica em "Solicitar Reenvio".</td>
+          <td>Schema Zod com <em>Strict Null</em> valida campos obrigatórios; falha retém o card na fase <code>1. Triagem & Divergências</code>.</td>
+          <td>Analista (Carlos) abre a conferência em split-view (/conferencia/[id]), compara com o PDF e digita a correção ou recusa.</td>
         </tr>
         <tr>
-          <td class="bold">Fornecedor envia mesma NF em duplicidade</td>
+          <td class="bold">Tentativa de envio de NF em duplicidade</td>
           <td class="center" style="color: #dc2626; font-weight: bold;">CRÍTICA</td>
-          <td>Hash SHA-256 e checagem <code>[CNPJ + Nº NF]</code> bloqueiam a inserção na entrada do n8n sem duplicar lançamentos.</td>
-          <td>Sistema dispara aviso automático ao remetente informando a data e o ID da nota já cadastrada, evitando pagamento duplo.</td>
+          <td>Hash criptográfico SHA-256 e índice único <code>[company_id, cnpj_prestador, invoice_number]</code> barram no banco.</td>
+          <td>A interface avisa na hora: <em>"Nota já cadastrada sob Protocolo #IHF-XXXX"</em>, impedindo pagamentos duplicados.</td>
         </tr>
         <tr>
-          <td class="bold">Divergência matemática de impostos retidos</td>
+          <td class="bold">Divergência matemática de retenções fiscais</td>
           <td class="center" style="color: #ea580c; font-weight: bold;">ALTA</td>
-          <td>Nó Code valida: <code>|Bruto - Retenções - Líquido| &gt; 0,05</code>. Se divergir, marca flag de alerta fiscal.</td>
-          <td>O financeiro é sinalizado com o detalhamento das alíquotas (ISS, IRRF, PIS/COFINS/CSLL) para correção antes da aprovação.</td>
+          <td>Validação algorítmica: <code>|Bruto - Retenções - Líquido| &gt; 0,05</code>. Detecta discrepâncias de ISS, IRRF, PIS/COFINS/CSLL.</td>
+          <td>O sistema marca a nota com alerta tributário na esteira e bloqueia o avanço até que o analista fiscal confirme a retenção.</td>
         </tr>
         <tr>
-          <td class="bold">Gestor não responde à solicitação de aprovação</td>
-          <td class="center" style="color: #ea580c; font-weight: bold;">ALTA</td>
-          <td>Disparo programado de lembrete automático no canal corporativo com 48h e 24h antes do vencimento da fatura.</td>
-          <td>Ao atingir 24h para o vencimento sem parecer, a pendência é escalonada automaticamente para o diretor geral da vertical.</td>
+          <td class="bold">Tentativa de aprovação de NF acima de R$ 10.000 por gestor</td>
+          <td class="center" style="color: #dc2626; font-weight: bold;">CRÍTICA</td>
+          <td>Regra de alçada no servidor valida o valor: se <code>valor &gt; 10000</code>, o botão de aprovação fica restrito ao perfil CFO.</td>
+          <td>O sistema emite aviso de alçada excedida e mantém a fatura na fase de aprovação aguardando parecer exclusivo do CFO Rodrigo.</td>
         </tr>
         <tr>
-          <td class="bold">Indisponibilidade momentânea da API de IA</td>
+          <td class="bold">Indisponibilidade ou instabilidade da IA (HTTP 503)</td>
           <td class="center" style="color: #d97706; font-weight: bold;">MÉDIA</td>
-          <td>O n8n executa política de 3 retentativas automáticas com intervalo progressivo (1m, 5m, 15m) via Dead Letter Queue.</td>
-          <td>Caso o erro persista, as notas são retidas em pasta segura e o operador recebe notificação com botão "Reprocessar Lote".</td>
+          <td>Pool fail-fast automático: tenta <code>gemini-flash-latest</code> e faz fallback instantâneo para <code>gemini-flash-lite-latest</code> (&lt; 18s).</td>
+          <td>Se persistir erro de infraestrutura, a interface exibe opção amigável de preenchimento manual sem travar o fornecedor.</td>
         </tr>
       </tbody>
     </table>
 
     <h2>6. Governança Corporativa, Compliance & Adequação à LGPD</h2>
     <div class="highlight-box">
-      <strong style="color: #0f766e;">🛡️ Trava de Auto-Auditoria (Segregação de Funções Financeiras):</strong><br>
-      Inspirada no sistema de conformidade já validado em produção, nenhum gestor ou colaborador da holding que preste serviços como PJ possui permissão no sistema para aprovar as suas próprias notas fiscais ou solicitações de reembolso. A alçada é compulsoriamente transferida para a liderança superior.
+      <strong style="color: #812926;">🛡️ Segregação de Funções (SoD) & Bloqueio de Auto-Aprovação:</strong><br>
+      Nenhum gestor ou colaborador da holding pode aprovar despesas emitidas contra seu próprio CPF/CNPJ ou em que figure como prestador de serviços. A alçada é compulsoriamente redirecionada para a liderança superior. Além disso, compras superiores a R$ 10.000,00 demandam deliberação privativa do CFO.
     </div>
 
     <p>
-      <strong>Proteção de Dados Pessoais (LGPD - Lei 13.709/2018):</strong> Notas fiscais de prestadores autônomos (RPA) e microempreendedores individuais (MEI) trazem dados pessoais protegidos por lei (CPF, nome civil, endereço residencial e chave Pix/dados bancários). O <strong>ImpactPay AI</strong> cumpre rigorosamente os princípios de conformidade:
+      <strong>Proteção de Dados Pessoais (LGPD - Lei 13.709/2018):</strong> Notas fiscais de prestadores autônomos (RPA) e microempreendedores individuais (MEI) trazem dados pessoais sensíveis (CPF, nome civil, endereço residencial e chave Pix/dados bancários). O <strong>iHubFiscal</strong> garante:
     </p>
-    <ul style="margin: 2px 0 8px 18px; padding: 0; font-size: 8.5pt; color: #334155;">
-      <li><strong>Criptografia Ponta a Ponta:</strong> Todo o tráfego de arquivos e payloads trafega sobre conexões seguras TLS 1.3 (HTTPS).</li>
-      <li><strong>Acesso Baseado em Papéis (RBAC):</strong> Apenas o analista de contas a pagar e o gestor aprovador designado têm visibilidade sobre os valores e dados cadastrais da respectiva contratação.</li>
-      <li><strong>Links Contábeis Temporários:</strong> O acesso externo de escritórios de contabilidade utiliza tokens criptográficos com expiração automática programada (máximo de 15 dias), eliminando links públicos permanentes.</li>
+    <ul style="margin: 2px 0 6px 16px; padding: 0; font-size: 8.2pt; color: #334155;">
+      <li><strong>Criptografia em Trânsito e Repouso:</strong> Todo o tráfego ocorre via TLS 1.3 (HTTPS) e os PDFs são gravados no Supabase Storage com chave segura.</li>
+      <li><strong>Isolamento Multi-Empresa com RLS:</strong> Políticas estritas de Row Level Security garantem que o time de uma vertical não visualize faturas das demais empresas.</li>
+      <li><strong>Auditoria Imutável em Banco:</strong> Toda transição de fase, alteração manual e aprovação registra log perpétuo na tabela <code>invoice_events</code> (com timestamp, usuário e payload anterior/novo).</li>
     </ul>
 
     <h2>7. Indicadores de Sucesso do Produto (OKRs & KPIs)</h2>
@@ -418,13 +452,13 @@
       </div>
       <div class="kpi-card">
         <span class="kpi-val">-90%</span>
-        <span class="kpi-label">Horas Gastas em Digitação Manual</span>
+        <span class="kpi-label">Horas em Digitação Manual</span>
       </div>
     </div>
 
     <h2>8. Conclusão Executiva</h2>
     <p>
-      O <strong>ImpactPay AI</strong> transforma o contas a pagar da Companhia de Impacto em uma operação blindada, eficiente e escalável. Ao combinar automação com <em>Human-in-the-Loop</em>, a solução preserva a segurança jurídica da holding e libera o time financeiro para atuar de forma analítica e estratégica.
+      O <strong>iHubFiscal</strong> transforma o contas a pagar da Companhia de Impacto em uma operação blindada, eficiente e escalável. Seja pela agilidade de baixo custo do <strong>Google Workspace (Solução A)</strong> ou pelo controle empresarial do <strong>Web App Next.js + Supabase (Solução B)</strong>, a holding ganha segurança jurídica, previsibilidade de caixa e libera o time financeiro para atuar de forma analítica e estratégica.
     </p>
   </div>
 
