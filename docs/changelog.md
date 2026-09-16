@@ -44,6 +44,21 @@ timeline
 
 ---
 
+### [2026-09-16] — Inclusão do Link Oficial do Repositório GitHub na Solução B e no Portal Executivo
+- **Commit**: `feat(solucao-b): adiciona links do repositorio GitHub no portal executivo e na Navbar do Web App`
+- **Contexto**: Facilitação do acesso ao código-fonte da Solução B (`https://github.com/mbrancos/DesafioIHF`) para a banca avaliadora da vaga de Analista Pleno de IA e Produtos Digitais.
+- **Arquivos**: `src/components/common/Navbar.tsx`, `portal/index.html`, `public/portal/index.html`, `docs/changelog.md`.
+- **Decisões e Resultados**:
+  1. **Navbar do Web App (`Navbar.tsx`)**:
+     - Adicionado botão de atalho direto para o repositório GitHub com o ícone oficial `lucide-react` tanto na navegação desktop quanto no menu móvel.
+     - Atualizado o rótulo de atalho da landing de *"Landing Fase 1"* para *"Portal Dual"*.
+  2. **Portal Executivo (`portal/index.html` e `public/portal/index.html`)**:
+     - **Header**: Adicionado botão estilizado do GitHub ao lado do botão de acesso à Solução B.
+     - **Hero Section (Card Solução B)**: Inserido link destacado *"Ver Código no GitHub &rarr;"*.
+     - **Demonstração Prática (`#demonstracao`)**: Adicionado botão secundário *"GitHub (Solução B)"* ao lado de *"Acessar iHubFiscal v2"*.
+     - **Footer**: Incluído link de acesso rápido ao GitHub da holding.
+  3. **Validação**: Testes unitários (44/44 vitest) e compilação do Next.js 15 validados com 100% de sucesso. Hashes de `portal/index.html` e `public/portal/index.html` rigorosamente sincronizados.
+
 ### [2026-09-16] — Arquitetura Dual no Portal (/portal), Transição do n8n para Gemini Spark e Sincronia Vercel
 - **Commit**: `feat(portal): implementa arquitetura dual Solucao A (Gemini Spark) vs Solucao B (Full-Stack), reposiciona video demo e remove n8n`
 - **Contexto**: Reposicionamento estratégico da entrega do desafio técnico da vaga de Analista Pleno de IA e Produtos Digitais:

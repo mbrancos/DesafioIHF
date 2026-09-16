@@ -18,6 +18,7 @@ import {
   X,
   ChevronDown,
   Check,
+  Github,
 } from 'lucide-react';
 import { signOut, loginWithPersona } from '@/actions/auth';
 
@@ -164,9 +165,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-1 text-[11px] text-[#484848] hover:text-[#812926] px-2 py-1 rounded transition-colors"
               title="Abrir Landing Page Executiva do Desafio Técnico"
             >
-              <span>Landing Fase 1</span>
+              <span>Portal Dual</span>
               <ExternalLink className="w-3 h-3" />
             </Link>
+
+            {/* Link GitHub do Projeto */}
+            <a
+              href="https://github.com/mbrancos/DesafioIHF"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-[#1c395c] hover:text-[#812926] bg-[#f7f6f2] hover:bg-[#f2eae9] rounded-lg transition-colors border border-[#e5e5e5]"
+              title="Ver repositório do projeto no GitHub"
+            >
+              <Github className="w-3.5 h-3.5" />
+              <span>GitHub</span>
+            </a>
 
             {/* Identificação de Usuário / Dropdown de Troca de Persona */}
             <div className="relative pl-2 border-l border-[#e5e5e5]">
@@ -340,8 +353,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-2 px-3 py-2 text-xs text-[#484848]"
             >
               <ExternalLink className="w-4 h-4" />
-              <span>Landing Page Fase 1</span>
+              <span>Portal Executivo Dual</span>
             </Link>
+            <a
+              href="https://github.com/mbrancos/DesafioIHF"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-[#1c395c] bg-[#f7f6f2] rounded-lg"
+            >
+              <Github className="w-4 h-4" />
+              <span>Repositório no GitHub</span>
+            </a>
             <button
               onClick={handleSignOut}
               className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-[#DC2626] hover:bg-[#fee2e2] rounded-lg"

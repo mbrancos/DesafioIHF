@@ -198,6 +198,10 @@
           <span>Acessar Solução B (Web App)</span>
           <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
         </a>
+        <a href="https://github.com/mbrancos/DesafioIHF" target="_blank" class="hidden sm:inline-flex items-center space-x-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold py-2.5 px-3.5 rounded-full transition-all border border-white/20 font-heading whitespace-nowrap" title="Repositório do Projeto no GitHub">
+          <i data-lucide="github" class="w-3.5 h-3.5"></i>
+          <span>GitHub</span>
+        </a>
         <div class="text-right border-l border-slate-700 pl-4 shrink-0 whitespace-nowrap">
           <span class="text-[11px] text-slate-400 block uppercase tracking-wider">Candidato</span>
           <span class="text-xs font-bold text-white font-heading">Moisés Branco</span>
@@ -255,6 +259,16 @@
             <p class="text-xs text-slate-300 leading-relaxed">
               <strong>Next.js 15 + Vercel + Supabase (Postgres & RLS) + Gemini API</strong>. Portal público do fornecedor com split-view PDF, esteira Kanban de 6 fases, segregação de funções, alçadas hierárquicas (Gestor até R$ 10k e CFO ilimitado) e fechamento contábil mensal em .ZIP.
             </p>
+            <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center gap-3">
+              <a href="https://github.com/mbrancos/DesafioIHF" target="_blank" class="text-ihf-cyan hover:underline text-[11px] font-semibold inline-flex items-center gap-1">
+                <i data-lucide="github" class="w-3 h-3"></i>
+                <span>Ver Código no GitHub &rarr;</span>
+              </a>
+              <a href="/" target="_blank" class="text-slate-300 hover:text-white text-[11px] font-semibold inline-flex items-center gap-1">
+                <i data-lucide="external-link" class="w-3 h-3"></i>
+                <span>Abrir Web App &rarr;</span>
+              </a>
+            </div>
           </div>
 
         </div>
@@ -836,10 +850,16 @@ function doGet(e) {
             </p>
           </div>
 
-          <a href="/" target="_blank" class="btn-ihf-primary w-full py-3 px-6 text-xs text-center flex items-center justify-center gap-2 shadow-md">
-            <span>Acessar iHubFiscal v2 (Aplicação Completa)</span>
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-          </a>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="/" target="_blank" class="btn-ihf-primary flex-1 py-3 px-4 text-xs text-center flex items-center justify-center gap-2 shadow-md">
+              <span>Acessar iHubFiscal v2</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <a href="https://github.com/mbrancos/DesafioIHF" target="_blank" class="btn-ihf-navy flex-1 py-3 px-4 text-xs text-center flex items-center justify-center gap-2 shadow-md">
+              <i data-lucide="github" class="w-4 h-4"></i>
+              <span>GitHub (Solução B)</span>
+            </a>
+          </div>
         </div>
 
       </div>
@@ -1006,6 +1026,11 @@ function doGet(e) {
         <div class="flex items-center space-x-4">
           <a href="/" class="text-xs font-semibold text-ihf-cyan hover:underline font-heading">
             Acessar Solução B (Web App)
+          </a>
+          <span class="text-slate-600">•</span>
+          <a href="https://github.com/mbrancos/DesafioIHF" target="_blank" class="text-xs font-semibold text-slate-300 hover:text-white flex items-center gap-1">
+            <i data-lucide="github" class="w-3.5 h-3.5"></i>
+            <span>GitHub</span>
           </a>
           <span class="text-slate-600">•</span>
           <a href="#entregaveis" class="text-xs font-semibold text-slate-400 hover:text-white">
