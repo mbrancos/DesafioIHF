@@ -1,0 +1,389 @@
+import os
+import subprocess
+import sys
+
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
+HTML_CONTENT = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Entregável 3-B — Manual de Governança & Alçadas (iHubFiscal v2)</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 10mm 13mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 8.8pt;
+    line-height: 1.32;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+  .page {
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+  .header {
+    border-bottom: 2px solid #1c395c;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header-left h1 {
+    font-size: 13pt;
+    color: #1c395c;
+    margin: 0 0 2px 0;
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    font-weight: 800;
+  }
+  .header-left p {
+    font-size: 8.2pt;
+    color: #812926;
+    margin: 0;
+    font-weight: 600;
+  }
+  .badge-solucao {
+    background: #e0f2fe;
+    border: 1px solid #7dd3fc;
+    color: #0369a1;
+    font-size: 7.8pt;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: right;
+    line-height: 1.25;
+  }
+  h2 {
+    font-size: 9.6pt;
+    color: #1c395c;
+    margin: 7px 0 3px 0;
+    border-left: 3px solid #812926;
+    padding-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    font-weight: 700;
+  }
+  p {
+    margin: 0 0 5px 0;
+    font-size: 8.5pt;
+    color: #334155;
+    text-align: justify;
+  }
+  .alert-box {
+    background: #f8fafc;
+    border-left: 3px solid #1c395c;
+    border-radius: 0 4px 4px 0;
+    padding: 6px 9px;
+    margin-bottom: 6px;
+    font-size: 8.1pt;
+    line-height: 1.3;
+  }
+  .alert-box strong {
+    color: #1c395c;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 6px;
+    font-size: 7.8pt;
+  }
+  th {
+    background: #1c395c;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 4px 6px;
+    border: 1px solid #1c395c;
+    text-transform: uppercase;
+    font-size: 7.2pt;
+  }
+  td {
+    padding: 3.5px 5px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  .case-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 5px 7px;
+    margin-bottom: 5px;
+    font-size: 8pt;
+    line-height: 1.25;
+  }
+  .case-card.danger {
+    border-left: 3.5px solid #dc2626;
+  }
+  .case-card.warning {
+    border-left: 3.5px solid #ea580c;
+  }
+  .case-card.info {
+    border-left: 3.5px solid #1c395c;
+  }
+  .case-title {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 8.4pt;
+    margin-bottom: 1px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .case-tag {
+    font-size: 6.8pt;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .tag-danger { background: #fee2e2; color: #b91c1c; }
+  .tag-warning { background: #fef3c7; color: #b45309; }
+  .tag-info { background: #e0f2fe; color: #1c395c; }
+  .footer {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 3px;
+    font-size: 7.2pt;
+    color: #94a3b8;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PÁGINA 1 ==================== -->
+<div class="page">
+  <div>
+    <div class="header">
+      <div class="header-left">
+        <h1>Entregável 3-B — Manual de Governança & Alçadas</h1>
+        <p>Operação do iHubFiscal v2, Kanban de 6 Fases & Alçadas Hierárquicas • Solução B</p>
+      </div>
+      <div class="badge-solucao">
+        MANUAL SOLUÇÃO B<br>
+        iHubFiscal v2 Enterprise
+      </div>
+    </div>
+
+    <h2>1. Boas-Vindas ao iHubFiscal v2</h2>
+    <p>
+      Este manual estabelece as rotinas operacionais para o time financeiro da <strong>Companhia de Impacto</strong> no uso da plataforma <strong>iHubFiscal v2</strong>. O sistema substitui o controle manual por uma esteira visual integrada com inteligência artificial, validação de alçadas em tempo real e fechamento contábil com empacotamento .ZIP direto no navegador.
+    </p>
+
+    <h2>2. A Esteira Oficial de 6 Fases do Kanban</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Fase no Kanban</th>
+          <th style="width: 38%;">Comportamento do Sistema</th>
+          <th>Atuação do Time Financeiro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color: #b45309;">1. Triagem & Divergências</strong></td>
+          <td>A nota foi processada pela IA e retida devido a inconsistências de retenção, cálculo ou dados pendentes.</td>
+          <td>Abrir em <code>/conferencia/[id]</code>, auditar o PDF lado a lado em Split-View, validar as alíquotas e liberar.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #16a34a;">2. Aguardando Aprovação</strong></td>
+          <td>Fatura consistente aguardando parecer. <strong>Alçadas ativas:</strong> Beatriz aprova até R$ 10k; valores &gt; R$ 10k exigem CFO.</td>
+          <td>Monitorar o quadro. Se a nota exceder R$ 10k, o sistema bloqueia o gestor e exige o parecer do CFO Rodrigo.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #dc2626;">3. Recusado</strong></td>
+          <td>Despesa rejeitada pelo gestor ou reprovada pelo financeiro com registro obrigatório da justificativa no banco.</td>
+          <td>Consultar a justificativa imutável gravada no histórico para comunicar o fornecedor e orientar nova emissão.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #0284c7;">4. Agendar Pagamento</strong></td>
+          <td>Despesa formalmente autorizada pela alçada competente, liberada para programação bancária pelo analista Carlos.</td>
+          <td>Acessar o internet banking da empresa respectiva e cadastrar o Pix/boleto para a data de liquidação.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #7c3aed;">5. Agendado</strong></td>
+          <td>Despesa cadastrada e programada no banco aguardando o débito na conta para a baixa com comprovante.</td>
+          <td>Mantém a previsibilidade do fluxo de caixa e impede que notas sejam agendadas em duplicidade por engano.</td>
+        </tr>
+        <tr>
+          <td><strong style="color: #15803d;">6. Pago & Liquidado</strong></td>
+          <td>Pagamento liquidado com anexo de comprovante Pix. A despesa é arquivada e entra no lote do fechamento contábil.</td>
+          <td>Dar baixa no card anexando o comprovante em PDF/imagem. A fatura é incluída no lote contábil mensal.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. A Tela de Autoatendimento do Fornecedor e Conferência Assistida</h2>
+    <div class="alert-box">
+      <strong>🖥️ Portal do Fornecedor (/upload) e Conferência (/conferencia/[id]):</strong><br>
+      • O fornecedor envia o arquivo na rota <code>/upload</code> e a IA preenche o formulário ao lado em menos de 5 segundos.<br>
+      • O prestador valida os dados antes da submissão final, eliminando 90% dos erros de digitação e retrabalho do financeiro.<br>
+      • Havendo qualquer divergência de impostos (<code>|Bruto - Retenções - Líquido| &gt; 0,05</code>), o sistema bloqueia o avanço automático.
+    </div>
+
+    <h2>4. Fechamento Contábil Mensal em 1 Clique (Pacote .ZIP com jszip)</h2>
+    <p>
+      Na rota <code>/fechamento</code>, o analista financeiro seleciona a vertical da holding (ex: <em>Impact Hub Floripa</em>) e o mês de competência. Ao clicar em <strong>"Baixar Pacote Contábil (.ZIP)"</strong>, o sistema utiliza a biblioteca <code>jszip</code> para compilar diretamente na memória do navegador um arquivo compactado contendo todos os PDFs renomeados (<code>NF_{num}_{prestador}.pdf</code>) acompanhados da planilha analítica <code>fechamento-contabil.csv</code>.
+    </p>
+  </div>
+
+  <div class="footer">
+    <span>Companhia de Impacto Holding • Solução B: iHubFiscal Enterprise</span>
+    <span>Página 1 de 2</span>
+  </div>
+</div>
+
+<!-- ==================== PÁGINA 2 ==================== -->
+<div class="page">
+  <div>
+    <div class="header">
+      <div class="header-left">
+        <h1>Entregável 3-B — Matriz de Incidentes, Alçadas & Suporte</h1>
+        <p>Resolução de Exceções, Governança de Valores e Canais de Atendimento • Solução B</p>
+      </div>
+      <div class="badge-solucao">
+        MANUAL SOLUÇÃO B • PÁGINA 2 DE 2
+      </div>
+    </div>
+
+    <h2>5. Guia Rápido de Contingência ("O Que Fazer Se Quebrar?")</h2>
+
+    <div class="case-card warning">
+      <div class="case-title">
+        <span>1. Nota fiscal escaneada de forma borrada, cortada ou escura</span>
+        <span class="case-tag tag-warning">Triagem / Saneamento</span>
+      </div>
+      <strong>Procedimento:</strong> O sistema retém o card na fase <code>1. Triagem & Divergências</code>. O analista Carlos abre <code>/conferencia/[id]</code>, aciona o zoom no PDF e realiza o saneamento manual dos campos ilegíveis antes de liberar para aprovação.
+    </div>
+
+    <div class="case-card danger">
+      <div class="case-title">
+        <span>2. Fornecedor envia a mesma nota fiscal duas vezes (Risco de Duplicidade)</span>
+        <span class="case-tag tag-danger">Bloqueio Criptográfico</span>
+      </div>
+      <strong>Procedimento:</strong> O iHubFiscal calcula o hash SHA-256 e valida o índice único <code>[company_id + cnpj + numero]</code>. A submissão é bloqueada na hora, exibindo o número do protocolo original e impedindo pagamentos duplicados no banco.
+    </div>
+
+    <div class="case-card danger">
+      <div class="case-title">
+        <span>3. A soma das retenções de impostos não bate com o valor líquido</span>
+        <span class="case-tag tag-danger">Divergência Fiscal</span>
+      </div>
+      <strong>Procedimento:</strong> O sistema bloqueia o avanço da nota e destaca o alerta em vermelho. Se for mero arredondamento de centavos, o analista corrige o campo. Se houver erro de alíquota do fornecedor, a nota é recusada com justificativa formal para cancelamento.
+    </div>
+
+    <div class="case-card warning">
+      <div class="case-title">
+        <span>4. Gestor tenta aprovar nota fiscal acima de R$ 10.000,00</span>
+        <span class="case-tag tag-warning">Trava de Alçada</span>
+      </div>
+      <strong>Procedimento:</strong> Pela matriz de governança da holding, gestores operacionais (Beatriz) têm alçada até R$ 10.000,00. Acima desse teto, o botão de aprovação fica bloqueado e o card exige compulsoriamente a deliberação do CFO Rodrigo no sistema.
+    </div>
+
+    <div class="case-card info">
+      <div class="case-title">
+        <span>5. Queda de conectividade ou indisponibilidade da IA (HTTP 503)</span>
+        <span class="case-tag tag-info">Pool Fail-Fast & Manual</span>
+      </div>
+      <strong>Procedimento:</strong> O backend tenta automaticamente o modelo <code>gemini-flash-latest</code> e chaveia em menos de 18 segundos para <code>gemini-flash-lite-latest</code>. Se a instabilidade persistir, a tela do fornecedor e do analista exibe a opção de preenchimento manual contingencial.
+    </div>
+
+    <h2>6. Matriz de Alçadas & Canais de Atendimento Interno</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Perfil / Persona</th>
+          <th>Responsável Oficial</th>
+          <th>Alçada de Decisão</th>
+          <th>Canal de Contato</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bold">Analista de Operações</td>
+          <td>Carlos Financeiro</td>
+          <td>Triagem, saneamento, conferência tributária e baixas com comprovante Pix.</td>
+          <td>Interface /kanban e /pagamentos</td>
+        </tr>
+        <tr>
+          <td class="bold">Gestora de Vertical</td>
+          <td>Beatriz Inovação</td>
+          <td>Aprovação de despesas operacionais da respectiva vertical até R$ 10.000,00.</td>
+          <td>Interface /aprovacoes</td>
+        </tr>
+        <tr>
+          <td class="bold">CFO da Holding</td>
+          <td>Rodrigo Controller</td>
+          <td>Aprovação exclusiva de despesas superiores a R$ 10.000,00 e fechamento contábil.</td>
+          <td>Interface /aprovacoes e /fechamento</td>
+        </tr>
+        <tr>
+          <td class="bold">Administradora</td>
+          <td>Mariana Admin</td>
+          <td>Parametrização de holding, alçadas, centros de custo e auditoria geral.</td>
+          <td>Interface /configuracoes</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <span>Companhia de Impacto Holding • Solução B: iHubFiscal Enterprise</span>
+    <span>Página 2 de 2 • Versão Oficial Homologada</span>
+  </div>
+</div>
+
+</body>
+</html>
+"""
+
+def main():
+    target_dir = os.path.abspath(r"d:\Etna\Projetos\DesafioIHF\docs")
+    html_path = os.path.join(target_dir, "entregavel-3-b-manual-governanca-financeira.html")
+    pdf_path = os.path.join(target_dir, "entregavel-3-b-manual-governanca-financeira.pdf")
+    
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(HTML_CONTENT)
+    print(f"Gerado HTML do Entregavel 3-B: {html_path}")
+    
+    browser_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+    if not os.path.exists(browser_path):
+        browser_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+    
+    cmd = [
+        browser_path,
+        "--headless=new",
+        "--disable-gpu",
+        "--no-pdf-header-footer",
+        f"--print-to-pdf={pdf_path}",
+        html_path
+    ]
+    
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if os.path.exists(pdf_path) and os.path.getsize(pdf_path) > 0:
+        print(f"[SUCESSO] PDF do Entregavel 3-B gerado: {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
+    else:
+        print(f"[ERRO] Falha ao gerar PDF: {res.stderr}")
+
+if __name__ == "__main__":
+    main()

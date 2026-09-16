@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Entregável 3-A — Manual Operacional Google Workspace (iHubFiscal Spark)</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 10mm 13mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 8.8pt;
+    line-height: 1.32;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+  .page {
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+  .header {
+    border-bottom: 2px solid #16a34a;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header-left h1 {
+    font-size: 13pt;
+    color: #166534;
+    margin: 0 0 2px 0;
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    font-weight: 800;
+  }
+  .header-left p {
+    font-size: 8.2pt;
+    color: #14532d;
+    margin: 0;
+    font-weight: 600;
+  }
+  .badge-solucao {
+    background: #dcfce7;
+    border: 1px solid #86efac;
+    color: #166534;
+    font-size: 7.8pt;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: right;
+    line-height: 1.25;
+  }
+  h2 {
+    font-size: 9.6pt;
+    color: #166534;
+    margin: 7px 0 3px 0;
+    border-left: 3px solid #16a34a;
+    padding-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    font-weight: 700;
+  }
+  p {
+    margin: 0 0 5px 0;
+    font-size: 8.5pt;
+    color: #334155;
+    text-align: justify;
+  }
+  .step-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 4px;
+    padding: 5px 8px;
+    margin-bottom: 5px;
+    font-size: 8.2pt;
+    line-height: 1.3;
+  }
+  .step-title {
+    font-weight: 700;
+    color: #166534;
+    font-size: 8.6pt;
+    margin-bottom: 2px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 6px;
+    font-size: 7.8pt;
+  }
+  th {
+    background: #166534;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 4px 6px;
+    border: 1px solid #166534;
+    text-transform: uppercase;
+    font-size: 7.2pt;
+  }
+  td {
+    padding: 3.5px 5px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  .bold {
+    font-weight: 600;
+  }
+  .code-snippet {
+    background: #0f172a;
+    color: #86efac;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 7.2pt;
+    margin: 3px 0;
+    display: block;
+    overflow-x: auto;
+  }
+  .footer {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 3px;
+    font-size: 7.2pt;
+    color: #94a3b8;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PÁGINA 1 ==================== -->
+<div class="page">
+  <div>
+    <div class="header">
+      <div class="header-left">
+        <h1>Entregável 3-A — Manual de Implementação da Solução A</h1>
+        <p>Passo a Passo Prático no Google Workspace (Drive, Sheets, Apps Script & Gemini Spark)</p>
+      </div>
+      <div class="badge-solucao">
+        MANUAL SOLUÇÃO A<br>
+        Google Workspace (Ágil)
+      </div>
+    </div>
+
+    <h2>1. Objetivo deste Guia Prático</h2>
+    <p>
+      Este manual é um roteiro replicável passo a passo para configurar a automação inteligente de contas a pagar da <strong>Solução A</strong> na Companhia de Impacto. Em menos de duas horas, qualquer operador é capaz de estruturar o Google Drive, configurar as 18 colunas da planilha oficial no Sheets, acoplar o código do Apps Script e ativar o agente Gemini Spark no Gmail.
+    </p>
+
+    <h2>2. Passo a Passo de Configuração dos Ambientes</h2>
+
+    <div class="step-box">
+      <div class="step-title">Passo 1: Criar a Pasta de Armazenamento no Google Drive</div>
+      <p style="margin: 0;">
+        1. No Google Drive da holding, crie uma pasta chamada <strong>Notas Fiscais Recebidas</strong>.<br>
+        2. Copie o ID da pasta (a sequência de caracteres no final da URL do navegador: <code>drive.google.com/drive/folders/<strong>[ID_DA_PASTA]</strong></code>).<br>
+        3. Esse ID será utilizado nas configurações do Gemini Spark e do Apps Script para salvar os PDFs originais.
+      </p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-title">Passo 2: Configurar a Planilha 'Contas a Pagar - Controle Fiscal' no Sheets</div>
+      <p style="margin: 0;">
+        1. Crie uma nova planilha e nomeie a primeira aba como <strong>Contas_a_Pagar</strong>.<br>
+        2. Na linha 1, crie exatamente as 18 colunas oficiais:<br>
+        <code>A: ID Protocolo</code> | <code>B: Data Recebimento</code> | <code>C: Prestador</code> | <code>D: CNPJ</code> | <code>E: Tomadora</code> | <code>F: Número NF</code> | <code>G: Centro Custo</code> | <code>H: Descrição</code> | <code>I: Bruto (R$)</code> | <code>J: Retenções (R$)</code> | <code>K: Líquido (R$)</code> | <code>L: Vencimento</code> | <code>M: Chave Pix</code> | <code>N: Link Drive</code> | <code>O: Status</code> | <code>P: Aprovador</code> | <code>Q: Data Decisão</code> | <code>R: Observações</code>.<br>
+        3. Crie uma segunda aba chamada <strong>Dashboard</strong> e insira as fórmulas de KPIs:<br>
+        • Total Faturado: <code>=SUM(Contas_a_Pagar!I2:I)</code> | Total Aprovado: <code>=SUMIF(Contas_a_Pagar!O2:O; "APROVADO"; Contas_a_Pagar!K2:K)</code><br>
+        • Total Aguardando: <code>=SUMIF(Contas_a_Pagar!O2:O; "AGUARDANDO_APROVACAO"; Contas_a_Pagar!K2:K)</code> | Qtd Notas: <code>=COUNTA(Contas_a_Pagar!A2:A)</code>.
+      </p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-title">Passo 3: Importar e Implantar o Código do Google Apps Script</div>
+      <p style="margin: 0;">
+        1. Na planilha, clique em <strong>Extensões &rarr; Apps Script</strong>.<br>
+        2. Cole o código fornecido em <code>solucao-a-codigo-apps-script.js</code>.<br>
+        3. Substitua a constante <code>DRIVE_FOLDER_ID</code> pelo ID da sua pasta do Drive copiado no Passo 1.<br>
+        4. Clique em <strong>Implantar &rarr; Nova implantação</strong>, selecione <strong>App da Web</strong>, configure acesso como <em>"Qualquer pessoa"</em> e clique em Implantar.<br>
+        5. Copie a URL gerada do Web App (ex: <code>https://script.google.com/macros/s/.../exec</code>). Ela será utilizada no botão APROVAR.
+      </p>
+    </div>
+
+    <h2>3. Configuração do Agente Gemini Spark no Gmail</h2>
+    <p>
+      No painel do Gemini Spark, configure a nova rotina automática utilizando o gatilho:
+    </p>
+    <div class="code-snippet">
+Gatilho: Quando receber novo e-mail com anexo e filtro has:attachment subject:(Nota OR NFS-e OR NF-e OR Fiscal)
+Ação: Salvar PDF no Google Drive e extrair campos estruturados inserindo linha na planilha de Contas_a_Pagar.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Companhia de Impacto Holding • Manual de Operação da Solução A</span>
+    <span>Página 1 de 2</span>
+  </div>
+</div>
+
+<!-- ==================== PÁGINA 2 ==================== -->
+<div class="page">
+  <div>
+    <div class="header">
+      <div class="header-left">
+        <h1>Entregável 3-A — Operação Diária & Monitoramento no Workspace</h1>
+        <p>Rotina do Gestor, Aprovação em 1 Clique e Checklist de Testes • Solução A</p>
+      </div>
+      <div class="badge-solucao">
+        MANUAL SOLUÇÃO A • PÁGINA 2 DE 2
+      </div>
+    </div>
+
+    <h2>4. Como Funciona a Aprovação em 1 Clique na Prática</h2>
+    <p>
+      Quando uma nova NFS-e é recebida e processada pela IA, o gestor da vertical recebe um e-mail estruturado contendo o resumo da despesa e dois botões de ação imediata:
+    </p>
+
+    <div class="step-box">
+      <div class="step-title">Botão 1: APROVAR (1 Clique via Web App)</div>
+      <p style="margin: 0;">
+        O botão aponta para a URL do Web App Apps Script: <code>[URL_WEBAPP]?id={ID_PROTOCOLO}&acao=aprovar</code>.<br>
+        Ao clicar, o gestor é direcionado a uma tela de confirmação verde e o script altera instantaneamente o status na Coluna O da planilha para <strong>APROVADO</strong>, carimba a data na Coluna Q e grava o e-mail do aprovador na Coluna P. <strong>Não é necessário abrir a planilha nem fazer login adicional.</strong>
+      </p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-title">Botão 2: REPROVAR (Resposta Direta ao Fornecedor)</div>
+      <p style="margin: 0;">
+        O botão utiliza o comando <code>mailto:</code> já preenchido com o remetente do fornecedor e assunto padronizado: <code>REPROVADO - NF {NUMERO}</code>.<br>
+        O gestor digita o motivo da recusa (ex: "Serviço não realizado conforme acordado") e clica em enviar. O <strong>Monitor de Recusas</strong> do Apps Script detecta a mensagem enviada e altera a Coluna O para <strong>REJEITADO</strong> de forma 100% automática.
+      </p>
+    </div>
+
+    <h2>5. Matriz "O Que Fazer Se Quebrar?" no Google Workspace</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 28%;">Situação / Incidente</th>
+          <th style="width: 34%;">Causa Comum</th>
+          <th>Procedimento de Correção</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bold">Link de aprovação dá 'Nota não localizada'</td>
+          <td>O parâmetro <code>?id=</code> do link não corresponde a nenhum Protocolo (Col A) ou Nº da NF (Col F).</td>
+          <td>Verifique na planilha se a nota foi gravada corretamente ou utilize o Número da Nota como identificador.</td>
+        </tr>
+        <tr>
+          <td class="bold">Nota chegou no e-mail mas não foi salva no Drive</td>
+          <td>O ID da pasta do Drive na constante <code>DRIVE_FOLDER_ID</code> está incorreto ou sem permissão de escrita.</td>
+          <td>Abra o editor do Apps Script, valide o ID da pasta e execute a função manualmente para conceder permissões de autorização.</td>
+        </tr>
+        <tr>
+          <td class="bold">E-mail de reprovação não alterou o status para REJEITADO</td>
+          <td>O assunto do e-mail não seguiu o padrão exato <code>REPROVADO - NF {NUMERO}</code> ou o trigger não foi criado.</td>
+          <td>No Apps Script, vá em <em>Acionadores &rarr; Adicionar acionador</em> para a função <code>verificarEmailsReprovadosEnviados</code> a cada 1 minuto.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. Checklist de Homologação da Solução A</h2>
+    <div class="step-box">
+      <div class="step-title">Roteiro de Teste em 4 Etapas:</div>
+      <p style="margin: 0;">
+        ☑ <strong>Envio de Teste:</strong> Envie um e-mail com a nota fiscal <code>test-samples/NF-2026001-ImpactHub-Floripa.pdf</code> em anexo.<br>
+        ☑ <strong>Validação da Planilha:</strong> Confirme que a linha apareceu na aba <em>Contas_a_Pagar</em> com status <code>AGUARDANDO_APROVACAO</code>.<br>
+        ☑ <strong>Clique de Aprovação:</strong> Abra o e-mail recebido e clique no link de aprovação. Verifique se o status mudou para <code>APROVADO</code>.<br>
+        ☑ <strong>Dashboard:</strong> Verifique se os números da aba <em>Dashboard</em> atualizaram os valores somados automaticamente.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Companhia de Impacto Holding • Manual de Operação da Solução A</span>
+    <span>Página 2 de 2 • Versão Oficial Homologada</span>
+  </div>
+</div>
+
+</body>
+</html>

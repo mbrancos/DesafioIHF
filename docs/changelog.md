@@ -44,6 +44,20 @@ timeline
 
 ---
 
+### [2026-09-16] — Separação e Criação de PDFs Específicos para a Solução A e Solução B
+- **Commit**: `feat(portal): separa downloads de PDFs com arquivos especificos para Solucao A e Solucao B`
+- **Contexto**: Diagnóstico de que ambos os botões da Solução A e da Solução B no portal apontavam anteriormente para os mesmos arquivos genéricos. Criação de 4 documentos executivos PDF independentes e dedicados para cada abordagem.
+- **Novos Documentos Criados**:
+  1. **Entregável 1-A (PDF)**: `entregavel-1-a-desenho-solucao-workspace.pdf` — Desenho da Solução Google Workspace (Gmail, Drive, Gemini Spark, Sheets 18 colunas, Apps Script Web App).
+  2. **Entregável 1-B (PDF)**: `entregavel-1-b-arquitetura-ihubfiscal-serverless.pdf` — Desenho da Arquitetura Serverless (Next.js 15, Vercel, Supabase PostgreSQL com RLS, Gemini 2.5 Flash API).
+  3. **Entregável 3-A (PDF)**: `entregavel-3-a-manual-google-workspace.pdf` — Manual Operacional de Implementação Passo a Passo da Solução A no Google Workspace.
+  4. **Entregável 3-B (PDF)**: `entregavel-3-b-manual-governanca-financeira.pdf` — Manual de Governança & Alçadas Hierárquicas da Solução B (Kanban 6 fases, Gestor R$ 10k / CFO ilimitado, Fechamento .ZIP).
+- **Ajustes no Portal (`portal/index.html` e `public/portal/index.html`)**:
+  - Coluna da Esquerda (Solução A): Botão "Baixar Desenho Solução A (PDF)" aponta para `entregavel-1-a...pdf` e botão "Baixar Manual Solução A (PDF)" aponta para `entregavel-3-a...pdf`.
+  - Coluna da Direita (Solução B): Botão "Baixar Arquitetura Solução B (PDF)" aponta para `entregavel-1-b...pdf` e botão "Baixar Manual Solução B (PDF)" aponta para `entregavel-3-b...pdf`.
+- **Arquivos**: `scripts/render_entregavel_1_a_pdf.py`, `scripts/render_entregavel_1_b_pdf.py`, `scripts/render_entregavel_3_a_pdf.py`, `scripts/render_entregavel_3_b_pdf.py`, `portal/index.html`, `public/portal/index.html`, pastas de download e `docs/changelog.md`.
+- **Validação**: Todos os 4 PDFs renderizados com Chrome headless (2 páginas A4 cada); 44/44 testes unitários no Vitest aprovados.
+
 ### [2026-09-16] — Reescrita Integral dos PDFs dos Entregáveis 1 e 3 Alinhados ao iHubFiscal v2 e Modelo Dual
 - **Commit**: `docs(entregaveis): reescreve PDFs dos entregaveis 1 e 3 alinhados com o produto real iHubFiscal v2 e modelo dual`
 - **Contexto**: Eliminação definitiva de incongruências conceituais da Fase 1 legada nos PDFs oficiais para download (`entregavel-1-desenho-da-solucao.pdf` e `entregavel-3-manual-operacional-financeiro.pdf`).
