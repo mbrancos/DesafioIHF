@@ -304,6 +304,17 @@ timeline
   3. Formalização no [`AGENTS.md`](../AGENTS.md) de que [`docs/designIHF.md`](docs/designIHF.md) é a **Fonte Absoluta da Verdade** visual.
   4. Isolamento claro: a Landing Page da Fase 1 (`portal/index.html`) permanece como o showroom dos entregáveis do desafio; o **iHubFiscal v2** será desenvolvido como uma aplicação web completa em `portal/ihub/` com design system 100% aderente ao tema real.
 
+### [2026-09-15] — Resolução de Dessincronização de Cache do Webpack (`.next`) e Recuperação da Rota `/upload`
+- **Contexto**: Após a execução de `npm run build` para validação de tipagens, o usuário encontrou um erro de tempo de execução (`Runtime TypeError: Cannot read properties of undefined (reading 'call')` em `options.factory` do webpack) ao acessar a rota `/upload`.
+- **Causa Raiz Identificada**:
+  - No Next.js 15, rodar `next build` (build de produção) na mesma pasta onde `next dev` está ativo sobrescreve a pasta `.next/static/chunks` com os artefatos de produção em vez dos módulos de desenvolvimento (HMR).
+  - Quando a aba do navegador solicitou os chunks de desenvolvimento antigos (como `layout.css?v=...`), o servidor retornou 404 e o bundler do cliente quebrou ao tentar resolver os módulos inexistentes no manifesto.
+- **Ação Corretiva Executada**:
+  1. Encerramento do processo `next dev` dessincronizado.
+  2. Limpeza completa do cache corrompido em `.next/`.
+  3. Reinicialização do servidor de desenvolvimento limpo (`npm run dev`).
+  4. Validação automatizada via navegador comprovando o carregamento integral da página `/upload` com status 200 OK.
+
 ### [2026-09-15] — Otimização de UI/UX: Eliminação de Barra de Rolagem Dupla no Visualizador de PDF e Diagnóstico de Wheel Violation
 - **Arquivos Afetados**: [`src/components/pdf/PdfViewer.tsx`](file:///d:/Etna/Projetos/DesafioIHF/src/components/pdf/PdfViewer.tsx), [`src/components/supplier/WizardStep2SplitView.tsx`](file:///d:/Etna/Projetos/DesafioIHF/src/components/supplier/WizardStep2SplitView.tsx).
 - **Contexto**: Na etapa 2 do portal do fornecedor (`/upload`) e na conferência técnica (`/conferencia/:id`), o usuário relatou a ocorrência de aviso `[Violation]` no DevTools do navegador referente a non-passive wheel event listener, além da presença de duas barras de rolagem verticais paralelas (Double Scrollbar) no preview do PDF.
