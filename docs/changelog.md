@@ -42,6 +42,13 @@ timeline
         Central Operacional iHubFiscal v2 : Implementação SPA em portal/ihub/
 ```
 
+### [2026-09-16] — Incorporação do Vídeo Oficial de Demonstração (YouTube Embed) no Portal
+- **Commit**: `feat(portal): incorpora player oficial do youtube no entregavel 4 de demonstracao executiva`
+- **Contexto**: Substituição do placeholder estático da seção **Entregável 4 Oficial • Demonstração Executiva** (`#video-demo`) pelo player responsivo do YouTube (`https://www.youtube-nocookie.com/embed/vhVVJOEx-wE`) nos arquivos `portal/index.html` e `public/portal/index.html`.
+- **Benefício**: Permite que a banca avaliadora assista diretamente na página a apresentação executiva cronometrada das Soluções A e B sem necessidade de redirecionamento externo.
+
+---
+
 ### [2026-09-16] — Tratamento de Duplicidade de Notas e Mensagens Humanas no Portal do Fornecedor
 - **Commit**: `fix(supplier): trata duplicidade de nfs-e e humaniza feedback de submissao no wizard`
 - **Contexto**: Diagnóstico de erro 500 no botão "Confirmar e Emitir Protocolo" em produção (`ihubfiscal.vercel.app`):
