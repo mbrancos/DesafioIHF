@@ -12,7 +12,7 @@ export interface KanbanInvoiceItem {
   id: string;
   protocol: string;
   invoice_number: string;
-  status: 'TRIAGEM' | 'AGUARDANDO_APROVACAO' | 'RECUSADO' | 'AGENDADO_PAGAMENTO' | 'PAGO';
+  status: 'TRIAGEM' | 'AGUARDANDO_APROVACAO' | 'RECUSADO' | 'AGENDADO_PAGAMENTO' | 'AGENDADO' | 'PAGO';
   amount_bruto: number;
   amount_liquido: number;
   due_date: string;

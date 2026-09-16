@@ -9,7 +9,10 @@ export type { UserSession };
 /**
  * Autentica o usuário com 1 clique utilizando as credenciais pré-cadastradas no seed.sql
  */
-export async function loginWithPersona(role: 'analista' | 'gestor' | 'cfo' | 'admin') {
+export async function loginWithPersona(
+  role: 'analista' | 'gestor' | 'cfo' | 'admin',
+  redirectTo?: string
+) {
   const user = TEST_USERS[role];
   if (!user) {
     throw new Error('Perfil de persona não encontrado.');
@@ -24,7 +27,7 @@ export async function loginWithPersona(role: 'analista' | 'gestor' | 'cfo' | 'ad
     maxAge: 60 * 60 * 24 * 7, // 7 dias
   });
 
-  redirect('/kanban');
+  redirect(redirectTo || '/kanban');
 }
 
 /**

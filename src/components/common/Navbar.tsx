@@ -16,13 +16,50 @@ import {
   UserCheck,
   Menu,
   X,
+  ChevronDown,
+  Check,
 } from 'lucide-react';
-import { signOut } from '@/actions/auth';
+import { signOut, loginWithPersona } from '@/actions/auth';
 
 interface NavbarProps {
   userRole?: string;
   userName?: string;
 }
+
+const PERSONAS = [
+  {
+    role: 'analista' as const,
+    name: 'Carlos Financeiro',
+    badge: 'analista',
+    description: 'Operação diária e retenções',
+    icon: '👤',
+    badgeColor: 'bg-[#e0f2fe] text-[#1c395c]',
+  },
+  {
+    role: 'gestor' as const,
+    name: 'Beatriz Inovação',
+    badge: 'gestor',
+    description: 'Alçada até R$ 10.000,00',
+    icon: '✨',
+    badgeColor: 'bg-[#fef3c7] text-[#b45309]',
+  },
+  {
+    role: 'cfo' as const,
+    name: 'Rodrigo Controller',
+    badge: 'cfo',
+    description: 'Alçada ilimitada e fechamento',
+    icon: '🛡️',
+    badgeColor: 'bg-[#fde2ce] text-[#812926]',
+  },
+  {
+    role: 'admin' as const,
+    name: 'Mariana Admin',
+    badge: 'admin',
+    description: 'Parametrização e holding',
+    icon: '⚙️',
+    badgeColor: 'bg-[#dcfce7] text-[#16a34a]',
+  },
+];
 
 export const Navbar: React.FC<NavbarProps> = ({
   userRole = 'analista',
@@ -30,6 +67,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+  const [isSwitchingRole, setIsSwitchingRole] = useState(false);
 
   const navItems = [
     { label: 'Kanban', href: '/kanban', icon: KanbanSquare },
@@ -43,6 +82,22 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleSignOut = async () => {
     await signOut();
     window.location.href = '/';
+  };
+
+  const handleSwitchRole = async (targetRole: 'analista' | 'gestor' | 'cfo' | 'admin') => {
+    if (targetRole === userRole) {
+      setRoleDropdownOpen(false);
+      return;
+    }
+    setIsSwitchingRole(true);
+    try {
+      await loginWithPersona(targetRole, pathname);
+    } catch {
+      window.location.reload();
+    } finally {
+      setIsSwitchingRole(false);
+      setRoleDropdownOpen(false);
+    }
   };
 
   return (
@@ -113,23 +168,100 @@ export const Navbar: React.FC<NavbarProps> = ({
               <ExternalLink className="w-3 h-3" />
             </Link>
 
-            {/* Identificação de Usuário / Persona */}
-            <div className="flex items-center gap-2 pl-2 border-l border-[#e5e5e5]">
-              <div className="text-right">
-                <p className="text-xs font-bold text-[#212020] leading-none">
-                  {userName}
-                </p>
-                <span className="text-[10px] font-bold text-[#812926] uppercase leading-none">
-                  {userRole}
-                </span>
-              </div>
+            {/* Identificação de Usuário / Dropdown de Troca de Persona */}
+            <div className="relative pl-2 border-l border-[#e5e5e5]">
               <button
-                onClick={handleSignOut}
-                className="p-1.5 text-[#c1c1c1] hover:text-[#DC2626] hover:bg-[#fee2e2] rounded-lg transition-colors"
-                title="Sair / Trocar de Usuário"
+                type="button"
+                onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-transparent hover:border-[#e5e5e5] hover:bg-[#f7f6f2] transition-all cursor-pointer group"
+                title="Clique para alternar o perfil de acesso"
               >
-                <LogOut className="w-4 h-4" />
+                <div className="text-right">
+                  <p className="text-xs font-bold text-[#212020] leading-none group-hover:text-[#812926] transition-colors">
+                    {userName}
+                  </p>
+                  <span className="text-[10px] font-bold text-[#812926] uppercase leading-none mt-0.5 inline-block">
+                    {userRole}
+                  </span>
+                </div>
+                <ChevronDown
+                  className={`w-4 h-4 text-[#717171] transition-transform duration-200 ${
+                    roleDropdownOpen ? 'rotate-180 text-[#812926]' : ''
+                  }`}
+                />
               </button>
+
+              {/* Backdrop para fechar ao clicar fora */}
+              {roleDropdownOpen && (
+                <div
+                  className="fixed inset-0 z-30"
+                  onClick={() => setRoleDropdownOpen(false)}
+                />
+              )}
+
+              {/* Dropdown Menu */}
+              {roleDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-xl border border-[#e5e5e5] p-2 z-40 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="px-3 py-2 border-b border-[#f3f4f5]">
+                    <p className="text-[10px] font-bold text-[#812926] uppercase tracking-wider font-['Poppins']">
+                      Alternar Alçada (1 Clique)
+                    </p>
+                    <p className="text-[11px] text-[#717171]">
+                      Mude o perfil para testar limites e permissões
+                    </p>
+                  </div>
+
+                  <div className="py-1 space-y-1">
+                    {PERSONAS.map((p) => {
+                      const isCurrent = userRole === p.role;
+                      return (
+                        <button
+                          key={p.role}
+                          onClick={() => handleSwitchRole(p.role)}
+                          disabled={isSwitchingRole}
+                          className={`w-full text-left p-2.5 rounded-xl flex items-center justify-between transition-colors ${
+                            isCurrent
+                              ? 'bg-[#812926]/10 border border-[#812926]/30'
+                              : 'hover:bg-[#f7f6f2]'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <span className="text-base leading-none">{p.icon}</span>
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-xs font-bold text-[#212020] font-['Poppins']">
+                                  {p.name}
+                                </span>
+                                <span
+                                  className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${p.badgeColor}`}
+                                >
+                                  {p.badge}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-[#717171] block mt-0.5">
+                                {p.description}
+                              </span>
+                            </div>
+                          </div>
+                          {isCurrent && (
+                            <Check className="w-4 h-4 text-[#812926] shrink-0" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="pt-2 border-t border-[#f3f4f5]">
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-[#DC2626] hover:bg-[#fee2e2] rounded-xl transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sair da conta</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -168,6 +300,31 @@ export const Navbar: React.FC<NavbarProps> = ({
             );
           })}
           <div className="pt-3 border-t border-[#e5e5e5] space-y-2">
+            <div className="px-1 py-1">
+              <span className="text-[10px] font-bold text-[#812926] uppercase tracking-wider block mb-1 font-['Poppins']">
+                Trocar Alçada (1 Clique):
+              </span>
+              <div className="grid grid-cols-2 gap-1.5">
+                {PERSONAS.map((p) => (
+                  <button
+                    key={p.role}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleSwitchRole(p.role);
+                    }}
+                    className={`p-1.5 rounded-lg text-left text-[11px] font-semibold flex items-center gap-1.5 border transition-colors ${
+                      userRole === p.role
+                        ? 'bg-[#812926]/10 border-[#812926]/40 text-[#812926]'
+                        : 'bg-[#f7f6f2] border-[#e5e5e5] text-[#212020]'
+                    }`}
+                  >
+                    <span>{p.icon}</span>
+                    <span className="truncate">{p.name.split(' ')[0]} ({p.badge})</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <Link
               href="/upload"
               onClick={() => setMobileMenuOpen(false)}

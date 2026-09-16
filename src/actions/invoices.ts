@@ -313,7 +313,7 @@ export async function submitSupplierInvoice(formData: FormData) {
  */
 export async function updateInvoiceStatus(
   invoiceId: string,
-  newStatus: 'TRIAGEM' | 'AGUARDANDO_APROVACAO' | 'RECUSADO' | 'AGENDADO_PAGAMENTO' | 'PAGO',
+  newStatus: 'TRIAGEM' | 'AGUARDANDO_APROVACAO' | 'RECUSADO' | 'AGENDADO_PAGAMENTO' | 'AGENDADO' | 'PAGO',
   metadata?: {
     justification?: string;
     payment_proof_url?: string;
@@ -497,6 +497,31 @@ const MOCK_KANBAN_INVOICES = [
       name: 'Administrativo & Legal',
     },
     confidence_score: 99,
+  },
+  {
+    id: 'inv-demo-006',
+    protocol: 'IHF-2026-R772',
+    invoice_number: '7410',
+    status: 'AGENDADO' as const,
+    amount_bruto: 680000,
+    amount_liquido: 635800,
+    issue_date: '2026-09-07T00:00:00.000Z',
+    due_date: '2026-09-28T00:00:00.000Z',
+    supplier: {
+      name: 'Datacenter Floripa Cloud & Infraestrutura LTDA',
+      cnpj: '44444444000144',
+      pix_key: 'financeiro@floripacloud.com.br',
+    },
+    company: {
+      id: 'c0000000-0000-0000-0000-000000000001',
+      name: 'Impact Hub Floripa Gestao de Espacos LTDA',
+      trade_name: 'Impact Hub Floripa',
+    },
+    cost_center: {
+      code: 'tecnologia_inovacao',
+      name: 'Tecnologia & Inovação',
+    },
+    confidence_score: 97,
   },
 ];
 
@@ -700,7 +725,7 @@ export async function getInvoiceById(invoiceId: string) {
         user: { name: 'Carlos Financeiro', role: 'analista' },
         metadata: {},
       },
-      ...(matchedDemo.status === 'AGENDADO_PAGAMENTO' || matchedDemo.status === 'PAGO'
+      ...(matchedDemo.status === 'AGENDADO_PAGAMENTO' || matchedDemo.status === 'AGENDADO' || matchedDemo.status === 'PAGO'
         ? [
             {
               id: 'ev-3',

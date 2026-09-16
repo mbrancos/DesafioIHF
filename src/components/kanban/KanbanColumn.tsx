@@ -6,6 +6,8 @@ import { KanbanColumnDef } from './kanban-utils';
 import { InvoiceCard, KanbanInvoiceItem } from './InvoiceCard';
 import { formatBRL } from '@/lib/formatters';
 
+import { Info } from 'lucide-react';
+
 interface KanbanColumnProps {
   column: KanbanColumnDef;
   invoices: KanbanInvoiceItem[];
@@ -32,6 +34,18 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-xs font-bold text-[#212020] font-['Poppins'] flex items-center gap-1.5">
             <span>{column.title}</span>
+
+            {/* Tooltip com descrição curta da etapa */}
+            <div className="relative group/tooltip inline-flex items-center">
+              <Info className="w-3.5 h-3.5 text-[#a8a8a8] hover:text-[#212020] cursor-help transition-colors" />
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover/tooltip:flex flex-col items-center z-50 pointer-events-none w-56">
+                <div className="bg-[#212020] text-white text-[10px] leading-tight font-normal rounded-lg p-2.5 shadow-xl border border-[#484848]/30 text-center font-['GT_Walsheim']">
+                  {column.tooltip}
+                </div>
+                <div className="w-2 h-2 bg-[#212020] rotate-45 -mt-1" />
+              </div>
+            </div>
+
             <span
               className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
               style={{

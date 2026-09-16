@@ -44,7 +44,14 @@ timeline
 
 ---
 
-## 📅 Registro Cronológico de Decisões e Atualizações
+### [2026-09-16] — Evolução do Kanban para 6 Fases (Nova Etapa "Agendado"), Tooltips Informativos e Dropdown de Alçadas na Navbar
+- **Commit**: `feat(kanban): adiciona fase Agendado (6 fases), tooltips informativos e dropdown de troca de personas na Navbar`
+- **Contexto**: Refinamento da esteira operacional de contas a pagar e da experiência de avaliação de alçadas:
+  1. **Renomeação de Fase**: Atualizado o nome de *"Agendar para Pagamento"* para *"Agendar Pagamento"*.
+  2. **Nova Etapa Operacional ("Agendado")**: Inserida coluna entre *"Agendar Pagamento"* e *"Pago & Liquidado"*, representando despesas já cadastradas e programadas no internet banking que aguardam a data de débito para a baixa com anexo de comprovante bancário.
+  3. **Tooltips Informativos nas Colunas**: Implementados tooltips em hover com micro-interação CSS nas 6 colunas do Kanban, contendo descrições curtas e didáticas de cada etapa do ciclo de vida.
+  4. **Dropdown de Alçadas na Navbar**: O card de usuário no canto superior direito foi convertido em um dropdown suspenso interativo para alternar entre as 4 personas (*Carlos Financeiro*, *Beatriz Inovação*, *Rodrigo Controller*, *Mariana Admin*) em 1 clique sem sair da página atual, além de atalho para logout.
+  5. **Compatibilidade e Validação E2E**: Tipos TypeScript e Server Actions atualizados, faturas na fase `AGENDADO` refletidas em `/pagamentos`, 44 testes unitários no Vitest aprovados (100%) e `next build` concluído com sucesso.
 
 ### [2026-09-16] — Correção de Server Actions e Desacoplamento de Utilitários para Deploy na Vercel
 - **Commit**: `fix(build): extrai generateProtocol para src/lib/protocol.ts e corrige tipagem em WizardStep2SplitView`

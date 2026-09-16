@@ -27,9 +27,9 @@ export default async function PaymentsPage({ searchParams }: PaymentsPageProps) 
     companyId: companyFilter,
   });
 
-  // Filtra apenas as faturas na fase AGENDADO_PAGAMENTO
+  // Filtra as faturas autorizadas (Agendar Pagamento e Agendado)
   const paymentInvoices = allInvoices.filter(
-    (i) => i.status === 'AGENDADO_PAGAMENTO'
+    (i) => i.status === 'AGENDADO_PAGAMENTO' || i.status === 'AGENDADO'
   );
 
   const totalPagarCentavos = paymentInvoices.reduce(

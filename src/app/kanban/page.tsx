@@ -50,7 +50,7 @@ export default async function KanbanPage({ searchParams }: KanbanPageProps) {
                 Quadro Operacional de Contas a Pagar
               </h1>
               <span className="text-xs bg-[#812926] text-white px-2.5 py-0.5 rounded-full font-semibold">
-                5 Fases
+                6 Fases
               </span>
             </div>
             <p className="text-xs text-[#484848] mt-1 font-['GT_Walsheim']">

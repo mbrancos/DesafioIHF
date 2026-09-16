@@ -1,7 +1,8 @@
 export interface KanbanColumnDef {
-  id: 'TRIAGEM' | 'AGUARDANDO_APROVACAO' | 'RECUSADO' | 'AGENDADO_PAGAMENTO' | 'PAGO';
+  id: 'TRIAGEM' | 'AGUARDANDO_APROVACAO' | 'RECUSADO' | 'AGENDADO_PAGAMENTO' | 'AGENDADO' | 'PAGO';
   title: string;
   description: string;
+  tooltip: string;
   color: string;
   bgHeader: string;
 }
@@ -11,6 +12,7 @@ export const KANBAN_COLUMNS: KanbanColumnDef[] = [
     id: 'TRIAGEM',
     title: 'Triagem & Divergências',
     description: 'Notas submetidas aguardando resolução fiscal',
+    tooltip: 'Notas fiscais submetidas aguardando conferência humana de retenções municipais e federais.',
     color: '#D97706',
     bgHeader: '#fef3c7',
   },
@@ -18,6 +20,7 @@ export const KANBAN_COLUMNS: KanbanColumnDef[] = [
     id: 'AGUARDANDO_APROVACAO',
     title: 'Aguardando Aprovação',
     description: 'Notas validadas aguardando deliberação de alçada',
+    tooltip: 'Notas fiscais validadas pelo fiscal aguardando deliberação técnica do Gestor (até R$ 10.000) ou CFO.',
     color: '#1c395c',
     bgHeader: '#e0f2fe',
   },
@@ -25,20 +28,31 @@ export const KANBAN_COLUMNS: KanbanColumnDef[] = [
     id: 'RECUSADO',
     title: 'Recusado / Devolvido',
     description: 'Faturas devolvidas com justificativa formal',
+    tooltip: 'Faturas rejeitadas com justificativa formal registrada e devolvidas ao fornecedor para correção.',
     color: '#DC2626',
     bgHeader: '#fee2e2',
   },
   {
     id: 'AGENDADO_PAGAMENTO',
-    title: 'Agendado para Pagamento',
-    description: 'Despesas autorizadas na fila de quitação',
+    title: 'Agendar Pagamento',
+    description: 'Despesas autorizadas para inclusão no banco',
+    tooltip: 'Despesas 100% aprovadas pela gestão, prontas para programação no internet banking.',
     color: '#812926',
     bgHeader: '#fde2ce',
+  },
+  {
+    id: 'AGENDADO',
+    title: 'Agendado',
+    description: 'Programado no banco, aguardando data de débito',
+    tooltip: 'Pagamento já programado no banco, onde o card aguarda a data de débito para realização da baixa com comprovante.',
+    color: '#6D28D9',
+    bgHeader: '#ede9fe',
   },
   {
     id: 'PAGO',
     title: 'Pago & Liquidado',
     description: 'Pagamento efetuado com comprovante anexado',
+    tooltip: 'Pagamento efetuado e liquidado no banco, com anexo obrigatório de comprovante bancário.',
     color: '#16A34A',
     bgHeader: '#dcfce7',
   },
@@ -77,6 +91,7 @@ export function calculateColumnTotals(
     AGUARDANDO_APROVACAO: { count: 0, totalCentavos: 0 },
     RECUSADO: { count: 0, totalCentavos: 0 },
     AGENDADO_PAGAMENTO: { count: 0, totalCentavos: 0 },
+    AGENDADO: { count: 0, totalCentavos: 0 },
     PAGO: { count: 0, totalCentavos: 0 },
   };
 
