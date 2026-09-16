@@ -186,13 +186,13 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
 
       {/* Grade do Split-View (Lado Esquerdo: PDF / Lado Direito: Formulário) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Lado Esquerdo: Visualizador de PDF */}
-        <div className="lg:col-span-6 h-[720px] sticky top-6">
+        {/* Lado Esquerdo: Visualizador de PDF (Altura sincronizada, zero scroll duplo) */}
+        <div className="lg:col-span-6 h-[calc(100vh-160px)] min-h-[600px] max-h-[820px] sticky top-4">
           <DynamicPdfViewer file={pdfFile} />
         </div>
 
         {/* Lado Direito: Formulário de Conferência */}
-        <div className="lg:col-span-6 bg-white rounded-xl border border-[#e5e5e5] p-6 shadow-sm overflow-y-auto max-h-[720px]">
+        <div className="lg:col-span-6 bg-white rounded-xl border border-[#e5e5e5] p-5 sm:p-6 shadow-sm overflow-y-auto h-[calc(100vh-160px)] min-h-[600px] max-h-[820px]">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Validador Matemático Visual */}
             <div

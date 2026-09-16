@@ -304,6 +304,17 @@ timeline
   3. Formalização no [`AGENTS.md`](../AGENTS.md) de que [`docs/designIHF.md`](docs/designIHF.md) é a **Fonte Absoluta da Verdade** visual.
   4. Isolamento claro: a Landing Page da Fase 1 (`portal/index.html`) permanece como o showroom dos entregáveis do desafio; o **iHubFiscal v2** será desenvolvido como uma aplicação web completa em `portal/ihub/` com design system 100% aderente ao tema real.
 
+### [2026-09-15] — Otimização de UI/UX: Eliminação de Barra de Rolagem Dupla no Visualizador de PDF e Diagnóstico de Wheel Violation
+- **Arquivos Afetados**: [`src/components/pdf/PdfViewer.tsx`](file:///d:/Etna/Projetos/DesafioIHF/src/components/pdf/PdfViewer.tsx), [`src/components/supplier/WizardStep2SplitView.tsx`](file:///d:/Etna/Projetos/DesafioIHF/src/components/supplier/WizardStep2SplitView.tsx).
+- **Contexto**: Na etapa 2 do portal do fornecedor (`/upload`) e na conferência técnica (`/conferencia/:id`), o usuário relatou a ocorrência de aviso `[Violation]` no DevTools do navegador referente a non-passive wheel event listener, além da presença de duas barras de rolagem verticais paralelas (Double Scrollbar) no preview do PDF.
+- **Causa Raiz Identificada**:
+  1. *Double Scrollbar*: O container pai (`flex-1 overflow-auto p-4`) possuía padding vertical e altura restrita, enquanto o wrapper interno possuía `min-h-[600px]` e o `iframe` fixava `h-[650px]`. A soma excedia a altura útil da coluna na viewport (1366x641), gerando uma barra externa no container pai, enquanto o motor PDFium do navegador gerava a barra interna para navegar no documento.
+  2. *Violation do Chromium*: Emitido pelo script nativo do visualizador de PDF do navegador (`pdf_viewer_wrapper.js`) ao registrar listener `wheel` com `{ passive: false }` para suportar atalhos de zoom (`Ctrl + Wheel`). Não é um erro da aplicação, mas o atrito do scroll duplo agravava a percepção de jank.
+- **Decisões Tomadas**:
+  - **Visualização Full-Bleed sem Rolagem Dupla**: Removidas as dimensões fixas em pixels (`h-[650px]`). O `iframe` agora ocupa 100% da largura e altura (`w-full h-full border-none block`) com o container pai em `overflow-hidden`. A rolagem vertical passa a ser unificada e exclusiva do motor do documento.
+  - **Sincronização de Altura no Split-View**: Ajustadas as colunas do split view para `h-[calc(100vh-160px)] min-h-[600px] max-h-[820px]`, mantendo o lado esquerdo fixo e o lado direito com rolagem independente suave.
+  - **Gerenciamento de Memória (Cleanup)**: Adicionado `useEffect` com `URL.revokeObjectURL` no desmonte para evitar vazamentos de memória de blobs no cliente.
+
 ### [2026-09-15] — Enriquecimento do Design System com Tokens de Aplicação e Auditoria Comparativa
 - **Commits**: `6419fdd`, `856374d`
 - **Contexto**: Confronto entre uma análise enviada por outra IA e o código-fonte CSS real do tema `labbotheme`.
