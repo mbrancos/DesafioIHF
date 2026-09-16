@@ -6,7 +6,7 @@ import { Button } from '@/components/common/Button';
 import { Badge } from '@/components/common/Badge';
 import { validateTaxMath } from '@/lib/math';
 import { formatBRL, formatCNPJ, parseCentavos } from '@/lib/formatters';
-import { createInvoice } from '@/actions/invoices';
+import { submitSupplierInvoice } from '@/actions/invoices';
 import { CheckCircle2, AlertTriangle, ShieldCheck, ArrowLeft, Copy, Check } from 'lucide-react';
 
 interface WizardStep2SplitViewProps {
@@ -65,26 +65,32 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
     e.preventDefault();
 
     startTransition(async () => {
-      const res = await createInvoice({
-        cnpj_prestador: formData.cnpj_prestador,
-        razao_social_prestador: formData.razao_social_prestador,
-        chave_pix: formData.chave_pix,
-        dados_bancarios: formData.dados_bancarios,
-        cnpj_tomador: formData.cnpj_tomador,
-        numero_nota: formData.numero_nota,
-        codigo_verificacao: formData.codigo_verificacao,
-        data_emissao: formData.data_emissao,
-        data_vencimento: formData.data_vencimento,
-        valor_bruto_centavos: Math.round(parseFloat(formData.valor_bruto) * 100),
-        valor_liquido_centavos: Math.round(parseFloat(formData.valor_liquido) * 100),
-        iss_centavos: Math.round(parseFloat(formData.iss) * 100),
-        irrf_centavos: Math.round(parseFloat(formData.irrf) * 100),
-        pis_cofins_csll_centavos: Math.round(parseFloat(formData.pis_cofins_csll) * 100),
-        descricao_servico: formData.descricao_servico,
-        centro_custo_sugerido: formData.centro_custo_sugerido,
-        hash_sha256: hashSha256,
-        extracted_data: initialData,
-      });
+      const payload = new FormData();
+      if (pdfFile) {
+        payload.append('file', pdfFile);
+      }
+      payload.append('hash_sha256', hashSha256);
+      payload.append('cnpj_prestador', formData.cnpj_prestador);
+      payload.append('razao_social_prestador', formData.razao_social_prestador);
+      payload.append('chave_pix', formData.chave_pix);
+      payload.append('dados_bancarios', formData.dados_bancarios);
+      payload.append('cnpj_tomador', formData.cnpj_tomador);
+      payload.append('numero_nota', formData.numero_nota);
+      payload.append('codigo_verificacao', formData.codigo_verificacao);
+      payload.append('data_emissao', formData.data_emissao);
+      payload.append('data_vencimento', formData.data_vencimento);
+      payload.append('valor_bruto_centavos', String(Math.round(parseFloat(formData.valor_bruto || '0') * 100)));
+      payload.append('valor_liquido_centavos', String(Math.round(parseFloat(formData.valor_liquido || '0') * 100)));
+      payload.append('iss_centavos', String(Math.round(parseFloat(formData.iss || '0') * 100)));
+      payload.append('irrf_centavos', String(Math.round(parseFloat(formData.irrf || '0') * 100)));
+      payload.append('pis_cofins_csll_centavos', String(Math.round(parseFloat(formData.pis_cofins_csll || '0') * 100)));
+      payload.append('descricao_servico', formData.descricao_servico);
+      payload.append('centro_custo_sugerido', formData.centro_custo_sugerido);
+      if (initialData) {
+        payload.append('extracted_data', JSON.stringify(initialData));
+      }
+
+      const res = await submitSupplierInvoice(payload);
 
       if (res.success && res.protocol) {
         setSubmittedProtocol(res.protocol);

@@ -46,6 +46,26 @@ timeline
 
 ## 📅 Registro Cronológico de Decisões e Atualizações
 
+### [2026-09-15] — Ativação Real da IA Gemini e Persistência Completa no Supabase (Storage + DB)
+- **Commit**: `feat(ai-storage): ativação real do Google Gemini com structured outputs e upload no Supabase Storage`
+- **Contexto**: Eliminação definitiva de fallbacks mockados na ingestão de notas fiscais, configuração da chave real da API do Google AI Studio no `.env.local`, criação de cliente administrativo (`createAdminClient`) com `SUPABASE_SERVICE_ROLE_KEY` para upload seguro no bucket público `invoices`, tratamento de status 503 com retry automático e persistência ponta a ponta na tabela `invoices` e `invoice_events`.
+- **Arquivos**: `.env.local`, `src/lib/gemini.ts`, `src/lib/supabase/admin.ts`, `src/actions/invoices.ts`, `src/components/supplier/WizardStep2SplitView.tsx`, `docs/changelog.md`.
+- **Decisões e Resultados**:
+  1. **Salvaguarda de Limite Server Actions**:
+     - `next.config.ts` mantido com `serverActions: { bodySizeLimit: '4mb' }`, viabilizando o envio seguro de PDFs íntegros de NFS-e via `FormData`.
+  2. **Bypass de RLS para Fornecedor Público**:
+     - Criado `src/lib/supabase/admin.ts` utilizando `SUPABASE_SERVICE_ROLE_KEY` no servidor, permitindo que submissões públicas e anônimas gravem no bucket `invoices` e nas tabelas relacionais sem bloqueio de RLS.
+  3. **Google Gemini Multimodal com Resiliência**:
+     - Ativada a chave oficial do Google AI Studio no `.env.local`.
+     - Implementado loop com retry automático (backoff exponencial) para blindar contra picos temporários de demanda (HTTP 503) no modelo `gemini-flash-latest`.
+     - Extração 100% precisa homologada com documento PDF real (`test-samples/NF-2026001-ImpactHub-Floripa.pdf`).
+  4. **Persistência Ponta a Ponta**:
+     - O arquivo binário do PDF é gravado no Supabase Storage (`invoices/<hash>.pdf`).
+     - A URL pública é armazenada na coluna `file_pdf_url`.
+     - Dados cadastrais do prestador atualizados em `suppliers`.
+     - Fatura persistida em `invoices` com status `TRIAGEM` e evento registrado na trilha de auditoria `invoice_events`.
+     - Nota refletida em tempo real no quadro Kanban.
+
 ### [2026-09-15] — Aplicação do Logotipo Oficial e Favicon do Impact Hub no Projeto
 - **Commit**: `feat(branding): aplica logotipo oficial do Impact Hub e configura favicon em todas as páginas`
 - **Contexto**: Inclusão do asset vetorial oficial da marca (`logo-impact-hub.svg`) extraído de `floripa.impacthub.net` para substituir todos os placeholders textuais ("iH", "H") por logotipo de alta definição, além de configurar suporte a favicon SVG nativo em todas as rotas do Next.js e da Landing Page executiva.

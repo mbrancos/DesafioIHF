@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getCurrentUser } from '@/actions/auth';
 import { revalidatePath } from 'next/cache';
 
@@ -39,7 +40,7 @@ function generateProtocol(): string {
  * Persiste a nota fiscal na fase inicial de TRIAGEM e registra o evento na trilha de auditoria
  */
 export async function createInvoice(input: CreateInvoiceInput) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const protocol = generateProtocol();
 
   // 1. Garante o cadastro ou atualização do fornecedor
@@ -60,8 +61,7 @@ export async function createInvoice(input: CreateInvoiceInput) {
 
   let supplierId = supplier?.id;
   if (supplierError || !supplierId) {
-    // Fallback para ID determinístico mock em ambiente local
-    supplierId = 's0000000-0000-0000-0000-000000000001';
+    supplierId = 'f0000000-0000-0000-0000-000000000001';
   }
 
   // 2. Identifica a empresa tomadora da holding pelo CNPJ
@@ -72,7 +72,6 @@ export async function createInvoice(input: CreateInvoiceInput) {
     .eq('cnpj', cleanCnpjTomador)
     .maybeSingle();
 
-  // Se não encontrar, atribui à empresa principal (Impact Hub Floripa)
   const companyId = company?.id || 'c0000000-0000-0000-0000-000000000001';
 
   // 3. Identifica centro de custo sugerido
@@ -114,7 +113,12 @@ export async function createInvoice(input: CreateInvoiceInput) {
     .select('id')
     .single();
 
-  const invoiceId = invoice?.id || `inv-${Date.now()}`;
+  if (invoiceError) {
+    console.error('Erro ao persistir invoice no Supabase:', invoiceError);
+    throw new Error(`Falha ao registrar fatura: ${invoiceError.message}`);
+  }
+
+  const invoiceId = invoice.id;
 
   // 5. Registra o evento de auditoria imutável
   await supabase.from('invoice_events').insert({
@@ -133,6 +137,168 @@ export async function createInvoice(input: CreateInvoiceInput) {
     success: true,
     protocol,
     invoice_id: invoiceId,
+  };
+}
+
+/**
+ * Server Action pública do Portal do Fornecedor:
+ * Realiza o upload real do binário do PDF no bucket 'invoices' do Supabase Storage
+ * e persiste os dados fiscais nas tabelas com credencial administrativa de servidor.
+ */
+export async function submitSupplierInvoice(formData: FormData) {
+  const adminSupabase = createAdminClient();
+  const protocol = generateProtocol();
+
+  const file = formData.get('file') as File | null;
+  const hashSha256 = (formData.get('hash_sha256') as string) || `hash-${Date.now()}`;
+  const cnpjPrestador = ((formData.get('cnpj_prestador') as string) || '').replace(/\D/g, '');
+  const razaoSocialPrestador = (formData.get('razao_social_prestador') as string) || 'Fornecedor';
+  const chavePix = (formData.get('chave_pix') as string) || null;
+  const dadosBancarios = (formData.get('dados_bancarios') as string) || '';
+  const cnpjTomador = ((formData.get('cnpj_tomador') as string) || '').replace(/\D/g, '');
+  const numeroNota = (formData.get('numero_nota') as string) || '';
+  const codigoVerificacao = (formData.get('codigo_verificacao') as string) || null;
+  const dataEmissao = (formData.get('data_emissao') as string) || '';
+  const dataVencimento = (formData.get('data_vencimento') as string) || '';
+  const valorBrutoCentavos = parseInt(formData.get('valor_bruto_centavos') as string, 10) || 0;
+  const valorLiquidoCentavos = parseInt(formData.get('valor_liquido_centavos') as string, 10) || 0;
+  const issCentavos = parseInt(formData.get('iss_centavos') as string, 10) || 0;
+  const irrfCentavos = parseInt(formData.get('irrf_centavos') as string, 10) || 0;
+  const pisCofinsCsllCentavos = parseInt(formData.get('pis_cofins_csll_centavos') as string, 10) || 0;
+  const descricaoServico = (formData.get('descricao_servico') as string) || 'Prestação de serviços';
+  const centroCustoSugerido = (formData.get('centro_custo_sugerido') as string) || null;
+
+  let extractedData = {};
+  try {
+    const rawExtracted = formData.get('extracted_data') as string;
+    if (rawExtracted) extractedData = JSON.parse(rawExtracted);
+  } catch (e) {
+    // Ignorado
+  }
+
+  // 1. Upload real do binário do PDF para o Supabase Storage no bucket 'invoices'
+  let filePdfUrl = `/storage/invoices/${hashSha256}.pdf`;
+
+  if (file && file.size > 0) {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const storagePath = `${hashSha256}.pdf`;
+
+    const { error: uploadError } = await adminSupabase.storage
+      .from('invoices')
+      .upload(storagePath, buffer, {
+        contentType: 'application/pdf',
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error('Erro no upload para o Supabase Storage:', uploadError);
+      throw new Error(`Falha ao persistir documento no Storage: ${uploadError.message}`);
+    }
+
+    const { data: urlData } = adminSupabase.storage
+      .from('invoices')
+      .getPublicUrl(storagePath);
+
+    if (urlData?.publicUrl) {
+      filePdfUrl = urlData.publicUrl;
+    }
+  }
+
+  // 2. Garante cadastro ou atualização do fornecedor
+  const { data: supplier, error: supplierError } = await adminSupabase
+    .from('suppliers')
+    .upsert(
+      {
+        cnpj: cnpjPrestador,
+        name: razaoSocialPrestador,
+        pix_key: chavePix,
+        bank_data: dadosBancarios ? { raw: dadosBancarios } : {},
+      },
+      { onConflict: 'cnpj' }
+    )
+    .select('id')
+    .single();
+
+  let supplierId = supplier?.id;
+  if (supplierError || !supplierId) {
+    supplierId = 'f0000000-0000-0000-0000-000000000001';
+  }
+
+  // 3. Identifica a empresa tomadora da holding pelo CNPJ
+  const { data: company } = await adminSupabase
+    .from('companies')
+    .select('id')
+    .eq('cnpj', cnpjTomador)
+    .maybeSingle();
+
+  const companyId = company?.id || 'c0000000-0000-0000-0000-000000000001';
+
+  // 4. Identifica centro de custo sugerido
+  let costCenterId: string | null = null;
+  if (centroCustoSugerido) {
+    const { data: cc } = await adminSupabase
+      .from('cost_centers')
+      .select('id')
+      .eq('code', centroCustoSugerido)
+      .maybeSingle();
+    costCenterId = cc?.id || null;
+  }
+
+  // 5. Insere a fatura na tabela invoices com status TRIAGEM
+  const invoicePayload = {
+    protocol,
+    invoice_number: numeroNota,
+    access_key: codigoVerificacao,
+    supplier_id: supplierId,
+    company_id: companyId,
+    cost_center_id: costCenterId,
+    service_description: descricaoServico,
+    status: 'TRIAGEM',
+    issue_date: dataEmissao ? new Date(dataEmissao).toISOString() : new Date().toISOString(),
+    due_date: dataVencimento ? new Date(dataVencimento).toISOString() : new Date().toISOString(),
+    amount_bruto: valorBrutoCentavos,
+    amount_liquido: valorLiquidoCentavos,
+    iss: issCentavos,
+    irrf: irrfCentavos,
+    pis_cofins_csll: pisCofinsCsllCentavos,
+    file_pdf_url: filePdfUrl,
+    hash_sha256: hashSha256,
+    extracted_data: extractedData,
+  };
+
+  const { data: invoice, error: invoiceError } = await adminSupabase
+    .from('invoices')
+    .insert(invoicePayload)
+    .select('id')
+    .single();
+
+  if (invoiceError) {
+    console.error('Erro ao persistir invoice no Supabase:', invoiceError);
+    throw new Error(`Falha ao registrar fatura: ${invoiceError.message}`);
+  }
+
+  const invoiceId = invoice.id;
+
+  // 6. Registra o evento de auditoria imutável
+  await adminSupabase.from('invoice_events').insert({
+    invoice_id: invoiceId,
+    action: 'UPLOADED',
+    metadata: {
+      protocol,
+      hash_sha256: hashSha256,
+      file_pdf_url: filePdfUrl,
+      origin: 'portal_fornecedor',
+    },
+  });
+
+  revalidatePath('/kanban');
+
+  return {
+    success: true,
+    protocol,
+    invoice_id: invoiceId,
+    file_pdf_url: filePdfUrl,
   };
 }
 

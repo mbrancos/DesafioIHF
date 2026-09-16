@@ -75,42 +75,51 @@ export async function extractInvoiceDataWithGemini(
 ): Promise<ExtractedInvoiceData> {
   const apiKey = process.env.GEMINI_API_KEY;
 
-  // Em ambiente de teste ou caso a chave não esteja configurada localmente, retorna mock estruturado de fallback
-  if (!apiKey || apiKey === 'mock_key' || process.env.NODE_ENV === 'test') {
-    return {
-      cnpj_prestador: '88888888000188',
-      razao_social_prestador: 'TechCloud Solucoes em Software LTDA',
-      chave_pix: 'financeiro@techcloud.com.br',
-      dados_bancarios: 'Banco Inter (077) Ag 0001 CC 1234567-8',
-      cnpj_tomador: '11111111000111',
-      razao_social_tomador: 'Impact Hub Floripa Gestao de Espacos LTDA',
-      numero_nota: '2026001',
-      codigo_verificacao: 'VERIF-98765-ABC',
-      data_emissao: '2026-09-10',
-      data_vencimento: '2026-09-25',
-      valor_bruto_centavos: 100000,
-      valor_liquido_centavos: 88850,
-      iss_centavos: 5000,
-      irrf_centavos: 1500,
-      pis_cofins_csll_centavos: 4650,
-      descricao_servico: 'Serviços de infraestrutura cloud e suporte técnico mensal',
-      centro_custo_sugerido: 'tecnologia_inovacao',
-      confidence_score: 98,
-    };
+  if (!apiKey || apiKey === 'mock_key') {
+    if (process.env.NODE_ENV === 'test') {
+      return {
+        cnpj_prestador: '88888888000188',
+        razao_social_prestador: 'TechCloud Solucoes em Software LTDA',
+        chave_pix: 'financeiro@techcloud.com.br',
+        dados_bancarios: 'Banco Inter (077) Ag 0001 CC 1234567-8',
+        cnpj_tomador: '11111111000111',
+        razao_social_tomador: 'Impact Hub Floripa Gestao de Espacos LTDA',
+        numero_nota: '2026001',
+        codigo_verificacao: 'VERIF-98765-ABC',
+        data_emissao: '2026-09-10',
+        data_vencimento: '2026-09-25',
+        valor_bruto_centavos: 100000,
+        valor_liquido_centavos: 88850,
+        iss_centavos: 5000,
+        irrf_centavos: 1500,
+        pis_cofins_csll_centavos: 4650,
+        descricao_servico: 'Serviços de infraestrutura cloud e suporte técnico mensal',
+        centro_custo_sugerido: 'tecnologia_inovacao',
+        confidence_score: 98,
+      };
+    }
+    throw new Error(
+      'A chave GEMINI_API_KEY não foi configurada nas variáveis de ambiente do servidor.'
+    );
   }
 
   const ai = new GoogleGenAI({ apiKey });
   const buffer = Buffer.isBuffer(pdfBuffer) ? pdfBuffer : Buffer.from(pdfBuffer);
   const base64Pdf = buffer.toString('base64');
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
-    contents: [
-      {
-        role: 'user',
-        parts: [
+  let lastError: any = null;
+  const maxRetries = 3;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await ai.models.generateContent({
+        model: 'gemini-flash-latest',
+        contents: [
           {
-            text: `Você é o auditor fiscal sênior da holding Companhia de Impacto (iHubFiscal).
+            role: 'user',
+            parts: [
+              {
+                text: `Você é o auditor fiscal sênior da holding Companhia de Impacto (iHubFiscal).
 Analise com extrema precisão este documento PDF de Nota Fiscal de Serviços Eletrônica (NFS-e) brasileira.
 Extraia todos os campos fiscais, tributários, bancários e de vencimento estritamente no formato do JSON Schema solicitado.
 Calcule com precisão os centavos de real (ex: R$ 1.250,50 vira 125050).
@@ -121,27 +130,40 @@ Caso o CNPJ do tomador seja de uma das 4 verticais da holding:
 - 33.333.333/0001-33: Impacta Mais
 - 44.444.444/0001-44: Seu PêJota
 Sugira o centro de custo mais adequado. Atribua uma pontuação de confiança de 0 a 100 com base na legibilidade dos dados.`,
-          },
-          {
-            inlineData: {
-              data: base64Pdf,
-              mimeType: 'application/pdf',
-            },
+              },
+              {
+                inlineData: {
+                  data: base64Pdf,
+                  mimeType: 'application/pdf',
+                },
+              },
+            ],
           },
         ],
-      },
-    ],
-    config: {
-      responseMimeType: 'application/json',
-      responseSchema: INVOICE_EXTRACTION_SCHEMA as any,
-    },
-  });
+        config: {
+          responseMimeType: 'application/json',
+          responseSchema: INVOICE_EXTRACTION_SCHEMA as any,
+        },
+      });
 
-  const rawText = typeof (response as any).text === 'function' ? (response as any).text() : response.text;
-  const responseText = typeof rawText === 'string' ? rawText : '';
-  if (!responseText) {
-    throw new Error('O modelo Gemini não retornou dados estruturados para este documento.');
+      const rawText = typeof (response as any).text === 'function' ? (response as any).text() : response.text;
+      const responseText = typeof rawText === 'string' ? rawText : '';
+      if (!responseText) {
+        throw new Error('O modelo Gemini não retornou dados estruturados para este documento.');
+      }
+
+      return JSON.parse(responseText) as ExtractedInvoiceData;
+    } catch (err: any) {
+      lastError = err;
+      const isUnavailable = err?.message?.includes('503') || err?.message?.includes('UNAVAILABLE');
+      if (isUnavailable && attempt < maxRetries) {
+        // Espera com backoff exponencial antes de tentar novamente
+        await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+        continue;
+      }
+      throw err;
+    }
   }
 
-  return JSON.parse(responseText) as ExtractedInvoiceData;
+  throw lastError || new Error('Falha ao processar o documento com IA após múltiplas tentativas.');
 }
