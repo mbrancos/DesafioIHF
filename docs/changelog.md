@@ -44,6 +44,22 @@ timeline
 
 ---
 
+### [2026-09-16] — Limpeza do Header Superior, Redesign Harmonioso do Hero e Padronização Nominal
+- **Commit**: `feat(portal): simplifica menu superior, centraliza e aprimora Hero, remove KPIs e padroniza nomenclatura`
+- **Contexto**: Refinamento visual e estético da página executiva `/portal`:
+  1. **Menu Superior (Header)**:
+     - Removidos os badges `"Modelo Dual"` e o subtítulo `"Holding Companhia de Impacto • Entrega Técnica"`.
+     - Removidos os parênteses e complementos dos links: `"(3 min)"` do Vídeo Demo e `"(A vs B)"` de Entregáveis.
+     - Removidos os botões de ação externos do header (`"Acessar Solução B (Web App)"` e `"GitHub"`), mantendo a identificação do candidato com design limpo e sofisticado.
+  2. **Seção Hero**:
+     - Removido o Bento Grid de 4 KPIs (`< 4h`, `0%`, `≥ 98%`, `-90%`).
+     - Removido o banner de downloads da visão unificada que ficava no Hero (mantido na barra rápida do rodapé para não poluir a apresentação inicial).
+     - Centralizado o bloco de títulos e alinhados os cards das Soluções A e B em um grid equilibrado com `text-left` interno, sombras suaves e micro-interações de navegação direta para os entregáveis.
+  3. **Padronização Global de Nomenclatura no Portal**:
+     - Removidos os asteriscos da menção às verticais da holding (`Impact Hub Floripa, Instituto Salto, Impacta Mais e Seu PêJota`).
+     - Substituídas todas as ocorrências de `"iHubFiscal v2"` para `"iHubFiscal"`.
+  4. **Validação**: 44/44 testes passando no Vitest, sincronia de hash rigorosa entre `portal/index.html` e `public/portal/index.html`.
+
 ### [2026-09-16] — Contatos no Rodapé, Downloads da Visão Unificada Completa e Amostra de Teste no Portal
 - **Commit**: `feat(portal): adiciona contatos de email/whatsapp no rodape, downloads da visao unificada e amostra de teste`
 - **Contexto**: Atendimento aos refinamentos de experiência do usuário e entrega da banca avaliadora:
