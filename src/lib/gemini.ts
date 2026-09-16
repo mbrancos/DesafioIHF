@@ -107,13 +107,16 @@ export async function extractInvoiceDataWithGemini(
   const buffer = Buffer.isBuffer(pdfBuffer) ? pdfBuffer : Buffer.from(pdfBuffer);
   const base64Pdf = buffer.toString('base64');
 
+  // Modelos oficiais validados para fallback rápido (fail-fast)
+  const modelsToTry = ['gemini-flash-latest', 'gemini-flash-lite-latest'];
   let lastError: any = null;
-  const maxRetries = 3;
 
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+  for (let i = 0; i < modelsToTry.length; i++) {
+    const currentModel = modelsToTry[i];
     try {
+      console.log(`[Gemini Extraction] Tentativa com modelo: ${currentModel}`);
       const response = await ai.models.generateContent({
-        model: 'gemini-flash-latest',
+        model: currentModel,
         contents: [
           {
             role: 'user',
@@ -152,18 +155,20 @@ Sugira o centro de custo mais adequado. Atribua uma pontuação de confiança de
         throw new Error('O modelo Gemini não retornou dados estruturados para este documento.');
       }
 
+      console.log(`[Gemini Extraction] Sucesso na extração com modelo: ${currentModel}`);
       return JSON.parse(responseText) as ExtractedInvoiceData;
     } catch (err: any) {
       lastError = err;
-      const isUnavailable = err?.message?.includes('503') || err?.message?.includes('UNAVAILABLE');
-      if (isUnavailable && attempt < maxRetries) {
-        // Espera com backoff exponencial antes de tentar novamente
-        await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+      console.warn(`[Gemini Extraction] Falha no modelo ${currentModel}:`, err?.message || err);
+
+      // Se houver próximo modelo para tentar, avança imediatamente sem delay
+      if (i < modelsToTry.length - 1) {
+        console.warn(`[Gemini Extraction] Chaveando imediatamente para o modelo fallback: ${modelsToTry[i + 1]}`);
         continue;
       }
-      throw err;
+      break;
     }
   }
 
-  throw lastError || new Error('Falha ao processar o documento com IA após múltiplas tentativas.');
+  throw lastError || new Error('Falha ao processar o documento com IA após tentar os modelos disponíveis.');
 }

@@ -2,7 +2,18 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/common/Button';
-import { UploadCloud, FileCheck, AlertCircle, FileCode, CheckCircle2 } from 'lucide-react';
+import { calculateSha256 } from '@/lib/crypto';
+import {
+  UploadCloud,
+  FileCheck,
+  AlertCircle,
+  AlertTriangle,
+  FileCode,
+  CheckCircle2,
+  ArrowRight,
+  RefreshCw,
+  Edit3,
+} from 'lucide-react';
 
 interface WizardStep1UploadProps {
   onProcessed: (data: any, pdfFile: File, hashSha256: string) => void;
@@ -13,9 +24,12 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({ onProcesse
   const [xmlFile, setXmlFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [isAiUnavailable, setIsAiUnavailable] = useState<boolean>(false);
+  const [lastHashSha256, setLastHashSha256] = useState<string>('');
 
   const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
+    setIsAiUnavailable(false);
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -47,6 +61,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({ onProcesse
 
     setIsProcessing(true);
     setError(null);
+    setIsAiUnavailable(false);
 
     try {
       const formData = new FormData();
@@ -62,13 +77,103 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({ onProcesse
 
       const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Falha ao processar a nota fiscal.');
+      if (result.hash_sha256) {
+        setLastHashSha256(result.hash_sha256);
+      }
+
+      if (!response.ok || !result.success) {
+        // Detecta se é erro 503 / indisponibilidade / alta demanda do Google AI
+        if (
+          response.status === 503 ||
+          result.isUnavailable ||
+          result.error?.includes('503') ||
+          result.error?.includes('alta demanda') ||
+          result.error?.includes('demand')
+        ) {
+          setIsAiUnavailable(true);
+          setError(
+            'Os servidores de IA estão com alta demanda temporária no momento. Você pode tentar novamente em alguns segundos ou prosseguir com o preenchimento manual.'
+          );
+          return;
+        }
+
+        // Garante que nenhuma string JSON bruta seja exibida na tela
+        let cleanError = result.error || 'Falha ao processar a nota fiscal.';
+        if (typeof cleanError === 'string' && cleanError.trim().startsWith('{')) {
+          try {
+            const parsed = JSON.parse(cleanError);
+            cleanError =
+              parsed?.error?.message ||
+              parsed?.message ||
+              'Falha na comunicação com o leitor de IA.';
+          } catch {
+            cleanError = 'Falha na leitura automática do documento fiscal.';
+          }
+        }
+        throw new Error(cleanError);
       }
 
       onProcessed(result.data, pdfFile, result.hash_sha256);
     } catch (err: any) {
-      setError(err.message || 'Erro inesperado durante a leitura da nota fiscal.');
+      let msg = err.message || 'Erro inesperado durante a leitura da nota fiscal.';
+      if (typeof msg === 'string' && msg.trim().startsWith('{')) {
+        try {
+          const parsed = JSON.parse(msg);
+          msg =
+            parsed?.error?.message ||
+            parsed?.message ||
+            'Falha na comunicação com o leitor de IA.';
+        } catch {
+          msg = 'Falha no processamento automático do documento.';
+        }
+      }
+      setError(msg);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  /**
+   * Modo Contingência: permite ao fornecedor avançar mesmo com a IA indisponível
+   */
+  const handleManualContingency = async () => {
+    if (!pdfFile) return;
+
+    setIsProcessing(true);
+    try {
+      // 1. Preservação do SHA-256: usa o já calculado ou gera via Web Crypto no cliente
+      let hash = lastHashSha256;
+      if (!hash) {
+        const arrayBuffer = await pdfFile.arrayBuffer();
+        hash = await calculateSha256(arrayBuffer);
+      }
+
+      // 2. Estrutura com campos zerados e pontuação 0 para entrada manual
+      const contingencyData = {
+        cnpj_prestador: '',
+        razao_social_prestador: '',
+        chave_pix: '',
+        dados_bancarios: '',
+        cnpj_tomador: '11111111000111', // Padrão: Impact Hub Floripa
+        numero_nota: '',
+        codigo_verificacao: '',
+        data_emissao: new Date().toISOString().split('T')[0],
+        data_vencimento: '',
+        valor_bruto_centavos: 0,
+        valor_liquido_centavos: 0,
+        iss_centavos: 0,
+        irrf_centavos: 0,
+        pis_cofins_csll_centavos: 0,
+        descricao_servico: '',
+        centro_custo_sugerido: 'tecnologia_inovacao',
+        confidence_score: 0,
+        is_contingency: true,
+      };
+
+      onProcessed(contingencyData, pdfFile, hash);
+    } catch (err: any) {
+      console.error('Erro ao acionar contingência manual:', err);
+      setError('Falha ao calcular hash do arquivo para modo manual. Tente novamente.');
     } finally {
       setIsProcessing(false);
     }
@@ -85,10 +190,45 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({ onProcesse
         </p>
       </div>
 
+      {/* Banner de Erro com Modo de Contingência */}
       {error && (
-        <div className="flex items-center gap-2 p-3.5 mb-6 text-xs text-[#DC2626] bg-[#fee2e2] border border-[#fecaca] rounded-lg">
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
-          <span>{error}</span>
+        <div className="mb-6 p-4 rounded-xl border border-[#fde68a] bg-[#fffbeb] text-[#212020] animate-fadeIn">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-[#D97706] flex-shrink-0 mt-0.5" />
+            <div className="flex-1 text-xs">
+              <h4 className="font-bold text-[#D97706] font-['Poppins'] mb-1 text-sm">
+                {isAiUnavailable
+                  ? 'Leitura Automática Temporariamente Indisponível'
+                  : 'Aviso de Processamento'}
+              </h4>
+              <p className="text-[#484848] leading-relaxed mb-3">{error}</p>
+
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleProcess}
+                  isLoading={isProcessing}
+                >
+                  <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+                  Tentar Novamente
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="sm"
+                  onClick={handleManualContingency}
+                  isLoading={isProcessing}
+                >
+                  <Edit3 className="w-3.5 h-3.5 mr-1.5" />
+                  Continuar e Preencher Manualmente
+                  <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -129,6 +269,29 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({ onProcesse
               <p className="text-xs text-[#c1c1c1] mt-1">Formatos aceitos: PDF</p>
             </div>
           )}
+        </div>
+
+        <div className="mt-2 text-right">
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                const res = await fetch('/samples/sample.pdf');
+                const blob = await res.blob();
+                const file = new File([blob], 'NF-2026189-ImpactaMais-Eventos.pdf', {
+                  type: 'application/pdf',
+                });
+                setPdfFile(file);
+                setError(null);
+                setIsAiUnavailable(false);
+              } catch (e) {
+                console.error('Erro ao carregar amostra:', e);
+              }
+            }}
+            className="text-[11px] text-[#812926] hover:underline inline-flex items-center gap-1 font-medium cursor-pointer"
+          >
+            <span>Carregar PDF de Demonstração (MegaSom NFS-e 2026189)</span>
+          </button>
         </div>
       </div>
 

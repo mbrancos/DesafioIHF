@@ -120,6 +120,11 @@ export async function createInvoice(input: CreateInvoiceInput) {
 
   const invoiceId = invoice.id;
 
+  const isContingency =
+    (input as any).is_contingency ||
+    input.extracted_data?.confidence_score === 0 ||
+    input.extracted_data?.is_contingency;
+
   // 5. Registra o evento de auditoria imutável
   await supabase.from('invoice_events').insert({
     invoice_id: invoiceId,
@@ -128,6 +133,8 @@ export async function createInvoice(input: CreateInvoiceInput) {
       protocol,
       hash_sha256: input.hash_sha256,
       origin: 'portal_fornecedor',
+      manual_entry: !!isContingency,
+      ai_fallback: !!isContingency,
     },
   });
 
@@ -278,7 +285,10 @@ export async function submitSupplierInvoice(formData: FormData) {
     throw new Error(`Falha ao registrar fatura: ${invoiceError.message}`);
   }
 
-  const invoiceId = invoice.id;
+  const isContingency =
+    formData.get('is_contingency') === 'true' ||
+    (extractedData as any)?.confidence_score === 0 ||
+    (extractedData as any)?.is_contingency;
 
   // 6. Registra o evento de auditoria imutável
   await adminSupabase.from('invoice_events').insert({
@@ -289,6 +299,8 @@ export async function submitSupplierInvoice(formData: FormData) {
       hash_sha256: hashSha256,
       file_pdf_url: filePdfUrl,
       origin: 'portal_fornecedor',
+      manual_entry: !!isContingency,
+      ai_fallback: !!isContingency,
     },
   });
 

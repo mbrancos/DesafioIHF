@@ -304,6 +304,22 @@ timeline
   3. Formalização no [`AGENTS.md`](../AGENTS.md) de que [`docs/designIHF.md`](docs/designIHF.md) é a **Fonte Absoluta da Verdade** visual.
   4. Isolamento claro: a Landing Page da Fase 1 (`portal/index.html`) permanece como o showroom dos entregáveis do desafio; o **iHubFiscal v2** será desenvolvido como uma aplicação web completa em `portal/ihub/` com design system 100% aderente ao tema real.
 
+### [2026-09-15] — Implementação de Resiliência em 3 Camadas: Fallback Fail-Fast de IA, Modo de Contingência Manual e Auditoria
+- **Arquivos Afetados**:
+  - [`src/lib/gemini.ts`](file:///d:/Etna/Projetos/DesafioIHF/src/lib/gemini.ts)
+  - [`src/app/api/extract/route.ts`](file:///d:/Etna/Projetos/DesafioIHF/src/app/api/extract/route.ts)
+  - [`src/components/supplier/WizardStep1Upload.tsx`](file:///d:/Etna/Projetos/DesafioIHF/src/components/supplier/WizardStep1Upload.tsx)
+  - [`src/components/supplier/WizardStep2SplitView.tsx`](file:///d:/Etna/Projetos/DesafioIHF/src/components/supplier/WizardStep2SplitView.tsx)
+  - [`src/actions/invoices.ts`](file:///d:/Etna/Projetos/DesafioIHF/src/actions/invoices.ts)
+- **Contexto**: A API do Google Gemini apresentou erro esporádico `503 UNAVAILABLE ("This model is currently experiencing high demand")`, exibindo JSON cru no frontend e bloqueando o fluxo de envio da nota pelo fornecedor.
+- **Decisões Tomadas (3 Camadas de Blindagem)**:
+  1. *Fallback Rápido (Fail-Fast)*: Configuração de pool sequencial entre `gemini-flash-latest` (primário) e `gemini-flash-lite-latest` (secundário) com 1 tentativa por modelo e sem backoff demorado, mantendo a execução bem abaixo do limite de 18s e respeitando `export const maxDuration = 30;` na Vercel.
+  2. *Tratamento de Erros e Eliminação de JSON Cru*: Higienização de mensagens de erro na API e na interface. Erros técnicos ou strings JSON são convertidos em banners amigáveis com tokens do Design System (`--ihf-status-warning`), orientando o usuário com clareza.
+  3. *Modo de Contingência (Preenchimento Manual)*: Adicionado o botão "Continuar e Preencher Manualmente". Caso a IA esteja indisponível ou o usuário opte por seguir sem IA, o sistema avança para o Step 2 (Split-View) com o PDF aberto à esquerda e campos liberados à direita (`confidence_score: 0`).
+  4. *Validação Rigorosa de Campos Obrigatórios*: Implementada checagem antes da submissão no Step 2 (`numero_nota`, `cnpj_prestador`, `razao_social_prestador`, `data_emissao`, `data_vencimento`, `valor_liquido > 0`), blindando o banco contra violações de `NOT NULL`.
+  5. *Rastreabilidade em `invoice_events`*: Registradas as flags semânticas `{ manual_entry: true, ai_fallback: true }` no evento de auditoria `UPLOADED` no Supabase, garantindo conformidade com os critérios de governança e auditoria da banca.
+  6. *Preservação de SHA-256*: Devolução do hash pela API mesmo em falha de IA e fallback com a biblioteca `src/lib/crypto.ts` via Web Crypto nativa no navegador caso haja desconexão de rede.
+
 ### [2026-09-15] — Resolução de Dessincronização de Cache do Webpack (`.next`) e Recuperação da Rota `/upload`
 - **Contexto**: Após a execução de `npm run build` para validação de tipagens, o usuário encontrou um erro de tempo de execução (`Runtime TypeError: Cannot read properties of undefined (reading 'call')` em `options.factory` do webpack) ao acessar a rota `/upload`.
 - **Causa Raiz Identificada**:

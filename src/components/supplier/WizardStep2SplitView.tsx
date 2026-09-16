@@ -44,6 +44,9 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
   const [isPending, startTransition] = useTransition();
   const [submittedProtocol, setSubmittedProtocol] = useState<string | null>(null);
   const [copiedProtocol, setCopiedProtocol] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  const isContingency = initialData?.confidence_score === 0 || initialData?.is_contingency;
 
   // Validação matemática em tempo real
   const mathValidation = React.useMemo(() => {
@@ -59,10 +62,41 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (validationError) setValidationError(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError(null);
+
+    // Validação estrita de campos obrigatórios para prevenir erros NOT NULL no banco
+    if (!formData.numero_nota.trim()) {
+      setValidationError('O Número da Nota Fiscal é obrigatório.');
+      return;
+    }
+    const cleanCnpj = formData.cnpj_prestador.replace(/\D/g, '');
+    if (cleanCnpj.length < 11) {
+      setValidationError('Informe um CNPJ ou CPF válido para o prestador de serviços.');
+      return;
+    }
+    if (!formData.razao_social_prestador.trim()) {
+      setValidationError('A Razão Social do prestador é obrigatória.');
+      return;
+    }
+    if (!formData.data_emissao) {
+      setValidationError('A Data de Emissão da nota é obrigatória.');
+      return;
+    }
+    if (!formData.data_vencimento) {
+      setValidationError('A Data de Vencimento da nota é obrigatória.');
+      return;
+    }
+    const bruto = parseFloat(formData.valor_bruto || '0');
+    const liquido = parseFloat(formData.valor_liquido || '0');
+    if (bruto <= 0 || liquido <= 0) {
+      setValidationError('Os valores Bruto e Líquido devem ser maiores que zero.');
+      return;
+    }
 
     startTransition(async () => {
       const payload = new FormData();
@@ -79,13 +113,16 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
       payload.append('codigo_verificacao', formData.codigo_verificacao);
       payload.append('data_emissao', formData.data_emissao);
       payload.append('data_vencimento', formData.data_vencimento);
-      payload.append('valor_bruto_centavos', String(Math.round(parseFloat(formData.valor_bruto || '0') * 100)));
-      payload.append('valor_liquido_centavos', String(Math.round(parseFloat(formData.valor_liquido || '0') * 100)));
+      payload.append('valor_bruto_centavos', String(Math.round(bruto * 100)));
+      payload.append('valor_liquido_centavos', String(Math.round(liquido * 100)));
       payload.append('iss_centavos', String(Math.round(parseFloat(formData.iss || '0') * 100)));
       payload.append('irrf_centavos', String(Math.round(parseFloat(formData.irrf || '0') * 100)));
       payload.append('pis_cofins_csll_centavos', String(Math.round(parseFloat(formData.pis_cofins_csll || '0') * 100)));
       payload.append('descricao_servico', formData.descricao_servico);
       payload.append('centro_custo_sugerido', formData.centro_custo_sugerido);
+      if (isContingency) {
+        payload.append('is_contingency', 'true');
+      }
       if (initialData) {
         payload.append('extracted_data', JSON.stringify(initialData));
       }
@@ -94,6 +131,8 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
 
       if (res.success && res.protocol) {
         setSubmittedProtocol(res.protocol);
+      } else if (res.error) {
+        setValidationError(res.error);
       }
     });
   };
@@ -172,7 +211,11 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          {initialData?.confidence_score >= 90 ? (
+          {isContingency ? (
+            <Badge variant="warning" size="md">
+              Modo Contingência · Entrada Manual (0%)
+            </Badge>
+          ) : initialData?.confidence_score >= 90 ? (
             <Badge variant="success" size="md">
               Alta Confiança IA ({initialData.confidence_score}%)
             </Badge>
@@ -194,6 +237,32 @@ export const WizardStep2SplitView: React.FC<WizardStep2SplitViewProps> = ({
         {/* Lado Direito: Formulário de Conferência */}
         <div className="lg:col-span-6 bg-white rounded-xl border border-[#e5e5e5] p-5 sm:p-6 shadow-sm overflow-y-auto h-[calc(100vh-160px)] min-h-[600px] max-h-[820px]">
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Alerta de Validação de Campos Obrigatórios */}
+            {validationError && (
+              <div className="p-3.5 rounded-lg border border-[#fecaca] bg-[#fee2e2] text-[#DC2626] text-xs flex items-start gap-2.5 animate-fadeIn">
+                <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-bold font-['Poppins']">Preenchimento Incompleto</p>
+                  <p className="mt-0.5">{validationError}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Banner de Modo Contingência */}
+            {isContingency && (
+              <div className="p-3.5 rounded-lg border border-[#fde68a] bg-[#fffbeb] text-[#212020] text-xs flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-[#D97706] flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-bold text-[#D97706] font-['Poppins']">
+                    Preenchimento Manual Assistido
+                  </p>
+                  <p className="text-[#484848] mt-0.5 leading-relaxed">
+                    A leitura automática foi dispensada ou estava sob alta demanda. Digite os dados da nota fiscal conferindo o PDF original à esquerda. Todos os campos obrigatórios devem ser preenchidos.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Validador Matemático Visual */}
             <div
               className={`p-3.5 rounded-lg border flex items-start gap-3 transition-colors ${

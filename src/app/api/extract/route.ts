@@ -46,27 +46,60 @@ export async function POST(request: Request | NextRequest) {
       );
     }
 
-    // 3. Conversão para ArrayBuffer e cálculo de SHA-256
-    const arrayBuffer = await file.arrayBuffer();
-    const hashSha256 = await calculateSha256(arrayBuffer);
+    let hashSha256 = '';
+    try {
+      // 3. Conversão para ArrayBuffer e cálculo de SHA-256
+      const arrayBuffer = await file.arrayBuffer();
+      hashSha256 = await calculateSha256(arrayBuffer);
 
-    // 4. Invocação do Gemini 2.5 Flash via @google/genai com Structured Outputs
-    const extractedData = await extractInvoiceDataWithGemini(arrayBuffer);
+      // 4. Invocação do Gemini via fail-fast com fallback de modelos
+      const extractedData = await extractInvoiceDataWithGemini(arrayBuffer);
 
-    return NextResponse.json({
-      success: true,
-      hash_sha256: hashSha256,
-      fileName: file.name,
-      fileSize: file.size,
-      data: extractedData,
-    });
+      return NextResponse.json({
+        success: true,
+        hash_sha256: hashSha256,
+        fileName: file.name,
+        fileSize: file.size,
+        data: extractedData,
+      });
+    } catch (innerError: any) {
+      console.error('Erro na extração com IA:', innerError);
+
+      const isUnavailable =
+        innerError?.message?.includes('503') ||
+        innerError?.message?.includes('UNAVAILABLE') ||
+        innerError?.status === 503;
+
+      let rawMsg = innerError?.message || '';
+      if (typeof rawMsg === 'string' && rawMsg.trim().startsWith('{')) {
+        try {
+          const parsed = JSON.parse(rawMsg);
+          rawMsg = parsed?.error?.message || parsed?.message || 'Falha na comunicação com o serviço de IA.';
+        } catch {
+          rawMsg = 'Falha no processamento automático do documento fiscal.';
+        }
+      }
+
+      const userFriendlyMessage = isUnavailable
+        ? 'O serviço de inteligência artificial está temporariamente com alta demanda. Você pode tentar novamente em alguns segundos ou prosseguir com a conferência manual.'
+        : rawMsg || 'Falha durante a extração automática dos dados fiscais.';
+
+      return NextResponse.json(
+        {
+          success: false,
+          isUnavailable,
+          hash_sha256: hashSha256,
+          error: userFriendlyMessage,
+        },
+        { status: isUnavailable ? 503 : 500 }
+      );
+    }
   } catch (error: any) {
-    console.error('Erro na extração de NFS-e:', error);
+    console.error('Erro geral na rota de extração:', error);
     return NextResponse.json(
       {
-        error:
-          error.message ||
-          'Falha inesperada durante a extração e leitura do documento fiscal.',
+        success: false,
+        error: error.message || 'Falha inesperada no processamento do documento fiscal.',
       },
       { status: 500 }
     );
